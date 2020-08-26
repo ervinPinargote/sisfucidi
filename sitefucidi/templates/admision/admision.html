@@ -1,0 +1,55 @@
+{% extends "usuarios/panel_usuarios.html" %}
+{%block cantidad%}
+    <p class="card-category">Materias</p>
+    <a  class="btn btn-primary btn-sm" href="{% url 'academia:NuevaMateria' %}">Nuevo </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Materias Vigentes</p>
+    <p class="card-title">{{pvigentes}}<p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Materias N. Vigentes</p>
+    <p class="card-title">{{nvigentes}}<p>
+{% endblock %}
+
+{% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
+
+{%block titulofuncional %} Admision de Estudiantes {% endblock%} <!-- Se Coloca el Titulo de la funcionalidad -->
+
+{% block trabajo %}
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+
+        <td>Codigo Admision</td>
+        <td>Estudiante</td>
+        <td>Fecha Solicitud</td>
+        <td>Programa Academico</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% if admisiones %}
+        {% for adm in admisiones %}
+        <tr>
+            <td>{{ adm.codigoAdmision }}</td>
+            <td>{{ adm.ci.nombre}}</td>
+            <td>{{ adm.fecha }}</td>
+            <td>{{ adm.Programa.nombre_programa }}</td>
+            <td><a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' adm.codigoAdmision  %}">Editar</a>  <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Eliminar</a> <a class="btn btn btn-success" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Ficha</a></td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registos para mostrar</h1>
+        {% endif %}
+
+    </tbody>
+
+
+</table>
+
+{% endblock %}

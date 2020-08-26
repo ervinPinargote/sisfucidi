@@ -1,0 +1,13 @@
+asgiref==3.2.10
+Django==3.0.8
+django-annoying==0.10.6
+django-filter==2.3.0
+django-jsonstore==0.4.1
+django-material==1.6.7
+django-material-admin==1.7.8
+django-viewflow==1.6.1
+Pillow==7.2.0
+psycopg2==2.8.5
+pytz==2020.1
+six==1.15.0
+sqlparse==0.3.1

@@ -1,0 +1,15 @@
+LICENSE
+LICENSE_EXCEPTION
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+django_jsonstore.egg-info/PKG-INFO
+django_jsonstore.egg-info/SOURCES.txt
+django_jsonstore.egg-info/dependency_links.txt
+django_jsonstore.egg-info/not-zip-safe
+django_jsonstore.egg-info/requires.txt
+django_jsonstore.egg-info/top_level.txt
+jsonstore/__init__.py
+jsonstore/fields.py
+jsonstore/queryset.py

@@ -1,0 +1,10 @@
+{% extends "academia/listar_programas.html" %} <!-- accedo a esta plantilla por que asi se beria presentar la funcionalidad -->
+
+{% block trabajo %}
+    <form method="post">
+        {% csrf_token %}
+        <h3>¿Desea eliminar el Programa: <b>{{programa.nombre_programa}}?</b></h3>
+        <button class="btn btn-danger" type="submit">Eliminar</button>
+        <a class="btn btn-default" href="{% url 'academia:Listar' %}">Cancelar</a>
+    </form>
+{% endblock %}

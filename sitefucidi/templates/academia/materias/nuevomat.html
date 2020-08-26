@@ -1,0 +1,12 @@
+{% extends "academia/materias/materias.html" %} <!-- accedo a esta plantilla por que asi se beria presentar la funcionalidad -->
+
+
+
+{% block trabajo %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock %}

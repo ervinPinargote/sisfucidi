@@ -1,0 +1,60 @@
+{% extends "usuarios/panel_usuarios.html" %}
+{%block cantidad%}
+    <p class="card-category">Programas</p>
+    <a  class="btn btn-primary btn-sm" href="{% url 'academia:Nuevo' %}">Nuevo </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Programas Vigentes</p>
+    <p class="card-title">{{pvigentes}}<p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Programas N. Vigentes</p>
+    <p class="card-title">{{nvigentes}}<p>
+{% endblock %}
+
+{% block il1 %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+
+{%block titulofuncional %} Lista de Programas Academicos {% endblock%}
+
+{% block trabajo %}
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <td>#</td>
+        <td>Codigo Programa</td>
+        <td>Nombre Programa</td>
+        <td>Duracion</td>
+        <td>Modalidad</td>
+        <td>Valor Matricula</td>
+        <td>Valor Colegiatura</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% if programas %}
+        {% for program in programas %}
+        <tr>
+            <td>{{ program.id }}</td>
+            <td>{{ program.cod_programa }}</td>
+            <td>{{ program.nombre_programa }}</td>
+            <td>{{ program.duracion }}</td>
+            <td>{{ program.tipo_programa }}</td>
+            <td>{{ program.precio_matricula }}</td>
+            <td>{{ program.precio_pension }}</td>
+            <td><a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>  <a class="btn btn-danger" href="{% url 'academia:Eliminar' program.id  %}">Eliminar</a></td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registos para mostrar</h1>
+        {% endif %}
+
+    </tbody>
+
+
+</table>
+
+{% endblock %}
