@@ -44,6 +44,10 @@ class Requisito(models.Model):
     codigo = models.CharField(max_length=10,null=False,verbose_name="Codigo Requisito")
     descripcion = models.CharField(max_length=100,null=False,verbose_name="Descripcion")
 
+    def __str__(self):
+        return '{}'.format(self.descripcion,)
+
+
 #apartado de Experiencia Espiritual
 class Experencia_espiritual(models.Model):
     fecha_conversion = models.DateField(verbose_name="Fecha de Conversion") #fecha de conversion de la persona

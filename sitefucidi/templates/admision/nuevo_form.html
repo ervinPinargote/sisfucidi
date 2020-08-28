@@ -1,0 +1,36 @@
+{% extends "admision/admision.html" %}
+
+{% block trabajo %}
+
+
+    <form method="post">
+        {% csrf_token %}
+        <div>
+          <a>Datos Personales</a>
+              {{form2.as_p}}
+        </div>
+
+        <div>
+            <a>Experiecia de Espiritual</a>
+            {{form3.as_p}}
+        </div>
+        <div>
+            <a>Experiecia de Transfondo</a>
+            {{form4.as_p}}
+        </div>
+      <!--<div>
+            <a>Experiecia de Estudios</a>
+            {{form5.as_p}}
+        </div>-->
+
+        <div>
+            <a>Experiecia de recomendaciones</a>
+            {{form6.as_p}}
+
+        </div>
+
+
+        {{form.as_p}}
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock %}
