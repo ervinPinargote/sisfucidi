@@ -13,13 +13,12 @@
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
 
-{% block il1 %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
+
 {% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 
-{%block titulofuncional %} Lista de Programas Academicos {% endblock%}
+    {%block titulofuncional %} <a><b> LISTADO PROGRAMAS ACADEMICOS </b></a> {% endblock%}
 
 {% block trabajo %}
-
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -45,16 +44,16 @@
             <td>{{ program.tipo_programa }}</td>
             <td>{{ program.precio_matricula }}</td>
             <td>{{ program.precio_pension }}</td>
-            <td><a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>  <a class="btn btn-danger" href="{% url 'academia:Eliminar' program.id  %}">Eliminar</a></td>
+            <td >
+                <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>
+                <button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "> Eliminar</button>
+                <a class="btn btn btn-success" href="">Malla</a>
+            </td>
         </tr>
         {% endfor %}
         {% else %}
         <h1>No hay registos para mostrar</h1>
         {% endif %}
-
     </tbody>
-
-
 </table>
-
 {% endblock %}

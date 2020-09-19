@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import admisioneForm, PersonaForm, ExpereciaForm, TrasfondoForm, estudiosForm, recomendacionesForm
-from .models import admisione
+from .models import admisione, estudios_realizado
 
 
 # Create your views here.
@@ -53,20 +53,27 @@ class AdmisionCreate(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form =  self.form_class(request.POST)
-        form2 = self.second_form_class(request.POST)
-        form3 = self.third_form_class(request.POST)
-        form4 = self.four_form_class(request.POST)
-        form5 = self.five_form_class(request.POST)
-        form6 = self.six_form_class(request.POST)
+        form =  self.form_class(request.POST) #FORMULARIO SOLICITUD
+        form2 = self.second_form_class(request.POST)# FORMULARIO PERSONA
+        form3 = self.third_form_class(request.POST)# FORMULARIO EXPERIENCIA ESPIRITUAL
+        form4 = self.four_form_class(request.POST)# FORMULARIO TRANSFONDO ECLESIASTICO
+        form5 = self.five_form_class(request.POST)# FORMULARIO ESTUDIOS REALIZADOS
+        form6 = self.six_form_class(request.POST)# FORMULARIO RECOMENDACIONES.
         if form.is_valid() and form2.is_valid():
+            pers = form2.save(commit=False)
+            estud = form5.save(commit=False)
             solicitud = form.save(commit=False)
 
-            solicitud.ci = form2.save()
-            solicitud.id_ex = form3.save()
-            solicitud.id_tra = form4.save()
-            solicitud.save()
-            form.save_m2m()
+            solicitud.ci = form2.save() #GUARDO PRIMERO EL FORMULARIO PERSONA Y ASIGNO EL ID DE CEDULA AL FORMULARIO SOLICITUD
+            solicitud.id_ex = form3.save() # GUARDO PRIMERO LA EXPERIENCIA ESPIRIRTUAL Y ASIGONO SU ID.
+            solicitud.id_tra = form4.save() # GUARDO EL TRANSFONDO ECLESIASTICO PARA PASAR SU ID.
+            # PROCESO PARA GUARDAR ESTUDIOS REALIZADOS
+
+            estudios = estudios_realizado.objects.create(tipo_est=estud.tipo_est,fecha_ini=estud.fecha_ini,fecha_fin=estud.fecha_fin,institucion=estud.institucion,graduacion=estud.graduacion,ci=pers) # creamos el obejeto estudios 2.
+            #solicitud.id_estudios.add(estudios)
+            solicitud.save() # aki se guarda la solicitud.
+            solicitud.id_estudios.add(estudios) # permite guardar una instancia del modelo  Formularios de Estudio al modelo ADMISION MANYTOMANY.
+            form.save_m2m() # PERMITE GUARDAR CAMPO MANY TO MANY.
 
             return HttpResponseRedirect(self.get_success_url())
         else:

@@ -1,12 +1,65 @@
 {% extends "academia/materias/materias.html" %} <!-- accedo a esta plantilla por que asi se beria presentar la funcionalidad -->
 
 
-
+{%block titulofuncional %}   <a><b> REGISTRO NUEVA MATERIA</b></a> {% endblock%}
 {% block trabajo %}
 
     <form method="post">
+
         {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Guardar</button>
+        <!--{{form.as_p}}-->
+        <div class="row">
+                    <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label>Codigo Materia</label>
+                        {{form.cod_materia}}
+                      </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                      <div class="form-group">
+                        <label>Programa Pertenece</label>
+                          {{form.cod_programa}}
+                      </div>
+                    </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label>Nombre Materia</label>
+                          {{form.nombre_materia}}
+                      </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label>Modalidad(Creditos/Horas)</label>
+                          {{form.modalidad}}
+                      </div>
+            </div>
+                    <div class="col-md-6 pl-1">
+                      <div class="form-group">
+                        <label>Duracion</label>
+                          {{form.duracion}}
+                      </div>
+                    </div>
+        </div>
+
+         <div class="row">
+                    <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label>Nivel? </label>
+                        {{form.nivel}}
+                      </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                      <div class="form-group">
+                        <label>Vigencia</label>
+                          {{form.estado}}
+                      </div>
+                    </div>
+        </div>
+        <button type="submit" class=" btn btn-primary btn-round">Guardar</button>
     </form>
 {% endblock %}

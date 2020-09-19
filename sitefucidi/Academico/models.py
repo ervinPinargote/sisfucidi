@@ -9,7 +9,7 @@ class  Programa(models.Model):
         ('M', 'Mensual'),
     )
 
-    cod_programa = models.CharField(max_length=10, null=False, verbose_name="Codigo Prograna")
+    cod_programa = models.CharField(max_length=10, null=False, verbose_name="Codigo Prograna", unique=True)
     nombre_programa = models.CharField(max_length=70,null = False,verbose_name="Programa")
     duracion = models.IntegerField(verbose_name="Duracion")
     tipo_programa = models.CharField(max_length=10, default=None,choices=opciones, verbose_name="Modalidad Programa")
@@ -25,6 +25,11 @@ class Materia(models.Model):
         ('C', 'Creditos'),
         ('H', 'Horas'),
     )
+    nivels=(
+        (1,'Uno'),
+        (2,'Dos'),
+        (3,'Tres'),
+    )
 
 
     cod_programa = models.ForeignKey('Programa',on_delete=models.CASCADE, verbose_name="Codigo Prograna")
@@ -32,6 +37,7 @@ class Materia(models.Model):
     nombre_materia = models.CharField(max_length=70, null=False, verbose_name="Asignatura")
     modalidad = models.CharField(max_length=10,choices=opcionesM)
     duracion = models.IntegerField(null=False)
+    nivel = models.IntegerField(null=True, blank=True,choices=nivels,default=0)
     estado = models.BooleanField()
 
     def __unicode__(self):

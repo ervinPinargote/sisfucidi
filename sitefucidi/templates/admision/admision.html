@@ -1,22 +1,21 @@
 {% extends "usuarios/panel_usuarios.html" %}
 {%block cantidad%}
-    <p class="card-category">Materias</p>
+    <p class="card-category">Admision</p>
     <a  class="btn btn-primary btn-sm" href="{% url 'admision:Nueva' %}">Nuevo </a>
 {% endblock %}
 {% block opcion2 %}
-    <p class="card-category">Materias Vigentes</p>
+    <p class="card-category">Admisiones Completas</p>
     <p class="card-title">{{pvigentes}}<p>
 {% endblock %}
 
 {% block opcion3 %}
-    <p class="card-category">Materias N. Vigentes</p>
+    <p class="card-category">Admisiones Incompletas</p>
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
 
-{% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
-{% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block il2 %} class="active" {% endblock %} <!-- clase para saber en que menu Estas -->
 
-{%block titulofuncional %} Admision de Estudiantes {% endblock%} <!-- Se Coloca el Titulo de la funcionalidad -->
+    {%block titulofuncional %} <a><b> ADMISIONES </b></a> {% endblock%} <!-- Se Coloca el Titulo de la funcionalidad -->
 
 {% block trabajo %}
 

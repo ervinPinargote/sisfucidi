@@ -1,7 +1,6 @@
 from django import forms
 from .models import Programa, Materia
 
-
 class ProgramaNuevo(forms.ModelForm):
 
     class Meta:
@@ -27,13 +26,14 @@ class ProgramaNuevo(forms.ModelForm):
         codigo = Programa.objects.last()
         generado =  "P"+str(codigo.id+1)
         widgets = {
-            'cod_programa': forms.TextInput(attrs={'class':'form-control','value':generado}),
+            'cod_programa': forms.TextInput(attrs={'class':'form-control'}),
             'nombre_programa':forms.TextInput(attrs={'class':'form-control'}),
             'duracion':forms.NumberInput(attrs={'class':'form-control'}),
             'tipo_programa':forms.Select(attrs={'class':'form-control'}),
             'precio_matricula':forms.NumberInput(attrs={'class':'form-control'}),
             'precio_pension':forms.NumberInput(attrs={'class':'form-control'}),
             #'vigencia':forms.BooleanField(required=True),
+            'vigencia': forms.NullBooleanSelect(attrs={'class': 'form-control'}),
         }
 
 class ProgramaEditar(forms.ModelForm):
@@ -66,6 +66,7 @@ class ProgramaEditar(forms.ModelForm):
             'tipo_programa':forms.Select(attrs={'class':'form-control'}),
             'precio_matricula':forms.NumberInput(attrs={'class':'form-control'}),
             'precio_pension':forms.NumberInput(attrs={'class':'form-control'}),
+             'vigencia':forms.NullBooleanSelect(attrs={'class': 'form-control'}),
             #'vigencia':forms.BooleanField(required=True),
         }
 
@@ -80,6 +81,7 @@ class MateriaNuevo(forms.ModelForm):
             'modalidad',
             'duracion',
             'estado',
+            'nivel',
         ]
         labels = {
             'cod_programa': 'Codigo Programa' ,
@@ -88,6 +90,7 @@ class MateriaNuevo(forms.ModelForm):
             'modalidad':'Modalidad',
             'duracion':'Duracion',
             'estado':'Vigencia',
+            'nivel':'Nivel',
         }
 
         widgets = {
@@ -96,6 +99,7 @@ class MateriaNuevo(forms.ModelForm):
             'nombre_materia':forms.TextInput(attrs={'class':'form-control'}),
             'modalidad':forms.Select(attrs={'class':'form-control'}),
             'duracion':forms.NumberInput(attrs={'class':'form-control'}),
-            #'estado':forms.NumberInput(attrs={'class':'form-control'}),
+            'nivel': forms.Select(attrs={'class': 'form-control'}),
+            'estado':forms.NullBooleanSelect(attrs={'class':'form-control'}),
             #'vigencia':forms.BooleanField(required=True),
         }

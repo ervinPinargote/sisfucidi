@@ -16,7 +16,7 @@
 {% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
 
-{%block titulofuncional %} Lista de Materias {% endblock%}
+{%block titulofuncional %}   <a><b> LISTADO MATERIAS</b></a> {% endblock%}
 
 {% block trabajo %}
 
@@ -26,10 +26,11 @@
 
         <td>Codigo Materia</td>
         <td>Descripcion</td>
+        <td>Nivel</td>
         <td>Duracion</td>
         <td>Modalidad</td>
         <td>Programa</td>
-        <td>Acciones</td>
+        <td width="240">Acciones</td>
     </tr>
     </thead>
 
@@ -39,10 +40,14 @@
         <tr>
             <td>{{ mat.cod_materia }}</td>
             <td>{{ mat.nombre_materia}}</td>
+            <td>{{ mat.nivel}}</td>
             <td>{{ mat.duracion }}</td>
             <td>{{ mat.modalidad }}</td>
             <td>{{ mat.cod_programa.nombre_programa }}</td>
-            <td><a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}">Editar</a>  <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' mat.cod_materia  %}">Eliminar</a></td>
+            <td width="240"><a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}">Editar</a>
+               <!-- <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' mat.cod_materia  %}">Eliminar</a>-->
+            <button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:EliminarMateria' mat.cod_materia  %}'); "> Eliminar</button>
+            </td>
         </tr>
         {% endfor %}
         {% else %}

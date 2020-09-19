@@ -53,16 +53,16 @@ class PersonaForm(forms.ModelForm): # clase para el formulario de las personas.
             'provincia': forms.TextInput(attrs={'class': 'form-control'}),
             'ciudad': forms.TextInput(attrs={'class': 'form-control'}),
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo': forms.Select(attrs={'class': 'form-control'}),
+            'tipo': forms.TextInput(attrs={'class': 'form-control', 'value':'Estudiante','disabled':'True'}),
             'estado_c': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control'}),
+            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
             'edad': forms.NumberInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'celular': forms.TextInput(attrs={'class': 'form-control'}),
             'correo': forms.EmailInput(attrs={'class': 'form-control'}),
             'cal_Emer': forms.TextInput(attrs={'class': 'form-control'}),
             'emer_tele': forms.TextInput(attrs={'class': 'form-control'}),
-             # 'vigencia':forms.BooleanField(required=True),
+             'estado':forms.Select(attrs={'class': 'form-control'}),
         }
 
 class ExpereciaForm(forms.ModelForm):
@@ -93,10 +93,10 @@ class ExpereciaForm(forms.ModelForm):
             'motivacion':'Motivacion',
         }
         widgets = {
-            'fecha_conversion': forms.DateInput(attrs={'class': 'form-control'}),
+            'fecha_conversion': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
             #'bautismo_espiritual':
-            'fecha_bautismo': forms.DateInput(attrs={'class': 'form-control'}),
-            'fecha_bautismo_es': forms.DateInput(attrs={'class': 'form-control'}),
+            'fecha_bautismo': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
+            'fecha_bautismo_es': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
            # 'obra_señor':
             'desc_obra': forms.TextInput(attrs={'class': 'form-control'}),
             #'doctrinas':
@@ -132,7 +132,7 @@ class TrasfondoForm(forms.ModelForm):
         'denominacion': forms.TextInput(attrs={'class': 'form-control'}),
         'direcion': forms.TextInput(attrs={'class': 'form-control'}),
         # 'miembro':
-        'fecha_menbresia': forms.DateInput(attrs={'class': 'form-control'}),
+        'fecha_menbresia': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
         'cargo_desempeñado': forms.TextInput(attrs={'class': 'form-control'}),
         'nom_apellido': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -141,21 +141,21 @@ class estudiosForm(forms.ModelForm):
     class Meta:
         model = estudios_realizado
         fields = [
-            'tipo',
+            'tipo_est',
             'fecha_ini',
             'fecha_fin',
             'institucion',
             'graduacion',
         ]
         labels={
-            'tipo' : 'Tipo de Estudios',
+            'tipo_est' : 'Tipo de Estudios',
             'fecha_ini': 'Fecha Inicio',
             'fecha_fin': 'Fecha Fin',
             'institucion': 'Institucion',
             'graduacion' : 'Graduacion'
         }
         widgets={
-            'tipo': forms.Select(attrs={'class':'form-control'}),
+            'tipo_est': forms.Select(attrs={'class':'form-control'}),
             'fecha_ini':forms.DateInput(attrs={'class':'form-control'}),
             'fecha_fin':forms.DateInput(attrs={'class':'form-control'}),
             'institucion':forms.TextInput(attrs={'class':'form-control'}),
@@ -191,8 +191,8 @@ class admisioneForm(forms.ModelForm):
             'Programa',
             'fecha',
             'foto',
-            'id_requisito',
-            'id_estudios'
+            'id_requisito'
+           # 'id_estudios'
         ]
         labels={
             'codigoAdmision':'Codigo Admision',
@@ -200,14 +200,14 @@ class admisioneForm(forms.ModelForm):
             'fecha':'Fecha Admision',
             'foto': 'Foto Estudiante',
             'id_requisito':'Requisitos',
-            'id_estudios':'Estudios Relaizados',
+           # 'id_estudios':'Estudios Relaizados',
 
         }
         widgets={
             'codigoAdmision' : forms.TextInput(attrs={'class':'form-control'}),
             'Programa' : forms.Select(attrs={'class':'form-control'}),
-            'fecha': forms.SelectDateWidget(attrs={'class':'form-control'}),
-            'foto':forms.FileInput(attrs={'class':'form-control'}),
+            'fecha': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'foto':forms.FileInput(attrs={'class':'form-control','accept':'image/*'}),
             'id_requisito':forms.CheckboxSelectMultiple(),
 
         }

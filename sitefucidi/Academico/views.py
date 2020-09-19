@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DeleteView
 # Create your views here.
 from .forms import ProgramaNuevo, ProgramaEditar, MateriaNuevo
 from .models import Programa, Materia
@@ -21,14 +22,18 @@ def CprograLista(request):
 def CprograNuevo(request):
 
      codigo = Programa.objects.last() # se obtiene el ultimo registro de la BD
+     mensaje = "asjkajks"
      if request.method == 'POST':
          form = ProgramaNuevo(request.POST)
          if form.is_valid():
-             form.save()
+             if form.save()==True:
+                 mensaje = "Exitoso"
+             else:
+                 mensaje = "Error al Guardar datos"
          return redirect('academia:Listar')
      else:
          form = ProgramaNuevo()
-     return render(request,'academia/nuevo.html',{'form':form,'codigo':codigo})
+     return render(request,'academia/nuevo.html',{'form':form,'codigo':codigo, 'mensaje':mensaje})
 
 def CprogramaEditar(request, id_programa):
     program = Programa.objects.get(id=id_programa)
@@ -40,6 +45,13 @@ def CprogramaEditar(request, id_programa):
             form.save()
         return redirect('academia:Listar') # Redirijo a la Listar que es Principal en el funcionalidad
     return render(request,'academia/nuevo.html',{'form':form}) # Usamos el mismo Formulario para un nuevo Programa
+
+
+class EliminarPrograma(DeleteView):
+    model = Programa   # AKI SE COLOCA EL NOMBRE DEL MODELO
+    template_name = 'academia/Eliminar.html'
+    success_url = reverse_lazy('academia:Listar')
+
 
 def CprogramaEliminar(request, id_programa):
     program = Programa.objects.get(id=id_programa)

@@ -393,7 +393,7 @@ demo = {
 
     $.notify({
       icon: "nc-icon nc-bell-55",
-      message: "Welcome to <b>Paper Dashboard</b> - a beautiful bootstrap dashboard for every web developer."
+      message: "Welcome to <b>Paper Dashboard</b> -> PRUEBA DE NOTIFICACIÓN"
 
     }, {
       type: color,

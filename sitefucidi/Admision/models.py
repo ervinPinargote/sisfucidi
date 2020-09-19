@@ -81,7 +81,7 @@ class estudios_realizado(models.Model):
         ('Otros', 'Otros'),
     )
 
-    tipo=models.CharField(verbose_name="Tipo Estutdios", choices=opciones,max_length=20,null=True)
+    tipo_est=models.CharField(verbose_name="Tipo Estutdios", choices=opciones,max_length=20,null=True)
     fecha_ini = models.DateField(verbose_name="Fecha Inicio",null=True)
     fecha_fin = models.DateField(verbose_name ="Fecha Final",null=True)
     institucion = models.CharField(verbose_name="Nombre Institucion",null=True, max_length=100)
