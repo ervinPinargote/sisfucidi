@@ -1,4 +1,4 @@
-{% extends "usuarios/panel_usuarios.html" %}
+{% extends "usuarios/base_panel.html" %}
 {%block cantidad%}
     <p class="card-category">Materias</p>
     <a  class="btn btn-primary btn-sm" href="{% url 'academia:NuevaMateria' %}">Nuevo </a>
@@ -16,12 +16,12 @@
 {% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
 
-{%block titulofuncional %}   <a><b> LISTADO MATERIAS</b></a> {% endblock%}
+{%block titulofuncional %} <a><b> LISTADO MATERIAS</b></a> {% endblock%}
 
 {% block trabajo %}
 
-<table class="table table-bordered">
-    <thead>
+<table class="table table-bordered" id="datatable">
+    <thead  class="centrado-negrita">
     <tr>
 
         <td>Codigo Materia</td>
@@ -44,9 +44,12 @@
             <td>{{ mat.duracion }}</td>
             <td>{{ mat.modalidad }}</td>
             <td>{{ mat.cod_programa.nombre_programa }}</td>
-            <td width="240"><a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}">Editar</a>
+            <td width="240">
+               <!-- <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}">Editar</a>-->
+                <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}"><i class="fas fa-edit"></i> </a>
                <!-- <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' mat.cod_materia  %}">Eliminar</a>-->
-            <button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:EliminarMateria' mat.cod_materia  %}'); "> Eliminar</button>
+            <!--<button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:EliminarMateria' mat.cod_materia  %}'); "> Eliminar</button>-->
+                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'academia:EliminarMateria' mat.cod_materia  %}');"><i class="fas fa-trash-alt"></i> </a>
             </td>
         </tr>
         {% endfor %}

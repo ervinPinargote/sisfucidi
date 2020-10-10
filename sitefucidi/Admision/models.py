@@ -107,6 +107,12 @@ class admisione(models.Model):
     fecha = models.DateField(verbose_name="Fecha Solicitud",null=True)
     foto = models.ImageField(upload_to='admision_images',null=True,blank=True)
 
+class asignacionMaterias(models.Model):
+
+    instructor = models.ForeignKey('Persona', on_delete=models.CASCADE, verbose_name="Cedula Instructor")
+    fecha_Asignacion = models.DateField(verbose_name="Fecha Asignacion",null=True, blank=True)
+    materias = models.ManyToManyField('Academico.Materia')
+    estado_asig = models.BooleanField()
 
 #class admisione_requisito(models.Model):
 #    id = models.AutoField()

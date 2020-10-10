@@ -1,0 +1,58 @@
+{% extends "usuarios/base_panel.html" %}
+{%block cantidad%}
+    <p class="card-category">Asignar</p>
+    <a href="{% url 'admision:AsignarMateriasDocente' Docente.ci %}">
+    <i class="fas fa-plus-square" style="font-size: 48px;"></i>
+    </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Asignaciones Activas</p>
+    <p class="card-title">{{ActivosD}}<p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Asignacion Inactiva</p>
+    <p class="card-title">{{InactivosD}}<p>
+{% endblock %}
+
+
+{% block il3 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+
+    {%block titulofuncional %} <a><b> {{TituloFuncionalidad}}: </b>   {{Docente.nombre}} {{Docente.apellido}} </a> {% endblock%}
+
+{% block trabajo %}
+<table class="table table-bordered" id="datatable">
+    <thead>
+    <tr>
+        <td>Materia(s) </td>
+        <td>Fecha de Asignacion</td>
+        <td>Estado </td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+    <tbody>
+        {% if materiasAsig %}
+        {% for mta in materiasAsig %}
+        <tr>
+            <td>
+                {% for materia in mta.materias.all %}
+                    <br>
+                    <span>{{ materia.nombre_materia }} <b>|</b> <b style="color:red">({{ materia.cod_programa.cod_programa }}</b>)</span>
+                {% endfor %}
+            </td>
+
+            <td>{{ mta.fecha_Asignacion }}</td>
+            <td>{{ mta.estado_asig }}</td>
+            <td >
+                <a CLASS="btn btn-primary"  title="Modificar" href="{% url 'admision:UpdateMateriasDocente' mta.id %}"><i class="fas fa-edit"></i> </a>
+                <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
+                <a class="btn btn btn-success" title="#" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registos para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

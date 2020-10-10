@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Persona, Requisito, Experencia_espiritual, Trasfondo_eclesiastico, estudios_realizado, \
-    recomendaciones, admisione
+    recomendaciones, admisione, asignacionMaterias
 
 
 # Register your models here.
@@ -33,4 +33,8 @@ class cEstudios(admin.ModelAdmin):
 
 @admin.register(admisione)
 class cEstudios(admin.ModelAdmin):
+     list
+
+@admin.register(asignacionMaterias)
+class cAsignarMaterias(admin.ModelAdmin):
      list

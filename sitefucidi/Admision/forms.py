@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Persona, Experencia_espiritual, Trasfondo_eclesiastico, estudios_realizado, recomendaciones, \
-    admisione
+    admisione, asignacionMaterias
 
 
 class PersonaForm(forms.ModelForm): # clase para el formulario de las personas.
@@ -212,3 +212,27 @@ class admisioneForm(forms.ModelForm):
 
         }
 
+
+class AsignacionMaterias(forms.ModelForm):
+    class Meta:
+        model = asignacionMaterias
+        fields = [
+            'instructor',
+            'fecha_Asignacion',
+            'materias',
+            'estado_asig'
+        ]
+        labels = {
+
+            'instructor':'Instructor',
+            'fecha_Asignacion': 'Fecha de Asignacion',
+            'estado_asig': 'Estado',
+            'materias': 'Materias',
+
+        }
+        widgets={
+            'instructor':forms.Select(attrs={'class':'form-control'}),
+            'fecha_Asignacion': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'estado_asig':forms.NullBooleanSelect(attrs={'class':'form-control'}),
+            'materias':forms.CheckboxSelectMultiple(attrs={'class':'QuitarPuntos'}),
+        }

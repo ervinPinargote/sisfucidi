@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView
 # Create your views here.
-from .forms import ProgramaNuevo, ProgramaEditar, MateriaNuevo
+from .forms import ProgramaNuevo, ProgramaEditar, MateriaNuevo, MateriaEditar
 from .models import Programa, Materia
 
 
@@ -90,7 +90,7 @@ def CMateriaNuevo(request):
 def CMateriaEditar(request, id_materia):
     materia = Materia.objects.get(cod_materia=id_materia)  # comparacion donde se verifica el Id que vamos a editar.
     if (request.method == 'GET'):
-        form = MateriaNuevo(instance = materia) # Se puede crear un nuevo formulario para bloquear campos que sean no editables.
+        form =  MateriaEditar(instance = materia) # Se puede crear un nuevo formulario para bloquear campos que sean no editables.
     else:
         form = MateriaNuevo(request.POST, instance= materia)
         if form.is_valid():

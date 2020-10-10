@@ -1,0 +1,18 @@
+.QuitarPuntos{
+list-style:none;
+}
+
+/*  left | right | center | justify | inherit*/
+.centrado-negrita{
+    text-align: center;
+    font-weight:bold;
+      color: black;
+    }
+.centrado{
+    text-align: center;
+     color: black;
+    }
+.text-right{
+     text-align: right;
+     color: black;
+    }

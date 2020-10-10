@@ -66,9 +66,10 @@ class ProgramaEditar(forms.ModelForm):
             'tipo_programa':forms.Select(attrs={'class':'form-control'}),
             'precio_matricula':forms.NumberInput(attrs={'class':'form-control'}),
             'precio_pension':forms.NumberInput(attrs={'class':'form-control'}),
-             'vigencia':forms.NullBooleanSelect(attrs={'class': 'form-control'}),
-            #'vigencia':forms.BooleanField(required=True),
+            'vigencia':forms.NullBooleanSelect(attrs={'class': 'form-control'}),
         }
+
+
 
 class MateriaNuevo(forms.ModelForm):
 
@@ -93,13 +94,47 @@ class MateriaNuevo(forms.ModelForm):
             'nivel':'Nivel',
         }
 
+
         widgets = {
-            'cod_programa': forms.Select(attrs={'class':'form-control'}),
-            'cod_materia':forms.TextInput(attrs={'class':'form-control'}),
-            'nombre_materia':forms.TextInput(attrs={'class':'form-control'}),
-            'modalidad':forms.Select(attrs={'class':'form-control'}),
-            'duracion':forms.NumberInput(attrs={'class':'form-control'}),
-            'nivel': forms.Select(attrs={'class': 'form-control'}),
-            'estado':forms.NullBooleanSelect(attrs={'class':'form-control'}),
-            #'vigencia':forms.BooleanField(required=True),
+                'cod_programa': forms.Select(attrs={'class':'form-control'}),
+                'cod_materia':forms.TextInput(attrs={'class':'form-control'}),
+                'nombre_materia':forms.TextInput(attrs={'class':'form-control'}),
+                'modalidad':forms.Select(attrs={'class':'form-control'}),
+                'duracion':forms.NumberInput(attrs={'class':'form-control'}),
+                'nivel': forms.Select(attrs={'class': 'form-control'}),
+                'estado':forms.NullBooleanSelect(attrs={'class':'form-control'}),
+        }
+
+class MateriaEditar(forms.ModelForm):
+
+    class Meta:
+        model = Materia
+        fields = [
+            'cod_programa',
+            'cod_materia',
+            'nombre_materia',
+            'modalidad',
+            'duracion',
+            'estado',
+            'nivel',
+        ]
+        labels = {
+            'cod_programa': 'Codigo Programa' ,
+            'cod_materia': 'Codigo Materia',
+            'nombre_materia':'Descripcion',
+            'modalidad':'Modalidad',
+            'duracion':'Duracion',
+            'estado':'Vigencia',
+            'nivel':'Nivel',
+        }
+
+
+        widgets = {
+                'cod_programa': forms.Select(attrs={'class':'form-control','readonly':True}),
+                'cod_materia':forms.TextInput(attrs={'class':'form-control','readonly':True}),
+                'nombre_materia':forms.TextInput(attrs={'class':'form-control'}),
+                'modalidad':forms.Select(attrs={'class':'form-control'}),
+                'duracion':forms.NumberInput(attrs={'class':'form-control'}),
+                'nivel': forms.Select(attrs={'class': 'form-control'}),
+                'estado':forms.NullBooleanSelect(attrs={'class':'form-control'}),
         }

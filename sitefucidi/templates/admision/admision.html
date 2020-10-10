@@ -1,4 +1,4 @@
-{% extends "usuarios/panel_usuarios.html" %}
+{% extends "usuarios/base_panel.html" %}
 {%block cantidad%}
     <p class="card-category">Admision</p>
     <a  class="btn btn-primary btn-sm" href="{% url 'admision:Nueva' %}">Nuevo </a>
@@ -39,16 +39,17 @@
             <td>{{ adm.ci.nombre}}</td>
             <td>{{ adm.fecha }}</td>
             <td>{{ adm.Programa.nombre_programa }}</td>
-            <td><a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' adm.codigoAdmision  %}">Editar</a>  <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Eliminar</a> <a class="btn btn btn-success" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Ficha</a></td>
+            <td>
+                <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' adm.codigoAdmision  %}">Editar</a>
+                <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Eliminar</a>
+                <a class="btn btn btn-success" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Ficha</a>
+            </td>
         </tr>
         {% endfor %}
         {% else %}
         <h1>No hay registos para mostrar</h1>
         {% endif %}
-
     </tbody>
-
-
 </table>
 
 {% endblock %}

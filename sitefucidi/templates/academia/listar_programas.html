@@ -1,4 +1,4 @@
-{% extends "usuarios/panel_usuarios.html" %}
+{% extends "usuarios/base_panel.html" %}
 {%block cantidad%}
     <p class="card-category">Programas</p>
     <a  class="btn btn-primary btn-sm" href="{% url 'academia:Nuevo' %}">Nuevo </a>
@@ -19,8 +19,8 @@
     {%block titulofuncional %} <a><b> LISTADO PROGRAMAS ACADEMICOS </b></a> {% endblock%}
 
 {% block trabajo %}
-<table class="table table-bordered">
-    <thead>
+<table class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
     <tr>
         <td>#</td>
         <td>Codigo Programa</td>
@@ -45,9 +45,11 @@
             <td>{{ program.precio_matricula }}</td>
             <td>{{ program.precio_pension }}</td>
             <td >
-                <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>
-                <button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "> Eliminar</button>
-                <a class="btn btn btn-success" href="">prueba2</a>
+                <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}"><i class="fas fa-edit"></i> </a>
+               <!-- <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>-->
+                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "><i class="fas fa-trash-alt"></i> </a>
+                <!--<button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "> Eliminar</button> -->
+                <a class="btn btn btn-success" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
             </td>
         </tr>
         {% endfor %}

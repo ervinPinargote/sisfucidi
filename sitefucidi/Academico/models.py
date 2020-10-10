@@ -43,4 +43,5 @@ class Materia(models.Model):
     def __unicode__(self):
         return self.Programa.cod_programa
 
-
+    def __str__(self):
+        return '{}'.format(self.nombre_materia)

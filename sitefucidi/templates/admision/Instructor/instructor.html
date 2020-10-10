@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "usuarios/base_panel.html" %}
+{%block cantidad%}
+    <p class="card-category">Docentes</p>
+    <a href="{% url 'admision:NuevoDocente'%}">
+    <i class="fas fa-plus-square" style="font-size: 48px;"></i>
+    </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Docentes Activos</p>
+    <p class="card-title">{{ActivosD}}<p>
+{% endblock %}
 
-</body>
-</html>
+{% block opcion3 %}
+    <p class="card-category">Docentes Inactivos</p>
+    <p class="card-title">{{InactivosD}}<p>
+{% endblock %}
+
+
+{% block il3 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+
+    {%block titulofuncional %} <a><b> {{Titulo}} </b></a> {% endblock%}
+
+{% block trabajo %}
+<table class="table table-bordered" id="datatable">
+    <thead>
+    <tr>
+        <td>Identificacion</td>
+        <td>Nombres</td>
+        <td>Apellidos</td>
+        <td>Provincia</td>
+        <td>Ciudad</td>
+        <td>Direcion</td>
+        <td>Celular</td>
+        <td>Correo Electronico</td>
+        <td>Estado</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% if object_list %}
+        {% for doc in object_list %}
+        <tr>
+            <td>{{ doc.ci }}</td>
+            <td>{{ doc.nombre }}</td>
+            <td>{{ doc.apellido }}</td>
+            <td>{{ doc.provincia }}</td>
+            <td>{{ doc.ciudad }}</td>
+            <td>{{ doc.direccion }}</td>
+            <td>{{ doc.celular }}</td>
+            <td>{{ doc.correo }} </td>
+            <td>{{ doc.estado }}</td>
+            <td >
+                <!--admision:ListarDocente-->
+                <a CLASS="btn btn-primary"  title="Modificar" href="{% url 'admision:EditarDocente' doc.ci %}"><i class="fas fa-edit"></i> </a>
+                <!--<a CLASS="" href="{% url 'admision:EditarDocente' doc.ci %}"><i class="fas fa-edit"></i> </a>-->
+
+                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'admision:EliminarDocente' doc.ci %}'); " title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
+
+                <a class="btn btn btn-success" title="Asignar Materias" href="{% url 'admision:ListaMateriasDocente' doc.ci %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registos para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}
