@@ -55,7 +55,7 @@ class PersonaForm(forms.ModelForm): # clase para el formulario de las personas.
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo': forms.TextInput(attrs={'class': 'form-control', 'value':'Estudiante','disabled':'True'}),
             'estado_c': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
+            'fecha_nacimiento': forms.SelectDateWidget(years=range(1900,2025)),
             'edad': forms.NumberInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'celular': forms.TextInput(attrs={'class': 'form-control'}),
@@ -146,19 +146,23 @@ class estudiosForm(forms.ModelForm):
             'fecha_fin',
             'institucion',
             'graduacion',
+            'ci'
         ]
         labels={
             'tipo_est' : 'Tipo de Estudios',
             'fecha_ini': 'Fecha Inicio',
             'fecha_fin': 'Fecha Fin',
             'institucion': 'Institucion',
-            'graduacion' : 'Graduacion'
+            'graduacion' : 'Graduacion',
+            'ci':'Cedula'
         }
         widgets={
             'tipo_est': forms.Select(attrs={'class':'form-control'}),
             'fecha_ini':forms.DateInput(attrs={'class':'form-control'}),
             'fecha_fin':forms.DateInput(attrs={'class':'form-control'}),
             'institucion':forms.TextInput(attrs={'class':'form-control'}),
+            'graduacion': forms.NullBooleanSelect(attrs={'class':'form-control'}),
+            'ci': forms.TextInput(attrs={'class': 'form-control'}),
             #'graduacion'
         }
 

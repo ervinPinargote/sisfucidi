@@ -16,3 +16,13 @@ list-style:none;
      text-align: right;
      color: black;
     }
+
+.swetd{
+     overflow:scroll;
+}
+
+#menu_gral li ul {
+    position: absolute;
+    width: 0;
+    overflow: hidden;
+}

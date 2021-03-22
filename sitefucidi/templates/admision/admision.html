@@ -1,23 +1,23 @@
 {% extends "usuarios/base_panel.html" %}
 {%block cantidad%}
-    <p class="card-category">Admision</p>
-    <a  class="btn btn-primary btn-sm" href="{% url 'admision:Nueva' %}">Nuevo </a>
+<p class="card-category">Admision</p>
+<a class="btn btn-primary btn-sm" href="{% url 'admision:Nueva' %}">Nuevo </a>
 {% endblock %}
 {% block opcion2 %}
-    <p class="card-category">Admisiones Completas</p>
-    <p class="card-title">{{pvigentes}}<p>
-{% endblock %}
+<p class="card-category">Admisiones Completas</p>
+<p class="card-title">{{pvigentes}}<p>
+    {% endblock %}
 
-{% block opcion3 %}
-    <p class="card-category">Admisiones Incompletas</p>
-    <p class="card-title">{{nvigentes}}<p>
-{% endblock %}
+    {% block opcion3 %}
+<p class="card-category">Admisiones Incompletas</p>
+<p class="card-title">{{nvigentes}}<p>
+    {% endblock %}
 
-{% block il2 %} class="active" {% endblock %} <!-- clase para saber en que menu Estas -->
+    {% block il2 %} class="active" {% endblock %} <!-- clase para saber en que menu Estas -->
 
     {%block titulofuncional %} <a><b> ADMISIONES </b></a> {% endblock%} <!-- Se Coloca el Titulo de la funcionalidad -->
 
-{% block trabajo %}
+    {% block trabajo %}
 
 <table class="table table-bordered">
     <thead>
@@ -32,23 +32,23 @@
     </thead>
 
     <tbody>
-        {% if admisiones %}
-        {% for adm in admisiones %}
-        <tr>
-            <td>{{ adm.codigoAdmision }}</td>
-            <td>{{ adm.ci.nombre}}</td>
-            <td>{{ adm.fecha }}</td>
-            <td>{{ adm.Programa.nombre_programa }}</td>
-            <td>
-                <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' adm.codigoAdmision  %}">Editar</a>
-                <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Eliminar</a>
-                <a class="btn btn btn-success" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Ficha</a>
-            </td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <h1>No hay registos para mostrar</h1>
-        {% endif %}
+    {% if admisiones %}
+    {% for adm in admisiones %}
+    <tr>
+        <td>{{ adm.codigoAdmision }}</td>
+        <td>{{ adm.ci.nombre}}</td>
+        <td>{{ adm.fecha }}</td>
+        <td>{{ adm.Programa.nombre_programa }}</td>
+        <td>
+            <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' adm.codigoAdmision  %}">Editar</a>
+            <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Eliminar</a>
+            <a class="btn btn btn-success" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Ficha</a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h1>No hay registos para mostrar</h1>
+    {% endif %}
     </tbody>
 </table>
 

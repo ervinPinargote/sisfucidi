@@ -52,14 +52,12 @@ class EliminarPrograma(DeleteView):
     template_name = 'academia/Eliminar.html'
     success_url = reverse_lazy('academia:Listar')
 
-
 def CprogramaEliminar(request, id_programa):
     program = Programa.objects.get(id=id_programa)
     if (request.method == 'POST'):
         program.delete()
         return redirect('academia:Listar') # Redirijo a la Listar que es Principal e
     return render(request,'academia/eliminar.html',{'programa':program}) # Usamos el mismo For
-
 
 # funcion que permite listar las materias del programa academico
 def CMateriaLista(request):

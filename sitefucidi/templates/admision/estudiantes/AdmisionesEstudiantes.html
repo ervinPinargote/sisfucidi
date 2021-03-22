@@ -1,0 +1,56 @@
+{% extends "admision/estudiantes/estudiante.html" %}
+{%block cantidad%}
+    <p class="card-category">Estudiantes</p>
+    <a href="{% url 'admision:NuevaAdmisionesEstudiante' estu.ci %}">
+    <i class="fas fa-plus-square" style="font-size: 48px;"></i>
+    </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Admisiones Activas</p>
+    <p class="card-title">{{ActivosD}}<p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Admisiones Inactivas</p>
+    <p class="card-title">{{InactivosD}}<p>
+{% endblock %}
+
+
+{% block il4 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+{%block titulofuncional %} <a><b> {{Titulo}}: </b>   {{estu.nombre}} {{estu.apellido}} </a> {% endblock%}
+
+{% block trabajo %}
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <td>Codigo Admision</td>
+        <td>Estudiante</td>
+        <td>Fecha Solicitud</td>
+        <td>Programa Academico</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% if admisiones %}
+        {% for adm in admisiones %}
+        <tr>
+            <td>{{ adm.codigoAdmision }}</td>
+            <td>{{ adm.ci.nombre}}</td>
+            <td>{{ adm.fecha }}</td>
+            <td>{{ adm.Programa.nombre_programa }}</td>
+            <td>
+                <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' adm.codigoAdmision  %}">Editar</a>
+                <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Eliminar</a>
+                <a class="btn btn btn-success" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}">Ficha</a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registos para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}

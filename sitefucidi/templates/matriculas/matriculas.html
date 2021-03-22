@@ -1,0 +1,55 @@
+{% extends "usuarios/base_panel.html" %}
+{%block cantidad%}
+    <p class="card-category">Matriculas</p>
+    <a href="{% url 'matricula:ListAdm'%}">Generar
+    <i class="fas fa-plus-square"></i>
+    </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Matriculas Vigentes</p>
+    <p class="card-title"><p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Matriculas Pendientes</p>
+    <p class="card-title"><p>
+{% endblock %}
+
+
+{% block il5 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+
+    {%block titulofuncional %} <a><b> {{Titulo}} </b></a> {% endblock%}
+
+{% block trabajo %}
+<table class="table table-bordered" id="datatable">
+    <thead>
+    <tr>
+        <td>N. Matricula</td>
+        <td>Programa Academico</td>
+        <td>Fecha Generada</td>
+        <td>Modalidad</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% if object_list %}
+            {% for doc in object_list %}
+                <tr>
+                    <td>#001</td>
+                    <td>PROGRAMA DE PRUEBA</td>
+                    <td>25/02/1993</td>
+                    <td>ONLINE</td>
+                    <td >
+                        <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
+                        <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
+                        <a class="btn btn btn-success" title="" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+                     </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h1>No hay registos para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

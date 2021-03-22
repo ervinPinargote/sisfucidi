@@ -13,12 +13,15 @@
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
 
-
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Programas Estudios {% endblock %}
+{% block il6 %} class="active" {% endblock %}
 {% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
-
-    {%block titulofuncional %} <a><b> LISTADO PROGRAMAS ACADEMICOS </b></a> {% endblock%}
+{%block titulofuncional %} <b> Programas Académicos </b>  &nbsp; &nbsp; &nbsp;
+<a class="btn btn-success btn-sm" href="{% url 'academia:Nuevo' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
+{% endblock%}
 
 {% block trabajo %}
+
 <table class="table table-hover table-bordered" id="datatable">
     <thead class="centrado-negrita">
     <tr>
@@ -58,4 +61,5 @@
         {% endif %}
     </tbody>
 </table>
+
 {% endblock %}

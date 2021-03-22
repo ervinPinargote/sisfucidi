@@ -136,7 +136,6 @@ def CMateriasAsignadasDocente(request, id_docente): # USO UNA FUNCION POR QUE PE
     contexto = {'materiasAsig': materias, 'TituloFuncionalidad': "Materias Asignadas", 'Docente': doc}
     return render(request,'admision/Instructor/Listado_materias_asignadas.html',contexto) # Usamos el mismo Formulario para un nuevo Programa
 
-
 def CMateriasAsignarRegitro(request,id_docente):
     doc = Persona.objects.get(ci=id_docente)
     your_params = {
@@ -154,7 +153,7 @@ def CMateriasAsignarRegitro(request,id_docente):
 
 def CMateriasAsignadasUpdate(request,pk):
     asignado = asignacionMaterias.objects.get(id=pk)  # comparacion donde se verifica el Id que vamos a editar.
-    docente = asignado.instructor
+    docente = asignado.instructor #Accemos al objeto instructor que contiene los datos de la persona.
     your_params = {
         'id_docente': asignado.instructor.ci
     }
@@ -167,3 +166,143 @@ def CMateriasAsignadasUpdate(request,pk):
         return redirect(reverse('admision:ListaMateriasDocente',kwargs=your_params))  # Redirijo a la Listar que es Principal en el funcionalidad
     contexto = {'form': form, 'doc': docente, 'Titulo': 'ACTUALIZAR MATERIAS'}
     return render(request, 'admision/Instructor/Asignar_materias.html', contexto)
+
+
+class EstudianteList(ListView):
+    model = Persona
+    template_name = 'admision/estudiantes/estudiante.html'
+    def get_context_data(self, **kwargs):
+        docente = Persona.objects.all().filter(tipo="Estudiante")
+        ac = 0
+        ne = 0
+        for i in docente:
+            if (i.estado== "Activo"):
+                ac = ac + 1
+            else:
+                ne = ne + 1
+        context= super(EstudianteList, self).get_context_data(**kwargs)
+        context['ActivosD'] = ac
+        context['InactivosD'] = ne
+        context['Titulo'] = "LISTADO DE ESTUDIANTES"
+        return context
+
+    def get_queryset(self):    #intervenimos en el metodo QUERY SET
+       queryset = super(EstudianteList, self).get_queryset()
+       factorb=self.kwargs.get('slug',None)
+       EstadoBus = None
+       if(factorb=='1'):
+           EstadoBus = "Activo"
+       else:
+           EstadoBus = "Inactivo"
+       return queryset.filter(tipo="Estudiante", estado=EstadoBus) # Filtro para Listar solo los Estudiantes.
+
+class EstudianteUpdate(UpdateView):
+    model=Persona
+    form_class = PersonaForm
+    template_name = 'admision/estudiantes/EditarEstudiante.html'
+    success_url = reverse_lazy('admision:ListarEstudiante', kwargs={'slug':'1'})
+    def get_context_data(self, **kwargs):
+        context = super(EstudianteUpdate, self).get_context_data(**kwargs)
+        context['Titulo'] = "ACTUALIZAR ESTUDIANTE"
+        return context
+
+class EstudianteAgregar(CreateView):
+    model = Persona
+    form_class = PersonaForm
+    template_name = 'admision/estudiantes/NuevoEstudiante.html'
+    success_url = reverse_lazy('admision:ListarEstudiante',kwargs={'slug':'1'})
+
+    def get_context_data(self, **kwargs):
+        context = super(EstudianteAgregar, self).get_context_data(**kwargs)
+        context['Titulo'] = "AÑADIR ESTUDIANTE"
+        return context
+
+class EstudianteEliminar(DeleteView): # Eliminar un Docente
+    model = Persona
+    template_name = 'admision/estudiantes/Eliminar.html'
+    success_url = reverse_lazy('admision:ListarEstudiante', kwargs={'slug':'1'})
+
+def CAdmisionListaEstudiante(request, id_estu):
+    adm = admisione.objects.all().filter(ci=id_estu) # obtengo las admisiones de un estudiante...
+    Pers = Persona.objects.get(ci=id_estu)
+    ac = 0
+    ne = 0
+    contexto = {'admisiones':adm,'pvigentes':ac,'nvigentes':ne,'Titulo':'Admisiones', 'estu':Pers}
+    return render(request,'admision/estudiantes/AdmisionesEstudiantes.html',contexto)
+
+def cAdmisionNuevaEstudiante(request, id_estu):
+    #self.object = self.get_object
+    estu = Persona.objects.get(ci=id_estu)  # obtnenemos al estudainte que se genera la admision
+    your_params = {
+        'id_estu': estu.ci
+    }
+    form2 = ExpereciaForm(request.POST)
+    form4 = TrasfondoForm(request.POST)
+    if request.method == 'POST':  # preguntamos si es un metodo POST.
+        form = admisioneForm(request.POST)  # Instaciomos el  formulario Admisiones
+        if form.is_valid():
+            admisionEs = form.save(commit=False)
+            admisionEs.ci = estu
+            admisionEs.id_ex = form2.save()
+            admisionEs.id_tra = form4.save()  # GUARDO EL TRANSFONDO ECLESIASTICO PARA PASAR SU ID.
+            admisionEs.save()
+            form.save_m2m()  # PERMITE GUARDAR CAMPO MANY TO MANY.
+        return redirect(reverse('admision:ListaAdmisionesEstudiante', kwargs=your_params))  ## RETROCEDER UNA LISTA CON PARAMETROS
+    else:
+        form = admisioneForm()
+        form2 = ExpereciaForm()
+    contexto = {'form': form,'form2': form2,'form4': form4,'doc': estu, 'Titulo': 'Admision Nueva'}
+    return render(request, 'admision/estudiantes/Nueva_Admision.html', contexto)
+
+
+class EstudianteEstudiosList(ListView):
+    model = Persona
+    template_name = 'admision/estudiantes/estudiante.html'
+
+    def get_context_data(self, **kwargs):
+        docente = Persona.objects.all().filter(tipo="Estudiante")
+        ac = 0
+        ne = 0
+        for i in docente:
+            if (i.estado == "Activo"):
+                ac = ac + 1
+            else:
+                ne = ne + 1
+        context = super(EstudianteList, self).get_context_data(**kwargs)
+        context['ActivosD'] = ac
+        context['InactivosD'] = ne
+        context['Titulo'] = "LISTADO DE ESTUDIANTES"
+        return context
+
+    def get_queryset(self):  # intervenimos en el metodo QUERY SET
+        queryset = super(EstudianteList, self).get_queryset()
+        factorb = self.kwargs.get('slug', None)
+        EstadoBus = None
+        if (factorb == '1'):
+            EstadoBus = "Activo"
+        else:
+            EstadoBus = "Inactivo"
+        return queryset.filter(tipo="Estudiante", estado=EstadoBus)  # Filtro para Listar solo los Estudiantes.
+
+
+# AREA COMUN PARA DATOS DE INSTRUCTRES Y DOCENTES
+def cAgregarDatosEstudiosRealizados(request, id_persona):
+    estudiosRealizado = estudios_realizado.objects.all().filter(ci=id_persona)  # estudios realizados de una persona
+    persona = Persona.objects.get(ci=id_persona)
+    mensaje = "OK"
+    if request.method == 'POST':
+        form = estudiosForm(request.POST)
+        if form.is_valid():
+            if form.save() == True:
+                mensaje = "Exitoso"
+            else:
+                mensaje = "Error al Guardar datos"
+
+        if persona.tipo == "Estudiante":
+            return redirect('admision:ListarEstudiante',1)
+        else:
+            return redirect('admision:ListarDocente')
+    else:
+        form = estudiosForm()
+    contexto = {'form': form, 'Estudios': estudiosRealizado, 'mensaje': mensaje,'persona':persona}
+    return render(request, 'admision/comun/Agregar_Estudios.html', contexto)

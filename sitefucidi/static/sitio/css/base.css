@@ -8,7 +8,7 @@
 .form {
   position: relative;
   z-index: 1;
-  background: #FFFFFF;
+  background: -webkit-linear-gradient(right, rgb(5, 84, 140), rgb(247, 107, 28));
   max-width: 360px;
   margin: 0 auto 100px;
   padding: 45px;
@@ -30,7 +30,8 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  /*background: #4CAF50;*/
+  background:rgb(247, 107, 28);
   width: 100%;
   border: 0;
   padding: 15px;
@@ -41,7 +42,8 @@
   cursor: pointer;
 }
 .form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+ /* background: #43A047;*/
+  background:rgb(5, 84, 140);
 }
 .form .message {
   margin: 15px 0 0;
@@ -89,11 +91,19 @@
   color: #EF3B3A;
 }
 body {
-  background: #76b852; /* fallback for old browsers */
-  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-  background: -moz-linear-gradient(right, #76b852, #8DC26F);
+ /* background: #76b852; /* fallback for old browsers */
+ /* background: -webkit-linear-gradient(right, #76b852, #8DC26F);*/
+
+    background-image: url("/static/sitio/images/logo.png");
+
+    background-position:  50% 110%;
+
+    background-repeat: no-repeat;
+    position: relative;
+
+ /* background: -moz-linear-gradient(right, #76b852, #8DC26F);
   background: -o-linear-gradient(right, #76b852, #8DC26F);
-  background: linear-gradient(to left, #76b852, #8DC26F);
+  background: linear-gradient(to left, #76b852, #8DC26F);*/
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

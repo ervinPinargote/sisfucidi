@@ -12,11 +12,13 @@
     <p class="card-category">Materias N. Vigentes</p>
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
-
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Materias {% endblock %}
 {% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
 
-{%block titulofuncional %} <a><b> LISTADO MATERIAS</b></a> {% endblock%}
+{%block titulofuncional %} <b> Listado de Materias</b>
+<a class="btn btn-success btn-sm" href="{% url 'academia:NuevaMateria' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
+{% endblock%}
 
 {% block trabajo %}
 
@@ -58,8 +60,6 @@
         {% endif %}
 
     </tbody>
-
-
 </table>
 
 {% endblock %}

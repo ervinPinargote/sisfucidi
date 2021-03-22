@@ -1,4 +1,4 @@
-{% extends "usuarios/base_panel.html" %}
+{% extends "admision/Instructor/instructor.html" %}
 {%block cantidad%}
     <p class="card-category">Asignar</p>
     <a href="{% url 'admision:AsignarMateriasDocente' doc.ci %}">
@@ -23,8 +23,6 @@
 <form method="post">
 	{% csrf_token %}
     <input type="hidden" name="instructor" class="" value="{{doc.ci}}" id="id_instructor">
-
-
     <div class="row">
                      <div class="col-md-6 pr-1">
                       <div class="form-group">
@@ -39,7 +37,6 @@
                       </div>
                     </div>
     </div>
-
     <div class="row">
         <div class="col-md-6 pr-1">
              <div class="form-group">

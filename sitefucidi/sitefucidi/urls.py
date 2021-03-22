@@ -26,4 +26,6 @@ urlpatterns = [
     path('Menu', include('administrador.urls')),
     path('academia/', include(('Academico.urls','academia'), namespace='academia'),name='academia'),
     path('admision/', include(('Admision.urls','admision'), namespace='admision'),name='admision'),# incluimos las urls de admision para generar el sistema
+    path('matricula/', include(('Matricula.urls', 'matricula'), namespace='matricula'), name='matricula'), # incluimos las urls de admision para generar el sistema
+
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

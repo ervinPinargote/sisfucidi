@@ -1,0 +1,201 @@
+{% extends "admision/estudiantes/estudiante.html" %}
+
+{%block titulofuncional %} <a><b> {{Titulo}}: </b> {{doc.nombre}} {{doc.apellido}} </a> {% endblock%}
+
+{% block trabajo %}
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="instructor" class="" value="{{doc.ci}}" id="id_ci">
+
+    <div> <!-- Cabezera de Formulario -->
+        <div class="row">
+            <div class="col-md-3 pr-1">
+                <div class="form-group">
+                    <label>Admision: </label>
+                    {{form.codigoAdmision}}
+                </div>
+            </div>
+            <div class="col-md-4 px-1">
+                <div class="form-group">
+                    <label>Programa que desea estudiar: </label>
+                    {{form.Programa}}
+                </div>
+            </div>
+            <div class="col-md-5 pl-1">
+                <div class="form-group">
+                    <label>Fecha (dd/mm/aaaa)</label>
+                    {{form.fecha}}
+                </div>
+            </div>
+        </div>
+        <a><b>INSTRUCCIONES</b></a><br>
+        1. llene la solicitud sin omitir los datos <br>
+        2. Adjunte a esta solicitud los siguientes documentos. <br>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label></label>
+                    {{form.id_requisito}}
+                </div>
+            </div>
+
+            <div class="col-md-6 pl-1">
+                <label>Foto</label>
+                {{form.foto}}
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <a> <b> EXPERIENCIA ESPIRITUAL </b> </a>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Fecha de conversión(dd/mm/aaaa)</label>
+                    {{form2.fecha_conversion}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Fecha de bautismo en agua(dd/mm/aaaa)</label>
+                    {{form2.fecha_bautismo}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>¿Ha recibido el bautismo del Espiritu Santo?</label>
+                    {{form2.bautismo_espiritual}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Fecha (dd/mm/aaaa)</label>
+                    {{form2.fecha_bautismo_es}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>¿Tiene un llamamiento a la obra del Señor?</label>
+                    {{form2.obra_señor}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>¿Cuál?</label>
+                    {{form2.desc_obra}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>¿Conoce y cree en las doctrinas de la iglesia de Dios?</label>
+                    {{form2.doctrinas}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>En su opinión, ¿Cuáles son las necesidades principales de la iglesia de hoy?</label>
+                    {{form2.opinion}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>¿Cómo piensa usted contribuir para suplir estas necesidades?</label>
+                    {{form2.contribucion}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>¿Que le motivo para ingresar al Seminario?</label>
+                    {{form2.motivacion}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a> <b> TRANSFONDO ECLESIÁSTICO</b></a>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>¿A que iglesia pertenece?</label>
+                    {{form4.iglesia}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Denominación: </label>
+                    {{form4.denominacion}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Direccion</label>
+                    {{form4.direcion}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>¿Eres mienbro ?</label>
+                    {{form4.miembro}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>¿Desde qué Fecha?(dd/mm/aaaa) </label>
+                    {{form4.fecha_menbresia}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>¿Qué cargos ha desempeñado en su iglesia?</label>
+                    {{form4.cargo_desempeñado}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Nombres y apellidos de su pastor: </label>
+                    {{form4.nom_apellido}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a> <B>NOTA:</B></a>
+        <p class="">
+            Entregar esta solicitud a admision y registro o enviar al e-mail de <b>SEMILA </b>: <br>
+            semilaonline@gmail.com, semila.academico@gmail.com, semilaregistro@gmail.com <br>
+            Teléfono: 03-2317646 Celular:0996622902 - 0968535012 <br>
+            Riobamba-Ecuador
+        </p>
+    </div>
+
+
+    <button type="submit" CLASS=" btn btn-primary btn-round">Guardar Asignación</button>
+</form>
+{% endblock %}
