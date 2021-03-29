@@ -34,7 +34,7 @@
 
     <div class="sidebar" data-color="white" data-active-color="danger">
         <div class="logo">
-            <a href="https://www.creative-tim.com" class="">
+            <a href="" class="">
                 <div class="logo-image-small">
                     <img src="{% static 'sitio/images/logo.png' %}">
                 </div>
@@ -46,7 +46,7 @@
                     <a data-toggle="collapse" href="#sub-item-2">
                         <i class="nc-icon nc-bank"></i> MÓDULO ACADÉMIA <span data-toggle="collapse" href="#sub-item-2"
                                                                               class="icon pull-right"><em
-                            class="fa fa-toggle-down"></em></span>
+                            class="caret"></em></span>
                     </a>
                     <ul class="children collapse" id="sub-item-2">
                         {% if perms.Academico %}
@@ -69,9 +69,10 @@
                 </li>
                 <li {% block il7 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-3">
-                        <i class="nc-icon nc-ruler-pencil"></i> MÓDULO ADMISIÓN <span data-toggle="collapse" href="#sub-item-3"
-                                                                              class="icon pull-right"><em
-                            class=" caret "></em></span>
+                        <i class="nc-icon nc-ruler-pencil"></i> MÓDULO ADMISIÓN
+                        <span data-toggle="collapse" href="#sub-item-3" class="icon pull-right">
+                            <em class=" caret "></em>
+                        </span>
                     </a>
                     <ul class="children collapse" id="sub-item-3">
 
@@ -109,7 +110,7 @@
                         <i class="nc-icon nc-single-copy-04"></i> MóDULO MATRICULA <span data-toggle="collapse"
                                                                                 href="#sub-item-1"
                                                                                 class="icon pull-right"><em
-                            class="fa fa-toggle-down"></em></span>
+                            class="caret"></em></span>
                     </a>
                     <ul class="children collapse" id="sub-item-1">
                         <li class="QuitarPuntos">
@@ -128,15 +129,15 @@
                     <a data-toggle="collapse" href="#sub-item-4">
                         <i class=" nc-icon nc-money-coins"></i> MóDULO PAGOS <span data-toggle="collapse" href="#sub-item-4"
                                                                             class="icon pull-right"><em
-                            class="fa fa-toggle-down"></em></span>
+                            class="caret"></em></span>
                     </a>
                     <ul class="children collapse" id="sub-item-4">
                         <li class="QuitarPuntos">
                             <a class="" href="{%  url 'matricula:MatriculasList' %}"> <span class="fa fa-arrow-right">&nbsp;</span>Gestión
-                                Matriculas </a>
+                                Pagos </a>
                         </li>
                         <li class="QuitarPuntos"><a class="" href="#">
-                            <span class="fa fa-arrow-right">&nbsp;</span> Visualizar Matrículas</a>
+                            <span class="fa fa-arrow-right">&nbsp;</span> Visualizar Pagos</a>
                         </li>
                         <li class="QuitarPuntos"><a class="" href="#">
                             <span class="fa fa-arrow-right">&nbsp;</span> Reportes</a>
@@ -308,7 +309,7 @@
 			    <ol class="breadcrumb">
 
 				    <li>
-                        <a href="#">
+                        <a {%block dir %}{%endblock%}>
 					        <em class="fa fa-home"></em>
 				        </a>
                     </li>

@@ -1,6 +1,8 @@
 {% extends "admision/estudiantes/estudiante.html" %}
-{%block titulofuncional %} <a><b> {{Titulo}}</b></a> {% endblock%}
+{%block titulofuncional %} <a><b> {{Titulo}} Estudiante</b></a> {% endblock%}
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión  / {{Titulo}} Estudiante  {% endblock %}
 
+{% block dir %} href="{% url 'admision:ListarEstudiante' 1 %}"{% endblock %}
 {% block trabajo %}
 <div>
 
@@ -128,7 +130,7 @@
                 </div>
             </div>
         </div>
-        <button type="submit" CLASS=" btn btn-primary btn-round">Guardar</button>
+        <button type="submit" CLASS=" btn btn-primary btn-round">{{Titulo}}</button>
     </form>
 </div>
 {% endblock %}

@@ -109,7 +109,7 @@ class DocenteUpdate(UpdateView):
     success_url = reverse_lazy('admision:ListarDocente')
     def get_context_data(self, **kwargs):
         context = super(DocenteUpdate, self).get_context_data(**kwargs)
-        context['Titulo'] = "ACTUALIZAR DOCENTE"
+        context['Titulo'] = "Editar"
         return context
 
 class DocenteAgregar(CreateView):
@@ -120,7 +120,7 @@ class DocenteAgregar(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(DocenteAgregar, self).get_context_data(**kwargs)
-        context['Titulo'] = "AÑADIR INSTRUCTOR"
+        context['Titulo'] = "Agregar"
         return context
 
 class DocenteEliminar(DeleteView): # Eliminar un Docente
@@ -203,7 +203,7 @@ class EstudianteUpdate(UpdateView):
     success_url = reverse_lazy('admision:ListarEstudiante', kwargs={'slug':'1'})
     def get_context_data(self, **kwargs):
         context = super(EstudianteUpdate, self).get_context_data(**kwargs)
-        context['Titulo'] = "ACTUALIZAR ESTUDIANTE"
+        context['Titulo'] = "Editar"
         return context
 
 class EstudianteAgregar(CreateView):
@@ -214,7 +214,7 @@ class EstudianteAgregar(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(EstudianteAgregar, self).get_context_data(**kwargs)
-        context['Titulo'] = "AÑADIR ESTUDIANTE"
+        context['Titulo'] = "Agregar"
         return context
 
 class EstudianteEliminar(DeleteView): # Eliminar un Docente

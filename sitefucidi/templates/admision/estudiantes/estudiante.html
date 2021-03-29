@@ -15,9 +15,12 @@
     <p class="card-title">{{InactivosD}}<p>
 {% endblock %}
 
-
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión  / Gestión Estudiantes  {% endblock %}
 {% block il4 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
-{%block titulofuncional %} <a><b> {{Titulo}} </b></a> {% endblock%}
+{% block il7 %} class="active" {% endblock %}
+{%block titulofuncional %} <a><b> Estudiantes </b></a>   &nbsp; &nbsp; &nbsp;
+    <a class="btn btn-success btn-sm" href="{% url 'admision:NuevoEstudiante'%}"><i class="fas fa-plus-square"> </i> Agregar </a>
+{% endblock%}
 
 {% block trabajo %}
 <table class="table table-bordered" id="datatable">

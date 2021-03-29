@@ -1,6 +1,7 @@
 {% extends "admision/Instructor/instructor.html" %}
-{%block titulofuncional %} <a><b> {{Titulo}}</b></a> {% endblock%}
-
+{%block titulofuncional %} <a><b> {{Titulo}} Instructor</b></a> {% endblock%}
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión  / {{Titulo}} Instructor  {% endblock %}
+{% block dir %} href="{% url 'admision:ListarDocente' %}"{% endblock %}
 {% block trabajo %}
 <div>
 
@@ -126,7 +127,7 @@
                       </div>
                     </div>
              </div>
-        <button type="submit" CLASS=" btn btn-primary btn-round">Guardar</button>
+        <button type="submit" CLASS=" btn btn-primary btn-round">{{Titulo}}</button>
     </form>
 </div>
 {% endblock %}

@@ -33,7 +33,7 @@ def CprograNuevo(request):
          return redirect('academia:Listar')
      else:
          form = ProgramaNuevo()
-     return render(request,'academia/nuevo.html',{'form':form,'codigo':codigo, 'mensaje':mensaje})
+     return render(request,'academia/nuevo.html',{'form':form,'codigo':codigo, 'mensaje':mensaje, 'title':"Agregar"})
 
 def CprogramaEditar(request, id_programa):
     program = Programa.objects.get(id=id_programa)
@@ -44,7 +44,7 @@ def CprogramaEditar(request, id_programa):
         if form.is_valid():
             form.save()
         return redirect('academia:Listar') # Redirijo a la Listar que es Principal en el funcionalidad
-    return render(request,'academia/nuevo.html',{'form':form}) # Usamos el mismo Formulario para un nuevo Programa
+    return render(request,'academia/nuevo.html',{'form':form,'title':"Editar"}) # Usamos el mismo Formulario para un nuevo Programa
 
 
 class EliminarPrograma(DeleteView):
@@ -82,7 +82,7 @@ def CMateriaNuevo(request):
         return redirect('academia:ListarMaterias')
     else:
         form = MateriaNuevo()
-    return render(request, 'academia/materias/nuevomat.html', {'form': form})
+    return render(request, 'academia/materias/nuevomat.html', {'form': form, 'title':"Agregar"})
 
 # funcion para editar una materia....
 def CMateriaEditar(request, id_materia):
@@ -94,7 +94,7 @@ def CMateriaEditar(request, id_materia):
         if form.is_valid():
             form.save()
         return redirect('academia:ListarMaterias') # Redirijo a la Listar que es Principal en el funcionalidad
-    return render(request,'academia/materias/nuevomat.html',{'form':form}) # Usamos el mismo Formulario para un nuevo Programa
+    return render(request,'academia/materias/nuevomat.html',{'form':form,'edit':1,'title':"Editar"}) # Usamos el mismo Formulario para un nuevo Programa
 
 # funcion que permite eliminar una materia
 def CMateriaEliminar(request, id_materia):

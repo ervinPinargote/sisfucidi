@@ -1,7 +1,11 @@
 {% extends "academia/listar_programas.html" %} <!-- accedo a esta plantilla por que asi se beria presentar la funcionalidad -->
 
 
-{%block titulofuncional %}   <a><b>REGISTRO NUEVO PROGRAMA ACADEMICO</b></a> {% endblock%}
+{% block dir %}href="{% url 'academia:Listar' %}" {% endblock %}
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / {{title}} Programa {% endblock %}
+{%block titulofuncional %}   <a><b> {{title}} Programa Académico </b></a> {% endblock%}
+
+
 
 {% block trabajo %}
 
@@ -58,7 +62,7 @@
                       </div>
                     </div>
          </div>
-        <button type="submit" class=" btn btn-primary btn-round">Guardar</button>
+        <button type="submit" class=" btn btn-primary btn-round">{{title}}</button>
     </form>
  </div>
 {% endblock %}

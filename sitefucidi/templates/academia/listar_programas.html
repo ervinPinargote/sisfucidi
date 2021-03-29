@@ -13,11 +13,13 @@
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
 
-{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Programas Estudios {% endblock %}
+
 {% block il6 %} class="active" {% endblock %}
 {% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Programas Académicos {% endblock %}
 {%block titulofuncional %} <b> Programas Académicos </b>  &nbsp; &nbsp; &nbsp;
 <a class="btn btn-success btn-sm" href="{% url 'academia:Nuevo' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
+<a class="btn btn-info btn-sm" href="{% url 'academia:Nuevo' %}"><i class="nc-icon nc-cloud-download-93"> </i> PDF Programas </a>
 {% endblock%}
 
 {% block trabajo %}
@@ -47,12 +49,13 @@
             <td>{{ program.tipo_programa }}</td>
             <td>{{ program.precio_matricula }}</td>
             <td>{{ program.precio_pension }}</td>
-            <td >
-                <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}"><i class="fas fa-edit"></i> </a>
+            <td style="text-align:center;">
+                <a CLASS="btn btn-primary" title="Editar" href="{% url 'academia:Editar' program.id  %}"><i class="fas fa-edit"></i> </a>
                <!-- <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>-->
-                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "><i class="fas fa-trash-alt"></i> </a>
+                <a class="btn btn btn-info" title="Descargar" href=""><i class="nc-icon nc-cloud-download-93"></i></a>
+                <a class="btn btn-danger" title="Eliminar" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "><i class="fas fa-trash-alt"></i> </a>
                 <!--<button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "> Eliminar</button> -->
-                <a class="btn btn btn-success" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+
             </td>
         </tr>
         {% endfor %}

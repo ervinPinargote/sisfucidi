@@ -12,11 +12,11 @@
     <p class="card-category">Materias N. Vigentes</p>
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
-{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Materias {% endblock %}
+
 {% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
-
-{%block titulofuncional %} <b> Listado de Materias</b>
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Materias {% endblock %}
+{%block titulofuncional %} <b> Listado de Materias</b> &nbsp; &nbsp; &nbsp;
 <a class="btn btn-success btn-sm" href="{% url 'academia:NuevaMateria' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
 {% endblock%}
 
@@ -46,7 +46,7 @@
             <td>{{ mat.duracion }}</td>
             <td>{{ mat.modalidad }}</td>
             <td>{{ mat.cod_programa.nombre_programa }}</td>
-            <td width="240">
+            <td style="text-align:center;">
                <!-- <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}">Editar</a>-->
                 <a CLASS="btn btn-primary" href="{% url 'academia:EditarMateria' mat.cod_materia  %}"><i class="fas fa-edit"></i> </a>
                <!-- <a class="btn btn-danger" href="{% url 'academia:EliminarMateria' mat.cod_materia  %}">Eliminar</a>-->

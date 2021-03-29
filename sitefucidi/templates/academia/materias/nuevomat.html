@@ -1,5 +1,7 @@
 {% extends "academia/materias/materias.html" %} <!-- accedo a esta plantilla por que asi se beria presentar la funcionalidad -->
-{%block titulofuncional %}   <a><b> REGISTRO NUEVA MATERIA</b></a> {% endblock%}
+{% block dir %} href="{% url 'academia:ListarMaterias' %}" {% endblock %}
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / {{title}} Materia {% endblock %}
+{%block titulofuncional %}   <a><b> {{title}} Materia</b></a> {% endblock%}
 {% block trabajo %}
 
     <form method="post">
@@ -58,6 +60,6 @@
                       </div>
                     </div>
         </div>
-        <button type="submit" class=" btn btn-primary btn-round">Guardar</button>
+        <button type="submit" class=" btn btn-primary btn-round">{{title}}</button>
     </form>
 {% endblock %}
