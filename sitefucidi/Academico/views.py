@@ -1,9 +1,25 @@
+import datetime
+from sys import path
+
+import uri as uri
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DeleteView
 # Create your views here.
 from .forms import ProgramaNuevo, ProgramaEditar, MateriaNuevo, MateriaEditar
 from .models import Programa, Materia
+
+import os
+from django.conf import settings
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
+from django.contrib.auth.models import User
+
+from .utils import render_to_pdf
 
 
 def CprograLista(request):
@@ -57,7 +73,7 @@ def CprogramaEliminar(request, id_programa):
     if (request.method == 'POST'):
         program.delete()
         return redirect('academia:Listar') # Redirijo a la Listar que es Principal e
-    return render(request,'academia/eliminar.html',{'programa':program}) # Usamos el mismo For
+    return render(request,'academia/Eliminar.html',{'programa':program}) # Usamos el mismo For
 
 # funcion que permite listar las materias del programa academico
 def CMateriaLista(request):
@@ -102,4 +118,112 @@ def CMateriaEliminar(request, id_materia):
     if (request.method == 'POST'):
         materia.delete()
         return redirect('academia:ListarMaterias') # Redirijo a la Listar que es Principal en la funcionalidad
-    return render(request,'academia/materias/eliminar.html',{'materia':materia}) # enviamos el contexto que es la materia a elminar.
+    return render(request,'academia/materias/Eliminar.html',{'materia':materia}) # enviamos el contexto que es la materia a elminar.
+
+
+# Generacion de Reportes
+class pdfMalla_view(View):
+    def link_callback(self,uri,rel):
+        result = finders.find(uri)
+        if result:
+            if not isinstance(result, (list, tuple)):
+                result = [result]
+            result = list(os.path.realpath(path) for path in result)
+            path = result[0]
+        else:
+            sUrl = settings.STATIC_URL  # Typically /static/
+            sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
+            mUrl = settings.MEDIA_URL  # Typically /media/
+            mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+
+            if uri.startswith(mUrl):
+                path = os.path.join(mRoot, uri.replace(mUrl, ""))
+            elif uri.startswith(sUrl):
+                path = os.path.join(sRoot, uri.replace(sUrl, ""))
+            else:
+                return uri
+        # make sure that file exists
+        if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+        return path
+
+    def get(self, request,*args,**kwargs):
+        mat = Materia.objects.all()
+        program = Programa.objects.all()
+        user = User.objects.get(username=self.request.user)  # envia el usuario que esta en la logueado en la aplicacion.
+        template_path = 'academia/Reportes/Reporte.html'
+        fecha= datetime.date.today()
+        context = {'tittle': 'Programas de Estudios','programas':program , 'c':mat,
+                   'icon':'{}{}'.format(settings.MEDIA_URL, 'logo13.png'),
+                   'date':fecha,
+                   'usuario': user
+                   }
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+        template = get_template(template_path)
+        html = template.render(context)
+        if request.POST.get('show_html', ''):
+            response['Content-Type'] = 'application/text'
+            response['Content-Disposition'] = 'attachment; filename="ABC.txt"'
+            response.write(html)
+        else:
+            pisaStatus = pisa.CreatePDF(
+                html.encode("UTF-8"), dest=response, link_callback=self.link_callback)
+            if pisaStatus.err:
+                return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisaStatus.err,  html))
+        return response
+
+class pdfMateria_view(LoginRequiredMixin,View):
+    def link_callback(self,uri,rel):
+        result = finders.find(uri)
+        if result:
+            if not isinstance(result, (list, tuple)):
+                result = [result]
+            result = list(os.path.realpath(path) for path in result)
+            path = result[0]
+        else:
+            sUrl = settings.STATIC_URL  # Typically /static/
+            sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
+            mUrl = settings.MEDIA_URL  # Typically /media/
+            mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
+
+            if uri.startswith(mUrl):
+                path = os.path.join(mRoot, uri.replace(mUrl, ""))
+            elif uri.startswith(sUrl):
+                path = os.path.join(sRoot, uri.replace(sUrl, ""))
+            else:
+                return uri
+        # make sure that file exists
+        if not os.path.isfile(path):
+            raise Exception(
+                'media URI must start with %s or %s' % (sUrl, mUrl)
+            )
+        return path
+
+    def get(self, request,*args,**kwargs):
+        mat = Materia.objects.all().order_by('nivel')
+        program = Programa.objects.get(pk=self.kwargs['pk'])
+        user = User.objects.get(username=self.request.user) # envia el usuario que esta en la logueado en la aplicacion.
+        template_path = 'academia/Reportes/ReportePrograma.html'
+        fecha= datetime.date.today()
+        context = {'tittle': program.nombre_programa,'programa':program , 'mat':mat,
+                   'icon':'{}{}'.format(settings.MEDIA_URL, 'logo13.png'),
+                   'date':fecha,
+                   'usuario':user
+                   }
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename='+program.nombre_programa+".pdf"
+        template = get_template(template_path)
+        html = template.render(context)
+        if request.POST.get('show_html', ''):
+            response['Content-Type'] = 'application/text'
+            response['Content-Disposition'] = 'attachment; filename="ABC.txt"'
+            response.write(html)
+        else:
+            pisaStatus = pisa.CreatePDF(
+                html.encode("UTF-8"), dest=response, link_callback=self.link_callback)
+            if pisaStatus.err:
+                return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisaStatus.err,  html))
+        return response

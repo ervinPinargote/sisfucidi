@@ -1,4 +1,6 @@
+arabic-reshaper==2.1.3
 asgiref==3.2.10
+dj-database-url==0.5.0
 Django==3.0.8
 django-annoying==0.10.6
 django-filter==2.3.0
@@ -6,8 +8,18 @@ django-jsonstore==0.4.1
 django-material==1.6.7
 django-material-admin==1.7.8
 django-viewflow==1.6.1
+future==0.18.2
+gunicorn==20.0.4
+html5lib==1.1
 Pillow==7.2.0
 psycopg2==2.8.5
+PyPDF2==1.26.0
+python-bidi==0.4.2
+python-decouple==3.4
 pytz==2020.1
+reportlab==3.5.66
 six==1.15.0
 sqlparse==0.3.1
+webencodings==0.5.1
+whitenoise==5.2.0
+xhtml2pdf==0.2.5

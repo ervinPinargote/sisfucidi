@@ -17,7 +17,12 @@
 
 
 {% block il4 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
-{%block titulofuncional %} <a><b> {{Titulo}}: </b>   {{estu.nombre}} {{estu.apellido}} </a> {% endblock%}
+{%block titulofuncional %} <a><b> {{Titulo}}: </b>   {{estu.nombre}} {{estu.apellido}} </a>
+
+    <a href="{% url 'admision:NuevaAdmisionesEstudiante' estu.ci %}">
+    <i class="fas fa-plus-square" style="font-size: 48px;"></i>
+
+    {% endblock%}
 
 {% block trabajo %}
 

@@ -18,9 +18,18 @@
 
 {% block il5 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 
-    {%block titulofuncional %} <a><b> {{Titulo}} </b></a> {% endblock%}
+    {%block titulofuncional %} <a><b> {{Titulo}} </b></a>
+
+    <a href="{% url 'matricula:ListAdm'%}">Generar
+    <i class="fas fa-plus-square"></i>
+    </a>
+
+    {% endblock%}
+
+
 
 {% block trabajo %}
+
 <table class="table table-bordered" id="datatable">
     <thead>
     <tr>

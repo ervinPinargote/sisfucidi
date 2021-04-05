@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{tittle}}</title>
+    <style>
+    @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 10pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+    }
+
+
+    .header_table{
+    text-align: center;
+    font-weight:bold;
+    color: black;
+     background-color: #F00;
+    }
+    .indice{
+     text-align: center;
+     font-weight:bold;
+     color: Red;
+     width:5%;
+    }
+
+    th, td{
+            padding: 5px 15px;
+    }
+    th{
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+    td{
+    }
+
+
+     .firma1{
+     float:left;
+     width: 30%;
+     outline: green solid thin
+     }
+
+     .firma1{
+     float:left;
+     width: 30%;
+     outline: red solid thin
+     }
+
+     .prueba{
+        height: 10px;
+        width: 50%;
+      border-color: red;
+      color: red;
+     }
+
+     .codigo{
+      width:15%;
+      text-align: center;
+    }
+
+    </style>
+
+
+</head>
+<body>
+
+<!-- Content for Static Frame 'header_frame' -->
+<div id="header_content">
+    <img src="media/logo13.png" width="200px">
+</div>
+
+<!-- Content for Static Frame 'footer_frame' -->
+<div id="footer_content">
+    (Semilla) - pagina
+    <pdf:pagenumber> de
+        <pdf:pagecount>
+</div>
+
+<!-- HTML Content -->
+
+<div class="infoGeneral">
+    <h1>{{tittle}}  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; Fecha Elaborado:<a> {{date}}</a> </h1>
+</div>
+<hr>
+<br>
+<h2> El siguiente reporte muestra la informacíon de los programas de estudios que se encuentran registrados en la fundacion. </h2>
+<br>
+
+<table border="1">
+    <thead class="header_table">
+    <tr>
+        <td class="indice">N.</td>
+        <td class="codigo">Codigo</td>
+        <td>Nombre Programa</td>
+        <td>Materias</td>
+    </tr>
+    </thead>
+    <tbody class="rows_table">
+    {% if programas %}
+    {% for program in programas %}
+    <tr>
+        <td class="indice">{{ program.id }}</td>
+        <td class="codigo">{{ program.cod_programa }}</td>
+        <td>{{ program.nombre_programa }}</td>
+        <td>
+            <ul style="list-style-type: decimal;">
+                {% for mat in c %}
+                {% ifequal mat.cod_programa.cod_programa program.cod_programa %}
+                <li style="">
+                    {{mat.nombre_materia|upper}}
+                </li>
+                {% endifequal %}
+                {% empty %}
+                <p>No hay Materias registradas</p>
+                {%endfor%}
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h1>No hay registos para mostrar</h1>
+    {% endif %}
+    </tbody>
+</table>
+<div>
+    <br> <br> <br> <br> <br> <br>
+    <br> <br> <br> <br>
+</div>
+
+<b>Realizado por: </b>
+<br> <br> <br>
+<br> <br> <br>
+<div class="cfirma">
+     <div style="color:#020000;height:10px;">________________________________________</div>
+    <p> &nbsp;&nbsp;&nbsp;<b> Nombre: </b>{{ usuario.first_name }} {{ usuario.last_name }}</p>
+    <p> &nbsp;&nbsp;&nbsp;<b> Correo: </b>{{ usuario.email }}</p>
+</div>
+
+</body>
+</html>

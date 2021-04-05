@@ -14,14 +14,8 @@ class MatriculasList(ListView):
         matriculas = Matricula.objects.all()
         ac = 0
         ne = 0
-        for i in matriculas:
-            if (i.estado== "Activo"):
-                ac = ac + 1
-            else:
-                ne = ne + 1
         context= super(MatriculasList, self).get_context_data(**kwargs)
-        context['ActivosD'] = ac
-        context['InactivosD'] = ne
+        context['matriculas'] = matriculas
         context['Titulo'] = "LISTADO DE MATRICULAS"
         return context
 
