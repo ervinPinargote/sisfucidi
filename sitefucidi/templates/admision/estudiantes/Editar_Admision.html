@@ -1,11 +1,9 @@
 {% extends "admision/estudiantes/estudiante.html" %}
 
-{% block dir %} href="{% url 'admision:ListaAdmisionesEstudiante' doc.ci %}"{% endblock %}
-{% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión/ Admisiones/ {{doc.nombre}} {{doc.apellido}} / Admision Nueva  {% endblock %}
-
-{%block titulofuncional %} <a><b> {{Titulo}}: </b> {{doc.nombre}} {{doc.apellido}} </a> {% endblock%}
+{%block titulofuncional %} <a><b> {{Titulo}}: </b> {{admision.ci.nombre}} {{admision.ci.apellido}} </a> {% endblock%}
 
 {% block trabajo %}
+
 <form method="post">
     {% csrf_token %}
     <input type="hidden" name="instructor" class="" value="{{doc.ci}}" id="id_ci">
@@ -14,20 +12,27 @@
         <div class="row">
             <div class="col-md-3 pr-1">
                 <div class="form-group">
-                    <label>Admision: </label>
-                    {{form.codigoAdmision}}
+                    <label>Admision:</label>
+                    <input type="text" name="codigoAdmision" class="form-control" maxlength="10" value="{{admision.codigoAdmision}}" readonly id="id_codigoAdmision">
                 </div>
             </div>
             <div class="col-md-4 px-1">
                 <div class="form-group">
                     <label>Programa que desea estudiar: </label>
-                    {{form.Programa}}
+                    <select name="Programa" class="form-control" id="id_Programa">
+                      <option value="{{admision.Programa.id}}"> {{admision.Programa}}</option>
+                        {% for mat in programas %}
+                           {% if mat.vigencia == 1 %}
+                               <option value="{{mat.id}}"> {{mat.nombre_programa}}</option>
+                           {% endif %}
+                        {%endfor%}}
+                  </select>
                 </div>
             </div>
             <div class="col-md-5 pl-1">
                 <div class="form-group">
-                    <label>Fecha (dd/mm/aaaa)</label>
-                    {{form.fecha}}
+                    <label>Fecha (dd/mm/aaaa) : {{admision.fecha}} </label>
+                    <span class="form-control">{{form.fecha}}</span>
                 </div>
             </div>
         </div>
@@ -38,13 +43,19 @@
             <div class="col-md-6 pr-1">
                 <div class="form-group">
                     <label></label>
-                    {{form.id_requisito}}
+                    <ul id="id_id_requisito" class="QuitarPuntos">
+                        {% for req in admision.id_requisito.values %}
+                        <li>
+                            <label for="id_id_requisito_{{forloop.counter0}}"><input type="checkbox" name="id_requisito" value="{{req.id}}" class="QuitarPuntos" id="id_id_requisito_{{forloop.counter0}}" checked>  {{req.descripcion}}</label>
+                        </li>
+                        {% endfor %}
+                    <ul>
                 </div>
             </div>
 
             <div class="col-md-6 pl-1">
                 <label>Foto</label>
-                {{form.foto}}
+                <input type="file" name="foto" required class="form-control" accept="image/*" id="id_foto">
             </div>
         </div>
     </div>
@@ -54,14 +65,14 @@
         <div class="row">
             <div class="col-md-6 pr-1">
                 <div class="form-group">
-                    <label>Fecha de conversión(dd/mm/aaaa)</label>
-                    {{form2.fecha_conversion}}
+                    <label>Fecha de conversión(dd/mm/aaaa) : {{admision.id_ex.fecha_conversion}} </label>
+                    <a class="form-control">{{form2.fecha_conversion}}</a>
                 </div>
             </div>
             <div class="col-md-6 pl-1">
                 <div class="form-group">
-                    <label>Fecha de bautismo en agua(dd/mm/aaaa)</label>
-                    {{form2.fecha_bautismo}}
+                    <label>Fecha de bautismo en agua(dd/mm/aaaa)  {{admision.id_ex.fecha_bautismo}} </label>
+                    <a class="form-control">{{form2.fecha_bautismo}}</a>
                 </div>
             </div>
         </div>
@@ -69,13 +80,17 @@
             <div class="col-md-6 pr-1">
                 <div class="form-group">
                     <label>¿Ha recibido el bautismo del Espiritu Santo?</label>
-                    {{form2.bautismo_espiritual}}
+                    {% if admision.id_ex.bautismo_espiritual == 1 %}
+                        <input type="checkbox" name="bautismo_espiritual" id="id_bautismo_espiritual"  checked >
+                    {% else %}
+                       <input type="checkbox" name="bautismo_espiritual" id="id_bautismo_espiritual">
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6 pl-1">
                 <div class="form-group">
-                    <label>Fecha (dd/mm/aaaa)</label>
-                    {{form2.fecha_bautismo_es}}
+                    <label>Fecha (dd/mm/aaaa) :  {{admision.id_ex.fecha_bautismo_es}}</label>
+                    <a class="form-control">{{form2.fecha_bautismo_es}}</a>
                 </div>
             </div>
         </div>
@@ -84,13 +99,18 @@
             <div class="col-md-6 pr-1">
                 <div class="form-group">
                     <label>¿Tiene un llamamiento a la obra del Señor?</label>
-                    {{form2.obra_señor}}
+
+                     {% if admision.id_ex.obra_señor == 1 %}
+                        <input type="checkbox" name="obra_señor" id="id_obra_señor" checked>
+                    {% else %}
+                       <input type="checkbox" name="obra_señor" id="id_obra_señor">
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6 pl-1">
                 <div class="form-group">
                     <label>¿Cuál?</label>
-                    {{form2.desc_obra}}
+                    <input type="text" name="desc_obra" class="form-control" maxlength="100"  value="{{admision.id_ex.desc_obra}}" required="" id="id_desc_obra">
                 </div>
             </div>
         </div>
@@ -99,13 +119,17 @@
             <div class="col-md-6 pr-1">
                 <div class="form-group">
                     <label>¿Conoce y cree en las doctrinas de la iglesia de Dios?</label>
-                    {{form2.doctrinas}}
+                    {% if admision.id_ex.doctrinas == 1 %}
+                        <input type="checkbox" name="doctrinas" id="id_doctrinas" checked>
+                    {% else %}
+                       <input type="checkbox" name="doctrinas" id="id_doctrinas">
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6 pl-1">
                 <div class="form-group">
                     <label>En su opinión, ¿Cuáles son las necesidades principales de la iglesia de hoy?</label>
-                    {{form2.opinion}}
+                    <input type="text" name="opinion" class="form-control" maxlength="100" value="{{admision.id_ex.opinion}}"  required="" id="id_opinion">
                 </div>
             </div>
         </div>
@@ -114,7 +138,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>¿Cómo piensa usted contribuir para suplir estas necesidades?</label>
-                    {{form2.contribucion}}
+                    <input type="text" name="contribucion" class="form-control"  value="{{admision.id_ex.contribucion}}" maxlength="100" required="" id="id_contribucion">
                 </div>
             </div>
         </div>
@@ -123,7 +147,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>¿Que le motivo para ingresar al Seminario?</label>
-                    {{form2.motivacion}}
+                    <input type="text" name="motivacion" class="form-control" value="{{admision.id_ex.motivacion}}" maxlength="100" required="" id="id_motivacion">
                 </div>
             </div>
         </div>
@@ -135,13 +159,13 @@
             <div class="col-md-6 pr-1">
                 <div class="form-group">
                     <label>¿A que iglesia pertenece?</label>
-                    {{form4.iglesia}}
+                    <input type="text" name="iglesia" class="form-control" value="{{admision.id_tra.iglesia}}" maxlength="100" required="" id="id_iglesia">
                 </div>
             </div>
             <div class="col-md-6 pl-1">
                 <div class="form-group">
                     <label>Denominación: </label>
-                    {{form4.denominacion}}
+                    <input type="text" name="denominacion" class="form-control" value=" {{admision.id_tra.denominacion}} " maxlength="100" required="" id="id_denominacion">
                 </div>
             </div>
         </div>
@@ -150,7 +174,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Direccion</label>
-                    {{form4.direcion}}
+                    <input type="text" name="direcion" class="form-control" value=" {{admision.id_tra.direcion}}" maxlength="200" required="" id="id_direcion">
                 </div>
             </div>
         </div>
@@ -158,13 +182,17 @@
             <div class="col-md-6 pr-1">
                 <div class="form-group">
                     <label>¿Eres mienbro ?</label>
-                    {{form4.miembro}}
+                    {% if admision.id_tra.miembro == 1 %}
+                        <input type="checkbox" name="miembro" id="id_miembro" checked>
+                    {% else %}
+                       <input type="checkbox" name="miembro" id="id_miembro">
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6 pl-1">
                 <div class="form-group">
-                    <label>¿Desde qué Fecha?(dd/mm/aaaa) </label>
-                    {{form4.fecha_menbresia}}
+                    <label>¿Desde qué Fecha?(dd/mm/aaaa)  {{admision.id_tra.fecha_menbresia}} </label>
+                    <span class="form-control"> {{form4.fecha_menbresia}}</span>
                 </div>
             </div>
         </div>
@@ -173,7 +201,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>¿Qué cargos ha desempeñado en su iglesia?</label>
-                    {{form4.cargo_desempeñado}}
+                    <input type="text" name="cargo_desempeñado" class="form-control"  value=" {{admision.id_tra.cargo_desempeñado}}" maxlength="200" required="" id="id_cargo_desempeñado">
                 </div>
             </div>
         </div>
@@ -181,7 +209,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Nombres y apellidos de su pastor: </label>
-                    {{form4.nom_apellido}}
+                    <input type="text" name="nom_apellido" class="form-control" value="{{admision.id_tra.nom_apellido}}" maxlength="70" required="" id="id_nom_apellido">
                 </div>
             </div>
         </div>
@@ -195,8 +223,6 @@
             Riobamba-Ecuador
         </p>
     </div>
-
-
     <button type="submit" CLASS=" btn btn-primary btn-round">Guardar Asignación</button>
 </form>
 {% endblock %}

@@ -93,10 +93,10 @@ class ExpereciaForm(forms.ModelForm):
             'motivacion':'Motivacion',
         }
         widgets = {
-            'fecha_conversion': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
+            'fecha_conversion': forms.SelectDateWidget(years=range(1900,2050)),
             #'bautismo_espiritual':
-            'fecha_bautismo': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
-            'fecha_bautismo_es': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
+            'fecha_bautismo': forms.SelectDateWidget(years=range(1900,2050)),
+            'fecha_bautismo_es': forms.SelectDateWidget(years=range(1900,2050)),
            # 'obra_señor':
             'desc_obra': forms.TextInput(attrs={'class': 'form-control'}),
             #'doctrinas':
@@ -132,7 +132,7 @@ class TrasfondoForm(forms.ModelForm):
         'denominacion': forms.TextInput(attrs={'class': 'form-control'}),
         'direcion': forms.TextInput(attrs={'class': 'form-control'}),
         # 'miembro':
-        'fecha_menbresia': forms.DateInput(attrs={'class': 'form-control','type':'date'}),
+        'fecha_menbresia': forms.SelectDateWidget(years=range(1900,2050)),
         'cargo_desempeñado': forms.TextInput(attrs={'class': 'form-control'}),
         'nom_apellido': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -210,10 +210,9 @@ class admisioneForm(forms.ModelForm):
         widgets={
             'codigoAdmision' : forms.TextInput(attrs={'class':'form-control'}),
             'Programa' : forms.Select(attrs={'class':'form-control'}),
-            'fecha': forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'fecha': forms.SelectDateWidget(years=range(1900,2050)),
             'foto':forms.FileInput(attrs={'class':'form-control','accept':'image/*'}),
-            'id_requisito':forms.CheckboxSelectMultiple(),
-
+            'id_requisito':forms.CheckboxSelectMultiple(attrs={'class':'QuitarPuntos'}),
         }
 
 

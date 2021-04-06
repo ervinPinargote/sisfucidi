@@ -1,16 +1,20 @@
-
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import get_template
 from django.urls import reverse_lazy, reverse, resolve
+from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from .forms import admisioneForm, PersonaForm, ExpereciaForm, TrasfondoForm, estudiosForm, recomendacionesForm, \
     AsignacionMaterias
-from .models import admisione, estudios_realizado, Persona, asignacionMaterias
-
+from .models import admisione, estudios_realizado, Persona, asignacionMaterias, Experencia_espiritual, \
+    Trasfondo_eclesiastico
 
 # Create your views here.
 # funcion que permite listar las materias del programa academico
+from Academico.models import Programa
+
 
 def CAdmisionLista(request):
     adm = admisione.objects.all()
@@ -148,7 +152,7 @@ def CMateriasAsignarRegitro(request,id_docente):
         return redirect(reverse('admision:ListaMateriasDocente',kwargs=your_params)) ## RETROCEDER UNA LISTA CON PARAMETROS
     else:
         form = AsignacionMaterias()
-    contexto = {'form':form,'doc':doc,'Titulo':'AGREGAR MATERIAS'}
+    contexto = {'form':form,'doc':doc,'Titulo':'Asignar Materias'}
     return render(request, 'admision/Instructor/Asignar_materias.html',contexto)
 
 def CMateriasAsignadasUpdate(request,pk):
@@ -164,9 +168,8 @@ def CMateriasAsignadasUpdate(request,pk):
         if form.is_valid():
             form.save()
         return redirect(reverse('admision:ListaMateriasDocente',kwargs=your_params))  # Redirijo a la Listar que es Principal en el funcionalidad
-    contexto = {'form': form, 'doc': docente, 'Titulo': 'ACTUALIZAR MATERIAS'}
+    contexto = {'form': form, 'doc': docente, 'Titulo': 'Actualizar Materias'}
     return render(request, 'admision/Instructor/Asignar_materias.html', contexto)
-
 
 class EstudianteList(ListView):
     model = Persona
@@ -251,8 +254,37 @@ def cAdmisionNuevaEstudiante(request, id_estu):
     else:
         form = admisioneForm()
         form2 = ExpereciaForm()
-    contexto = {'form': form,'form2': form2,'form4': form4,'doc': estu, 'Titulo': 'Admision Nueva'}
+    contexto = {'form': form,'form2': form2,'form4': form4,'doc': estu, 'Titulo': 'Admision'}
     return render(request, 'admision/estudiantes/Nueva_Admision.html', contexto)
+
+
+def cAdmisionUpdateEstudiante(request, pk):
+    programas = Programa.objects.all
+    adm = admisione.objects.get(id=pk)
+    estu = Persona.objects.get(ci=adm.ci)
+    exp = Experencia_espiritual.objects.get(id=adm.id_ex.id)
+    tra = Trasfondo_eclesiastico.objects.get(id=adm.id_tra.id)
+    your_params = {
+        'id_estu': estu.ci
+    }
+    if request.method == 'GET':  # preguntamos si es un metodo POST.
+        form = admisioneForm(instance=adm)  # Instaciomos el  formulario Admisiones
+        form2 = ExpereciaForm(instance=exp)
+        form4 = TrasfondoForm(instance=tra)
+
+    else:
+        form = admisioneForm(request.POST, instance=adm)
+        form2 = ExpereciaForm(request.POST, instance=exp)
+        form4 = TrasfondoForm(request.POST, instance=tra)
+        if form.is_valid() and form2.is_valid() and form4.is_valid():
+            form.save()
+            form2.save()
+            form4.save()
+        return redirect(reverse('admision:ListaAdmisionesEstudiante', kwargs=your_params))  ## RETROCEDER UNA LISTA CON PARAMETROS
+    contexto = {'form': form,'form2': form2,'form4': form4,'admision': adm, 'Titulo': 'Actualizar información','programas':programas}
+    return render(request, 'admision/estudiantes/Editar_Admision.html', contexto)
+
+
 
 
 class EstudianteEstudiosList(ListView):

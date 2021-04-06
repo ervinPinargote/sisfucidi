@@ -16,6 +16,10 @@
 {% endblock %}
 
 
+{% block dir %} href="{% url 'admision:ListaMateriasDocente' doc.ci %}"{% endblock %}
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión  / Gestión Instructores / {{Titulo}}  {% endblock %}
+
+{% block il7 %} class="active" {% endblock %}
 {% block il3 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {%block titulofuncional %} <a><b> {{Titulo}}: </b>   {{doc.nombre}} {{doc.apellido}} </a> {% endblock%}
 
@@ -46,6 +50,6 @@
              </div>
         </div>
     </div>
-    <button type="submit" CLASS=" btn btn-primary btn-round">Guardar Asignación</button>
+    <button type="submit" CLASS=" btn btn-primary btn-round">{{Titulo}}</button>
 </form>
 {% endblock %}

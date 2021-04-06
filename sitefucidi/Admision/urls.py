@@ -4,7 +4,7 @@ from . import views
 from .views import CAdmisionLista, AdmisionCreate, DocenteList, DocenteUpdate, CMateriasAsignadasDocente, \
     DocenteAgregar, DocenteEliminar, CMateriasAsignarRegitro, CMateriasAsignadasUpdate, EstudianteList, \
     EstudianteUpdate, EstudianteAgregar, EstudianteEliminar, CAdmisionListaEstudiante, cAdmisionNuevaEstudiante, \
-    cAgregarDatosEstudiosRealizados
+    cAgregarDatosEstudiosRealizados, cAdmisionUpdateEstudiante
 
 urlpatterns = [
 
@@ -30,6 +30,8 @@ urlpatterns = [
 
     path('estudiantes/admisiones/(?P<id_estu>\d+)/$',CAdmisionListaEstudiante,name="ListaAdmisionesEstudiante"),
     path('estudiantes/admisiones/nueva/(?P<id_estu>\d+)/$',cAdmisionNuevaEstudiante,name="NuevaAdmisionesEstudiante"),
+    path('estudiantes/admisiones/editar/(?P<pk>\d+)/$',cAdmisionUpdateEstudiante,name="EditarAdmision"),
+
 
 
     #AREA COMUN PARA DATOS DE ADMISION INTRUCTORES Y ESTUDIANTES.

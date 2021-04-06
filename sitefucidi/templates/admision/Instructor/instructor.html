@@ -22,8 +22,10 @@
     <a class="btn btn-success btn-sm" href="{% url 'admision:NuevoDocente'%}"><i class="fas fa-plus-square"> </i> Agregar </a>
 {% endblock%}
 {% block trabajo %}
-<table class="table table-bordered" id="datatable">
-    <thead>
+<div class="table-responsive">
+
+<table  class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
     <tr>
         <td>Identificacion</td>
         <td>Nombres</td>
@@ -51,14 +53,12 @@
             <td>{{ doc.celular }}</td>
             <td>{{ doc.correo }} </td>
             <td>{{ doc.estado }}</td>
-            <td >
+            <td  style="text-align: center;" >
                 <!--admision:ListarDocente-->
                 <a CLASS="btn btn-primary"  title="Modificar" href="{% url 'admision:EditarDocente' doc.ci %}"><i class="fas fa-edit"></i> </a>
                 <!--<a CLASS="" href="{% url 'admision:EditarDocente' doc.ci %}"><i class="fas fa-edit"></i> </a>-->
-
-                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'admision:EliminarDocente' doc.ci %}'); " title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
-
                 <a class="btn btn btn-success" title="Asignar Materias" href="{% url 'admision:ListaMateriasDocente' doc.ci %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'admision:EliminarDocente' doc.ci %}'); " title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
             </td>
         </tr>
         {% endfor %}
@@ -67,4 +67,5 @@
         {% endif %}
     </tbody>
 </table>
+    </div>
 {% endblock %}

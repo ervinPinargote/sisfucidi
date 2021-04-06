@@ -15,14 +15,22 @@
     <p class="card-title">{{InactivosD}}<p>
 {% endblock %}
 
+{% block dir %} href="{% url 'admision:ListarDocente' %}"{% endblock %}
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión  / Gestión Instructores / Asignacion Materias  {% endblock %}
+{% block il7 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 
 {% block il3 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 
-    {%block titulofuncional %} <a><b> {{TituloFuncionalidad}}: </b>   {{Docente.nombre}} {{Docente.apellido}} </a> {% endblock%}
+    {%block titulofuncional %} <a><b> {{TituloFuncionalidad}}: </b>   {{Docente.nombre}} {{Docente.apellido}} </a>
+    &nbsp; &nbsp; &nbsp;
+    <a class="btn btn-success btn-sm" href="{% url 'admision:AsignarMateriasDocente' Docente.ci %}"><i class="fas fa-plus-square"> </i> Agregar </a>
+    {% endblock%}
 
 {% block trabajo %}
-<table class="table table-bordered" id="datatable">
-    <thead>
+<div class="table-responsive">
+
+<table class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
     <tr>
         <td>Materia(s) </td>
         <td>Fecha de Asignacion</td>
@@ -35,18 +43,20 @@
         {% for mta in materiasAsig %}
         <tr>
             <td>
-                {% for materia in mta.materias.all %}
-                    <br>
-                    <span>{{ materia.nombre_materia }} <b>|</b> <b style="color:red">({{ materia.cod_programa.cod_programa }}</b>)</span>
-                {% endfor %}
+                <ul style="list-style-type: decimal;">
+
+                     {% for materia in mta.materias.all %}
+                         <li>{{ materia.nombre_materia }} <b>|</b> <b style="color:red">({{ materia.cod_programa.cod_programa }}</b>)</li>
+                     {% endfor %}
+                </ul>
             </td>
 
-            <td>{{ mta.fecha_Asignacion }}</td>
+            <td  style="text-align: center;">{{ mta.fecha_Asignacion }}</td>
             <td>{{ mta.estado_asig }}</td>
-            <td >
+            <td style="text-align: center;">
                 <a CLASS="btn btn-primary"  title="Modificar" href="{% url 'admision:UpdateMateriasDocente' mta.id %}"><i class="fas fa-edit"></i> </a>
-                <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
                 <a class="btn btn btn-success" title="#" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+                <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
             </td>
         </tr>
         {% endfor %}
@@ -55,4 +65,5 @@
         {% endif %}
     </tbody>
 </table>
+    </div>
 {% endblock %}

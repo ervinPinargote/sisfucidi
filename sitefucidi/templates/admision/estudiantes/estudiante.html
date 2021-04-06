@@ -15,6 +15,7 @@
     <p class="card-title">{{InactivosD}}<p>
 {% endblock %}
 
+{% block dir %} href="{% url 'admision:ListaAdmisionesEstudiante' doc.ci %}"{% endblock %}
 {% block path%} &nbsp; &nbsp; &nbsp; Módulo Admisión  / Gestión Estudiantes  {% endblock %}
 {% block il4 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block il7 %} class="active" {% endblock %}
@@ -23,8 +24,9 @@
 {% endblock%}
 
 {% block trabajo %}
-<table class="table table-bordered" id="datatable">
-    <thead>
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
     <tr>
         <td>Identificacion</td>
         <td>Nombres</td>
@@ -57,11 +59,11 @@
                 <a CLASS="btn btn-primary"  title="Modificar" href="{% url 'admision:EditarEstudiante' doc.ci %}"><i class="fas fa-edit"></i> </a>
                 <a CLASS="btn btn-info"  title="Agregar Estudios"  onclick="abrirmodaleliminar('{% url 'admision:EstudiosRealizados' doc.ci %}'); " ><i class="fas fa-plus-square"></i> </a>
                 <!--<a CLASS="" href="{% url 'admision:EditarDocente' doc.ci %}"><i class="fas fa-edit"></i> </a>-->
-                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'admision:EliminarEstudiante' doc.ci %}'); " title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
 
                 {% if doc.estado == "Activo" %}
                     <a class="btn btn btn-success" title="Admisiones Estudiante" href="{% url 'admision:ListaAdmisionesEstudiante' doc.ci %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
                 {% endif %}
+                <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'admision:EliminarEstudiante' doc.ci %}'); " title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
             </td>
         </tr>
         {% endfor %}
@@ -70,4 +72,5 @@
         {% endif %}
     </tbody>
 </table>
+</div>
 {% endblock %}

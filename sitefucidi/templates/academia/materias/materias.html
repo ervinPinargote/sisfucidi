@@ -13,10 +13,11 @@
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
 
+{% block il6 %} class="active" {% endblock %}
 {% block il1 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Materias {% endblock %}
-{%block titulofuncional %} <b> Listado de Materias</b> &nbsp; &nbsp; &nbsp;
+{%block titulofuncional %} <b> Materias</b> &nbsp; &nbsp; &nbsp;
 <a class="btn btn-success btn-sm" href="{% url 'academia:NuevaMateria' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
 {% endblock%}
 
