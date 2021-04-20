@@ -33,7 +33,7 @@
         <td>Duracion</td>
         <td>Modalidad</td>
         <td>Valor Matricula</td>
-        <td>Valor Colegiatura</td>
+
         <td>Acciones</td>
     </tr>
     </thead>
@@ -48,7 +48,6 @@
             <td>{{ program.duracion }}</td>
             <td>{{ program.tipo_programa }}</td>
             <td>{{ program.precio_matricula }}</td>
-            <td>{{ program.precio_pension }}</td>
             <td style="text-align:center;">
                 <a CLASS="btn btn-primary" title="Editar" href="{% url 'academia:Editar' program.id  %}"><i class="fas fa-edit"></i> </a>
                <!-- <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>-->

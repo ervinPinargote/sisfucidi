@@ -4,7 +4,7 @@ from . import views
 from .views import CAdmisionLista, AdmisionCreate, DocenteList, DocenteUpdate, CMateriasAsignadasDocente, \
     DocenteAgregar, DocenteEliminar, CMateriasAsignarRegitro, CMateriasAsignadasUpdate, EstudianteList, \
     EstudianteUpdate, EstudianteAgregar, EstudianteEliminar, CAdmisionListaEstudiante, cAdmisionNuevaEstudiante, \
-    cAgregarDatosEstudiosRealizados, cAdmisionUpdateEstudiante
+    cAgregarDatosEstudiosRealizados, cAdmisionUpdateEstudiante, EstudianteSolicitud
 
 urlpatterns = [
 
@@ -35,8 +35,11 @@ urlpatterns = [
 
 
     #AREA COMUN PARA DATOS DE ADMISION INTRUCTORES Y ESTUDIANTES.
-    path('estudiosRealizados/(?P<id_persona>\d+)/$',cAgregarDatosEstudiosRealizados,name="EstudiosRealizados")
+    path('estudiosRealizados/(?P<id_persona>\d+)/$',cAgregarDatosEstudiosRealizados,name="EstudiosRealizados"),
 
+
+    # PARA QUE EL ESTUDIANTE PUEDA CREAR UNA SOLICITUD
+    path('estudiantes/solicitud/', EstudianteSolicitud.as_view(), name='Solicitud')
 
     #path('nuevo_programa/',CprograNuevo,name='Nuevo' ),
     #path('editar/(?P<id_programa>\d+)/',CprogramaEditar,name='Editar'),

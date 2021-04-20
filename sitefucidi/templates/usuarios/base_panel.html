@@ -42,7 +42,8 @@
         </div>
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li {% block il6 %} {% endblock %}>
+                {% if perms.Academico %}
+                    <li {% block il6 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-2">
                         <i class="nc-icon nc-bank"></i> MÓDULO ACADÉMIA <span data-toggle="collapse" href="#sub-item-2"
                                                                               class="icon pull-right"><em
@@ -67,7 +68,11 @@
                         {% endif %}
                     </ul>
                 </li>
-                <li {% block il7 %} {% endblock %}>
+                {% endif %}
+
+
+                {% if perms.Admision %}
+                    <li {% block il7 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-3">
                         <i class="nc-icon nc-ruler-pencil"></i> MÓDULO ADMISIÓN
                         <span data-toggle="collapse" href="#sub-item-3" class="icon pull-right">
@@ -77,7 +82,7 @@
                     <ul class="children collapse" id="sub-item-3">
 
                         {% if perms.Admision %}
-                        <li class="QuitarPuntos" {% block il2 %} {% endblock %}>
+                            <li class="QuitarPuntos" {% block il2 %} {% endblock %}>
                             <!-- <a href="{% url 'admision:Listar' %}" >
                                <i class="nc-icon nc-badge"></i>
                                <p>Admision</p>
@@ -86,7 +91,7 @@
                         {% endif %}
 
                         {% if perms.Admision %}
-                        <li class="QuitarPuntos" {% block il4 %} {% endblock %}>
+                            <li class="QuitarPuntos" {% block il4 %} {% endblock %}>
                             <a href="{% url 'admision:ListarEstudiante' 1 %}">
                                 <!-- Designo el tipo de la lista de los estudiantes-->
                                 <span class="fa fa-arrow-right"></span>
@@ -96,7 +101,7 @@
                         {% endif %}
 
                         {% if perms.Admision %}
-                        <li class="QuitarPuntos" {% block il3 %} {% endblock %}>
+                            <li class="QuitarPuntos" {% block il3 %} {% endblock %}>
                             <a href="{% url 'admision:ListarDocente' %}">
                                 <span class="fa fa-arrow-right"></span>
                                 Instructores
@@ -105,7 +110,10 @@
                         {% endif %}
                     </ul>
                 </li>
-                <li {% block il5 %} {% endblock %}>
+                {% endif %}
+
+                {% if perms.Matricula %}
+                    <li {% block il5 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-1">
                         <i class="nc-icon nc-single-copy-04"></i> MóDULO MATRICULA <span data-toggle="collapse"
                                                                                 href="#sub-item-1"
@@ -125,7 +133,10 @@
                         </li>
                     </ul>
                 </li>
-                <li {% block il8 %} {% endblock %}>
+                {% endif %}
+
+                {% if perms.Pago %}
+                    <li {% block il8 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-4">
                         <i class=" nc-icon nc-money-coins"></i> MóDULO PAGOS <span data-toggle="collapse" href="#sub-item-4"
                                                                             class="icon pull-right"><em
@@ -144,6 +155,28 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
+
+                {% if perms.Admision.add_persona %}
+                    <li {% block il9 %} {% endblock %}>
+                    <a data-toggle="collapse" href="#sub-item-8">
+                        <i class=" nc-icon nc-money-coins"></i> SOLICITUD EXTERNA <span data-toggle="collapse" href="#sub-item-8"
+                                                                            class="icon pull-right"><em
+                            class="caret"></em></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-8">
+                        <li class="QuitarPuntos">
+                            <a class="" href="{% url 'admision:Solicitud'%}"> <span class="fa fa-arrow-right">&nbsp;</span>SOLICITUD</a>
+                        </li>
+                        <li class="QuitarPuntos"><a class="" href="#">
+                            <span class="fa fa-arrow-right">&nbsp;</span> Visualizar Pagos</a>
+                        </li>
+                        <li class="QuitarPuntos"><a class="" href="#">
+                            <span class="fa fa-arrow-right">&nbsp;</span> Reportes</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -164,6 +197,7 @@
                         {% if user.is_authenticated %}
                         <p>Bienvenido, &nbsp;
                         <p style="color:red"> {{ user.first_name }} {{ user.last_name }}</p>.</p>
+                        <p>{{perms.Admision}}</p>
                         {% else %}
                         <p>Por favor tiene que Loguearse.</p>
                         {% endif %}

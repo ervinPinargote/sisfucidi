@@ -25,14 +25,14 @@ FUCIDI-MATRICULAS
 {%block titulofuncional %} <a><b> {{Titulo}} </b>  </a> {% endblock%}
 
 {% block trabajo %}
-
-<table class="table table-bordered">
-    <thead>
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
     <tr>
         <td>Admision</td>
         <td>Estudiante</td>
-        <td>Fecha Solicitud</td>
-        <td>Programa Academico</td>
+        <td>Fecha Admision</td>
+        <td>Programa de Estudio</td>
         <td>Acciones</td>
     </tr>
     </thead>
@@ -45,7 +45,8 @@ FUCIDI-MATRICULAS
             <td>{{ adm.fecha }}</td>
             <td>{{ adm.Programa.nombre_programa }}</td>
             <td>
-                <a class="btn btn btn-success" href="">Matricula</a>
+                <a class="btn btn btn-success" onclick="abrirmodaleliminar('{% url 'matricula:Matricula' adm.id %}'); " >Matricula</a>
+                <a href="{% url 'matricula:Matricula' adm.id %}">as</a>
             </td>
         </tr>
         {% endfor %}
@@ -54,5 +55,5 @@ FUCIDI-MATRICULAS
         {% endif %}
     </tbody>
 </table>
-
+</div>
 {% endblock %}

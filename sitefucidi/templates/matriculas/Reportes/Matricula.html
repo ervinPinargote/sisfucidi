@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{tittle}} {{codigo}}</title>
+    <style type="text/css" media="screen, print">
+     @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 10pt; height: 40pt;
+            font-size: 100em;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+
+    }
+
+
+    .header_table{
+    text-align: center;
+    font-weight:bold;
+    color: black;
+     background-color: #F00;
+    }
+
+
+    .indice{
+     text-align: center;
+     font-weight:bold;
+     color: Red;
+     width:10%;
+    }
+    .nivel{
+     width:10%;
+    }
+    .materias{
+      width:50%;
+    }
+    .infoCenter{
+    text-align: center;
+    }
+
+    th, td{
+            padding: 5px 15px;
+    }
+    th{
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+    td{
+
+    }
+     .firma1{
+     float:left;
+     width: 30%;
+     outline: green solid thin
+     }
+     p.linea { text-align:  left; }
+     .prueba{
+        height: 10px;
+        width: 50%;
+      border-color: red;
+      color: red;
+     }
+
+    </style>
+</head>
+<body STYLE="font-size:9pt;">
+
+<div id="header_content">
+    <img src="media/logo13.png" width="200px">
+</div>
+
+
+<div class="infoGeneral">
+    <h1>{{tittle}} <b style="color:blue;"> {{codigo}}</b>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Fecha Elaborado:<a> {{date}}</a> </h1>
+</div>
+<hr>
+
+<div style="">
+    <diV >
+        <b>Codigo Matricula: &nbsp; </b> {{matricula.cod_matricula}}
+        <br>
+        <b>Progama de Estudios: &nbsp;</b>{{matricula.admision_id.Programa.nombre_programa}}
+        <br>
+        <b>Identificacíon: &nbsp;</b> {{matricula.admision_id.ci.ci}}
+        <br>
+        <b>Nombre y Apellidos: &nbsp;</b> {{matricula.admision_id.ci.nombre}}  {{matricula.admision_id.ci.apellido}}
+        <br>
+        <b>Valor Matrícula: &nbsp;</b> {{matricula.admision_id.Programa.precio_matricula}} &nbsp;&nbsp;  <b>Valor Colegiatura: &nbsp;</b>{{matricula.admision_id.Programa.precio_pension}}
+    </diV>
+    <br>
+</div>
+
+<span>Materias en las que se matriculo el estudiante : </span>
+<br>
+<br>
+<table border="1">
+
+    <thead class="header_table">
+    <tr>
+        <td class="indice">Codigo</td>
+        <td class="materias">Materia</td>
+        <td class="nivel">Nivel</td>
+        <td>Modalidad</td>
+        <td>Duracion</td>
+    </tr>
+    </thead>
+
+    <tbody class="rows_table">
+    {% if matricula.materias %}
+    {% for materias in matricula.materias.values %}
+    <tr>
+
+            <td class="indice">{{ materias.cod_materia }}</td>
+            <td class="materias">{{ materias.nombre_materia}}</td>
+            <td class="nivel">{{ materias.nivel}}</td>
+            <td class="infoCenter">{{ materias.modalidad }}</td>
+            <td class="infoCenter">{{ materias.duracion }}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h1>No hay registos para mostrar</h1>
+    {% endif %}
+    </tbody>
+</table>
+
+<br>
+<div>
+    <p><b> Leyendas:</b> </p>
+    <p> Esta información Permite leer mejor los datos presentados en la tabla </p>
+    <p> <b>C :</b>  Significa Creditos.</p>
+    <p> <b>H :</b>  Significa Horas. </p>
+</div>
+
+<div>
+    <br> <br> <br> <br> <br> <br>
+    <br><br>
+</div>
+
+<b>Realizado por: </b>
+<br> <br> <br>
+<br> <br> <br>
+<div class="cfirma">
+     <div style="color:#020000;height:10px;">________________________________________</div>
+    <p> &nbsp;&nbsp;&nbsp;<b> Nombre: </b>{{ usuario.first_name }} {{ usuario.last_name }}</p>
+    <p> &nbsp;&nbsp;&nbsp;<b> Correo: </b>{{ usuario.email }}</p>
+</div>
+
+
+<div id="footer_content">
+    (Semilla) - pagina
+    <pdf:pagenumber> de
+        <pdf:pagecount>
+</div>
+
+
+</body>
+</html>

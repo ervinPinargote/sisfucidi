@@ -1,0 +1,134 @@
+{% extends "admision/estudiantes/estudiante.html" %}
+{%block titulofuncional %} <a><b> {{Titulo}} Estudiante</b></a> {% endblock%}
+{% block path%} &nbsp; &nbsp; &nbsp; Solicitud Admision  / {{Titulo}} Estudiante  {% endblock %}
+
+{% block trabajo %}
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Cedula/Pasaporte</label>
+                    <input type="text" name="ci" value="" class="form-control" maxlength="10" id="id_ci">
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Estado</label>
+                    {{form.estado}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Nombres</label>
+                    {{form.nombre}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Apellidos</label>
+                    {{form.apellido}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 pr-1">
+                <div class="form-group">
+                    <label>Pais</label>
+                    {{form.pais}}
+                </div>
+            </div>
+            <div class="col-md-3 px-1">
+                <div class="form-group">
+                    <label>Provincia</label>
+                    {{form.provincia}}
+                </div>
+            </div>
+            <div class="col-md-4 pl-1">
+                <div class="form-group">
+                    <label>Ciudad</label>
+                    {{form.ciudad}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Direccion</label>
+                    {{form.direccion}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 pr-1">
+                <div class="form-group">
+                    <label>Tipo de Admision</label>
+                    <input type="input" name="tipo" value="Estudiante" class="form-control" required="True" id="id_tipo"
+                           disabled>
+                    <input type="hidden" name="tipo" value="Estudiante" class="form-control" required="True"
+                           id="id_tipo">
+                </div>
+            </div>
+            <div class="col-md-3 px-1">
+                <div class="form-group">
+                    <label>Estado Civil</label>
+                    {{form.estado_c}}
+                </div>
+            </div>
+            <div class="col-md-4 pl-1">
+                <div class="form-group">
+                    <label>Fecha de Nacimiento:</label>
+                    <a class="form-control"> {{form.fecha_nacimiento}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 pr-1">
+                <div class="form-group">
+                    <label>Edad</label>
+                    {{form.edad}}
+                </div>
+            </div>
+            <div class="col-md-3 px-1">
+                <div class="form-group">
+                    <label>Telefono</label>
+                    {{form.telefono}}
+                </div>
+            </div>
+            <div class="col-md-4 pl-1">
+                <div class="form-group">
+                    <label>Celular</label>
+                    {{form.celular}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Correo Electronico</label>
+                    {{form.correo}}
+                </div>
+            </div>
+        </div>
+        <a> <b>En caso de Emergencia comunicarse con: </b></a>
+        <div class="row">
+            <div class="col-md-6 pr-1">
+                <div class="form-group">
+                    <label>Nombres y Apellidos </label>
+                    {{form.cal_Emer}}
+                </div>
+            </div>
+            <div class="col-md-6 pl-1">
+                <div class="form-group">
+                    <label>Telefono</label>
+                    {{form.emer_tele}}
+                </div>
+            </div>
+        </div>
+        <button type="submit" CLASS=" btn btn-primary btn-round">{{Titulo}}</button>
+    </form>
+</div>
+{% endblock %}

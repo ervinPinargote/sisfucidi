@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
@@ -15,7 +16,7 @@ from .models import admisione, estudios_realizado, Persona, asignacionMaterias, 
 # funcion que permite listar las materias del programa academico
 from Academico.models import Programa
 
-
+@login_required
 def CAdmisionLista(request):
     adm = admisione.objects.all()
     ac = 0
@@ -28,6 +29,7 @@ def CAdmisionLista(request):
     #        ne=ne+1
     contexto = {'admisiones':adm,'pvigentes':ac,'nvigentes':ne}
     return render(request,'admision/admision.html',contexto)
+
 
 class AdmisionCreate(CreateView):
     model = admisione
@@ -84,6 +86,7 @@ class AdmisionCreate(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2, form3 = form3,form4 = form4,form5 = form5,form6 = form6 ))
 
+
 class DocenteList(ListView):
     model = Persona
     template_name = 'admision/Instructor/instructor.html'
@@ -106,6 +109,7 @@ class DocenteList(ListView):
        queryset = super(DocenteList, self).get_queryset()
        return queryset.filter(tipo="Instructor") # Filtro para Listar solo los Instructores
 
+
 class DocenteUpdate(UpdateView):
     model=Persona
     form_class = PersonaForm
@@ -115,6 +119,7 @@ class DocenteUpdate(UpdateView):
         context = super(DocenteUpdate, self).get_context_data(**kwargs)
         context['Titulo'] = "Editar"
         return context
+
 
 class DocenteAgregar(CreateView):
     model = Persona
@@ -127,11 +132,12 @@ class DocenteAgregar(CreateView):
         context['Titulo'] = "Agregar"
         return context
 
+
 class DocenteEliminar(DeleteView): # Eliminar un Docente
     model = Persona
     template_name = 'admision/Instructor/eliminar.html'
     success_url = reverse_lazy('admision:ListarDocente')
-
+@login_required
 def CMateriasAsignadasDocente(request, id_docente): # USO UNA FUNCION POR QUE PERMITE AGREGAR AGURMENTOS
     materias = asignacionMaterias.objects.all().filter(instructor=id_docente)
     doc = Persona.objects.all().filter(ci=id_docente) #envio al Docente para accerder A sus Atributos u poder realizazr una nueva
@@ -139,7 +145,7 @@ def CMateriasAsignadasDocente(request, id_docente): # USO UNA FUNCION POR QUE PE
         doc = i
     contexto = {'materiasAsig': materias, 'TituloFuncionalidad': "Materias Asignadas", 'Docente': doc}
     return render(request,'admision/Instructor/Listado_materias_asignadas.html',contexto) # Usamos el mismo Formulario para un nuevo Programa
-
+@login_required
 def CMateriasAsignarRegitro(request,id_docente):
     doc = Persona.objects.get(ci=id_docente)
     your_params = {
@@ -154,7 +160,7 @@ def CMateriasAsignarRegitro(request,id_docente):
         form = AsignacionMaterias()
     contexto = {'form':form,'doc':doc,'Titulo':'Asignar Materias'}
     return render(request, 'admision/Instructor/Asignar_materias.html',contexto)
-
+@login_required
 def CMateriasAsignadasUpdate(request,pk):
     asignado = asignacionMaterias.objects.get(id=pk)  # comparacion donde se verifica el Id que vamos a editar.
     docente = asignado.instructor #Accemos al objeto instructor que contiene los datos de la persona.
@@ -199,6 +205,7 @@ class EstudianteList(ListView):
            EstadoBus = "Inactivo"
        return queryset.filter(tipo="Estudiante", estado=EstadoBus) # Filtro para Listar solo los Estudiantes.
 
+
 class EstudianteUpdate(UpdateView):
     model=Persona
     form_class = PersonaForm
@@ -220,11 +227,13 @@ class EstudianteAgregar(CreateView):
         context['Titulo'] = "Agregar"
         return context
 
+
 class EstudianteEliminar(DeleteView): # Eliminar un Docente
     model = Persona
     template_name = 'admision/estudiantes/Eliminar.html'
     success_url = reverse_lazy('admision:ListarEstudiante', kwargs={'slug':'1'})
 
+@login_required
 def CAdmisionListaEstudiante(request, id_estu):
     adm = admisione.objects.all().filter(ci=id_estu) # obtengo las admisiones de un estudiante...
     Pers = Persona.objects.get(ci=id_estu)
@@ -233,6 +242,7 @@ def CAdmisionListaEstudiante(request, id_estu):
     contexto = {'admisiones':adm,'pvigentes':ac,'nvigentes':ne,'Titulo':'Admisiones', 'estu':Pers}
     return render(request,'admision/estudiantes/AdmisionesEstudiantes.html',contexto)
 
+@login_required
 def cAdmisionNuevaEstudiante(request, id_estu):
     #self.object = self.get_object
     estu = Persona.objects.get(ci=id_estu)  # obtnenemos al estudainte que se genera la admision
@@ -257,7 +267,7 @@ def cAdmisionNuevaEstudiante(request, id_estu):
     contexto = {'form': form,'form2': form2,'form4': form4,'doc': estu, 'Titulo': 'Admision'}
     return render(request, 'admision/estudiantes/Nueva_Admision.html', contexto)
 
-
+@login_required
 def cAdmisionUpdateEstudiante(request, pk):
     programas = Programa.objects.all
     adm = admisione.objects.get(id=pk)
@@ -283,7 +293,6 @@ def cAdmisionUpdateEstudiante(request, pk):
         return redirect(reverse('admision:ListaAdmisionesEstudiante', kwargs=your_params))  ## RETROCEDER UNA LISTA CON PARAMETROS
     contexto = {'form': form,'form2': form2,'form4': form4,'admision': adm, 'Titulo': 'Actualizar información','programas':programas}
     return render(request, 'admision/estudiantes/Editar_Admision.html', contexto)
-
 
 
 
@@ -316,7 +325,7 @@ class EstudianteEstudiosList(ListView):
             EstadoBus = "Inactivo"
         return queryset.filter(tipo="Estudiante", estado=EstadoBus)  # Filtro para Listar solo los Estudiantes.
 
-
+@login_required
 # AREA COMUN PARA DATOS DE INSTRUCTRES Y DOCENTES
 def cAgregarDatosEstudiosRealizados(request, id_persona):
     estudiosRealizado = estudios_realizado.objects.all().filter(ci=id_persona)  # estudios realizados de una persona
@@ -338,3 +347,16 @@ def cAgregarDatosEstudiosRealizados(request, id_persona):
         form = estudiosForm()
     contexto = {'form': form, 'Estudios': estudiosRealizado, 'mensaje': mensaje,'persona':persona}
     return render(request, 'admision/comun/Agregar_Estudios.html', contexto)
+
+
+
+class EstudianteSolicitud(CreateView):
+    model = Persona
+    form_class = PersonaForm
+    template_name = 'admision/solicitud/Solicitud.html'
+    success_url = reverse_lazy('admision:ListarEstudiante',kwargs={'slug':'1'})
+
+    def get_context_data(self, **kwargs):
+        context = super(EstudianteSolicitud, self).get_context_data(**kwargs)
+        context['Titulo'] = "Solicitud de Admision"
+        return context

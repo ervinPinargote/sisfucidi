@@ -1,4 +1,6 @@
 {% extends "usuarios/base_panel.html" %}
+{% block title %} Listado-Matriculas{% endblock %}
+
 {%block cantidad%}
     <p class="card-category">Matriculas</p>
     <a href="{% url 'matricula:ListAdm'%}">Generar
@@ -15,21 +17,22 @@
     <p class="card-title"><p>
 {% endblock %}
 
-{% block il5 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Matrícula  / Listado de Matrículas  {% endblock %}
 
+{% block il5 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
     {%block titulofuncional %} <a><b> {{Titulo}} </b></a>
     <a href="{% url 'matricula:ListAdm'%}">Generar
     <i class="fas fa-plus-square"></i>
     </a>
     {% endblock%}
 {% block trabajo %}
-
-<table class="table table-bordered" id="datatable">
-    <thead>
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead  class="centrado-negrita">
     <tr>
         <td>N. Matricula</td>
-        <td>Programa Academico</td>
-        <td>Fecha Generada</td>
+        <td>Programa de Estudio</td>
+        <td>Fecha Matricula</td>
         <td>Modalidad</td>
         <td>Acciones</td>
     </tr>
@@ -39,13 +42,14 @@
             {% for doc in object_list %}
                 <tr>
                     <td>{{doc.cod_matricula}}</td>
-                    <td>{{doc.admision_id.codigoAdmision}}</td>
+                    <td>{{doc.admision_id.Programa.nombre_programa}}</td>
                     <td>{{doc.fecha_matricula}}</td>
                     <td>{{doc.modalidad}}</td>
+
                     <td >
                         <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
+                        <a class="btn btn btn-success" title="Ficha Matricula" href="{% url 'matricula:MatriculaFicha' doc.cod_matricula %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
                         <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
-                        <a class="btn btn btn-success" title="" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -54,4 +58,5 @@
         {% endif %}
     </tbody>
 </table>
+</div>
 {% endblock %}

@@ -107,6 +107,9 @@ class admisione(models.Model):
     fecha = models.DateField(verbose_name="Fecha Solicitud",null=True)
     foto = models.ImageField(upload_to='admision_images',null=True,blank=True)
 
+    def __str__(self):
+        return self.codigoAdmision
+
 class asignacionMaterias(models.Model):
 
     instructor = models.ForeignKey('Persona', on_delete=models.CASCADE, verbose_name="Cedula Instructor")

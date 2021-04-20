@@ -1,0 +1,100 @@
+{% extends "matriculas/matriculas.html" %}
+
+{% block title %} Matricula-Ficha{% endblock %}
+
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Matrícula  / Ficha Matrícula  {% endblock %}
+{% block dir %} href="{% url 'matricula:MatriculasList' %}"{% endblock %}
+{%block titulofuncional %}
+<a><b> {{Titulo}} </b></a>   &nbsp; &nbsp; &nbsp;
+    <a class="btn btn-info btn-sm" href="{% url 'matricula:ReporteMatricula' form.cod_matricula.value  %}"><i class="nc-icon nc-cloud-download-93"> </i> PDF Ficha Matricula </a>
+
+{% endblock%}
+
+{% block trabajo %}
+<div class="table-responsive">
+        <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                        <div class="form-group">
+                            <label>Codigo de Matricula: </label>
+                            {{form.cod_matricula}}
+                            <input type="hidden" name="admision_id" class="form-control" value="{{admision.id}}"
+                                   required="" id="id_admision_id">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Modalidad: </label>
+                            {{form.modalidad}}
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                        <div class="form-group">
+                            <label>Foto Estudiante: </label>
+                            <div  class="form-control" style="width:20%; height:150px; margin-left: 20%;position: relative;"> <span  style="position: absolute; top: 50%; left: 50%;transform: translate(-50%, -50%);"> Aqui tu foto!!  </span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                        <div class="form-group">
+                            <label>Codigo de Admisión: </label>
+                            <input type="text" class="form-control" name="1" readonly
+                                   value="{{admision.codigoAdmision}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                        <div class="form-group">
+                            <label>Programa de Estudio:</label>
+                            <input type="text" class="form-control" name="2" readonly
+                                   value="{{admision.Programa.nombre_programa}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                        <div class="form-group">
+                            <label>Nombre del Estudiante: </label>
+                            <input type="text" class="form-control" name="3" readonly
+                                   value="{{admision.ci.nombre}} {{admision.ci.apellido}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                        <div class="form-group">
+                            <label>Valor de Matricula</label>
+                            <input type="text" class="form-control" name="4" readonly
+                                   value="{{admision.Programa.precio_matricula}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 pr-1">
+                        <div class="form-group">
+                            <label>Fecha Matricula (dd/mm/aaaa): </label>
+                            <br>
+                            {{form.fecha_matricula.value}}
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-1">
+                        <div class="form-group">
+                            <label>Nivel: </label>
+                            <br>
+                            {{form.nivel.value}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <b>Mterias Tomadas en esta Matricula: </b>
+                <ol>
+                        <ul>
+                            {% for Mate in matricula.materias.values %}
+                            <li>{{Mate.nombre_materia}}</li>
+                            {% endfor %}
+                        </ul>
+                </ol>
+            </div>
+        </div>
+        <br><br>
+</div>
+{% endblock %}
