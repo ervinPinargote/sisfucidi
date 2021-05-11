@@ -1,13 +1,13 @@
- <div class="modal-dialog modal-lg" role="document">
+ <div class="modal-dialog modal-lg"  id="ModalMatricula" role="document">
   <div class="modal-content">
       <div class="modal-header">
-        {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"> <b>Formulario de Matricula</b> </h5>{% endblock %}
+        {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"> <b>Formulario de Matricula : {{codM}}</b> </h5>{% endblock %}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
           {% block modalcuerpo%}
-        <form action="{% url 'matricula:Matricula' admision.id %}" method="POST">
+        <form data-post-url="{% url 'matricula:Matricula' admision.id %}" id= "form_GenerarMatricula"  method="POST">
             {% csrf_token %}
           <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
            <div class="modal-body">
@@ -15,7 +15,8 @@
                  <div class="col-md-6 pr-1">
                     <div class="form-group">
                     <label>Codigo de Matricula: </label>
-                     {{form.cod_matricula}}
+                    <input type="text" name="cod_matricula" class="form-control" maxlength="10" required="" value="{{codM}} "  id="id_cod_matricula">
+                    <input type="hidden" name="id_matricula" class="form-control" required="" id="id_id_matricula" value="{{ID}}">
                     <input type="hidden" name="admision_id" class="form-control"  value="{{admision.id}}" required="" id="id_admision_id">
                     </div>
                  </div>
@@ -50,7 +51,12 @@
                 <div class="col-md-6 pl-1">
                     <div class="form-group">
                         <label>Valor de Matricula</label>
-                        <input type="text" class="form-control" name="4" readonly value="{{admision.Programa.precio_matricula}}">
+                        <select name="4" class="form-control"  readonly id="valores">
+                        {% for val in valores %}
+                               <option value="{{val.valor_matricula_presencial}}"> ${{val.valor_matricula_presencial}} (Presencial)</option>
+                               <option value="{{val.valor_matricula_online}}"> ${{val.valor_matricula_online}}(Online)</option>
+                        {%endfor%}
+                        </select>
                     </div>
                 </div>
                </div>
@@ -64,45 +70,98 @@
                  </div>
                 <div class="col-md-6 pl-1">
                     <div class="form-group">
-                        <label>Nivel: </label>
-                        {{form.nivel}}
+                        <label>Procentaje de beca: </label>
+                        {{form.porcentaje_beca}}
                     </div>
                 </div>
+               </div>
+                <div class="row">
+                 <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                    <label>Extension: </label>
+                        {{form.extesion}}
+                    </div>
+                 </div>
+                 <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                        <label>Valor total a Pagar: </label>
+                        {{form.valor_pagar}}
+                    </div>
+                 </div>
                </div>
            </div>
          <div class="modal-body">
              <b>Matriculas Anteriores: </b>
              <ol>
              {% for Matr in  Matriculas %}
-                 <li> <span> <b>Codigo: </b>{{Matr.cod_matricula}} </span>
-                    <ul>
-                        {% for  Mate in Matr.materias.values %}
-                            <li>{{Mate.nombre_materia}}</li>
-                        {% endfor %}
-                    </ul>
-                 </li>
+                 <li> <span> <b>Codigo: </b>{{Matr.cod_matricula}} </span> </li>
              {% endfor %}
              </ol>
-           <hr>
-           <b>Materias a Matricular: </b>
-           <br>
-           <br>
-            <ul id="id_materias" class="QuitarPuntos">
-                {% for mat in materias %}
-                <li>
-                    <label for="id_materias_{{forloop.counter0}}">
-                         <input type="checkbox" name="materias" value="{{mat.cod_materia}}" class="QuitarPuntos" id="id_materias_{{forloop.counter0}}">
-                        {{mat.nombre_materia}}
-                    </label>
-                </li>
-                {% endfor %}
-            </ul>
-             <button id="#eliminarP" class="btn btn-primary" type="submit">Matricular</button>
+             <button class="btn btn-primary" type="submit">Matricular</button>
         </div>
    </div>
             <br><br>
    </form>
       {% endblock %}
-      </div>
-
+    </div>
 </div>
+
+<script>
+$(function() {
+    'use strict';
+    $('#id_modalidad').on('change', function() {
+         var opcion = this.value;
+         if(opcion=="Online")
+         {
+            alert("Has esocgido " + opcion);
+            $("#valores").prop("selectedIndex", 1);
+            var pagar = $("#valores").val();
+            var bec =  $("#id_porcentaje_beca").val();
+            var beca =  (parseFloat(bec) * parseFloat(pagar))/100;
+            var valornuevo = parseFloat(pagar) - parseFloat(beca);
+            $("#id_valor_pagar").val(valornuevo);
+         }
+         else
+         {
+            alert("Has esocgido " + opcion);
+            $("#valores").prop("selectedIndex", 0);
+            var pagar = $("#valores").val();
+            var bec =  $("#id_porcentaje_beca").val();
+            var beca =  (parseFloat(bec) * parseFloat(pagar))/100;
+            var valornuevo = parseFloat(pagar) - parseFloat(beca);
+            $("#id_valor_pagar").val(valornuevo);
+         }
+    });
+
+    $('#id_porcentaje_beca').on('change', function() {
+         var pagar = $("#valores").val();
+         var bec =  $("#id_porcentaje_beca").val();
+         var beca =  (parseFloat(bec) * parseFloat(pagar))/100;
+         var valornuevo = parseFloat(pagar) - parseFloat(beca);
+         $("#id_valor_pagar").val(valornuevo);
+    });
+
+    $('#form_GenerarMatricula').on('submit', function() {
+       var post_url = $("#form_GenerarMatricula").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+                $("#id_materia_id").val(response.content.nuevo_id);
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+                $('#eliminar').modal('hide')
+            },
+        });
+        return false;
+    });
+
+
+
+
+});
+</script>

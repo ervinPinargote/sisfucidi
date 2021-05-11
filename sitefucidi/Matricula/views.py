@@ -4,12 +4,14 @@ import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
-from django.http import HttpResponse
+from django.db.models import Max
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.template.loader import get_template
 from django.urls import reverse_lazy
+from django.utils.dateparse import parse_date
 from django.utils.functional import empty
 from django.views import View
 from xhtml2pdf import pisa
@@ -19,10 +21,12 @@ from .models import Matricula
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 
 from Admision.models import admisione
-from Academico.models import Materia
+from Academico.models import Valor_matricula
 
 import os
 from django.conf import settings
+
+from Pago.models import Pago
 
 
 class MatriculasList(ListView):
@@ -48,28 +52,64 @@ def CAdmisionListaEstudiante(request):
 
 def cMatricula(request,id_adm):
     adm = admisione.objects.get(id=id_adm)  # Datos de la Admision a Generar Matricula
-    materias = Materia.objects.all().filter(cod_programa=adm.Programa.id)
+    #materias = Materia.objects.all().filter(cod_programa=adm.Programa.id)
+    valores_pagar = Valor_matricula.objects.all().filter(cod_programa=adm.Programa.id).order_by('-id')[:1]
     materiasMatriculdas = Matricula.objects.all().filter(admision_id = adm.id)
-    #entry_list = list(Materia.objects.all().filter(cod_programa=adm.Programa.id)) #MATERIAS PROGRAMA ACADEMICO
-    #persona = Persona.objects.get(ci=id_persona)
-    #entry_list3=[]
-    #entry_list1 = list(Matricula.objects.all().filter(admision_id = adm.id).values_list('materias',flat=True)) #Materias que ha tomado
-    #for i in entry_list:
-    #    for j in  entry_list1:
-    #       a = i.cod_materia
-    #        if i.cod_materia == j:
-    #            if i not in entry_list3:
-    #              entry_list3.append(i)
+    valor = Matricula.objects.all().order_by('-id_matricula')[:1]
+    nvalor = None
+    codigo = ""
+    for t in valor:
+        nvalor = t.id_matricula + 1
+    # verifico si el indice sigue vacio.
+    if nvalor==None:
+        nvalor = Matricula.objects.all().count() + 1
+    if nvalor>=10 and nvalor<=99:
+        codigo = "MAT-0"+ str(nvalor)
+    else:
+        if nvalor>99:
+            codigo = "MAT-"+ str(nvalor)
+        else:
+            codigo = "MAT-00" + str(nvalor)
+    # codigo para Guardar matricula
     if request.method == 'POST':
         form = cMatriculaForm(request.POST)
         if form.is_valid():
-            admisionEs = form.save(commit=False)
-            admisionEs.save()
-            form.save_m2m()
-        return redirect('matricula:MatriculasList')
+          if form.save():
+              # creacion del metodo para Generar un pago
+              cdMatriccula =request.POST.get("cod_matricula")
+              matriculacd = Matricula.objects.get(id_matricula=nvalor)
+              dia = request.POST.get("fecha_matricula_day")
+              mes = request.POST.get("fecha_matricula_month")
+              anio= request.POST.get("fecha_matricula_year")
+              fecha = anio +"-"+ mes+"-"+dia
+              date = datetime.datetime.strptime(fecha, "%Y-%m-%d").date()
+              val = request.POST.get("valor_pagar")
+              # proceso para generar el codigo del Pago
+              idpago = None
+              obpago = Pago.objects.all().order_by('-id')[:1]
+              for i in obpago:
+                  idpago = i.id + 1
+              # verificamos idPago
+              codigoP=" "
+              if idpago==None:
+                  idpago = Pago.objects.all().count() + 1
+              if idpago >= 10 and idpago <= 99:
+                  codigoP = "PAM-0" + str(idpago)
+              else:
+                  if idpago > 99:
+                      codigoP = "PAM-" + str(idpago)
+                  else:
+                      codigoP = "PAM-00" + str(idpago)
+              opago = Pago(cod_matricula=matriculacd,cod_pago=codigoP,descripcion='Matricula',obervaciones='NA',fecha_generacion=date,valor_pagar=val,estado=False)
+              opago.save()
+              msg = "Se Registro con exito Matricula " + request.POST.get("cod_matricula")
+          return JsonResponse({'content': {'message': msg,'color':'success',}})
+        else:
+            msg = "Se genero un error al generar la Matricula " + request.POST.get("cod_matricula") + "Al parecer esta matricula ya existe.!"
+            return JsonResponse({'content': {'message': msg, 'color': 'danger',}})
     else:
         form = cMatriculaForm()
-    contexto = {'form': form, 'admision': adm, 'materias':materias, 'Matriculas':materiasMatriculdas}
+    contexto = {'form': form, 'admision': adm, 'Matriculas':materiasMatriculdas, 'ID':nvalor, 'codM':codigo, 'valores':valores_pagar}
     return render(request, 'matriculas/FormMatriculacion.html', contexto)
 
 class MatriculaFicha(UpdateView):

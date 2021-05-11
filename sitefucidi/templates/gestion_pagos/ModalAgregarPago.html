@@ -1,0 +1,152 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"><b>Agregar Pagos Matricula :
+            {{pgd.cod_matricula}}</b></h5>{% endblock %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% block modalcuerpo%}
+        <form action="{% url 'pago:PagoDetalle' id  %}" enctype="multipart/form-data" method="POST">
+            <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+                <div class="modal-body">
+                    <b>Registrar pago: </b>
+                    <br>
+                    <span>Sr(ita). Usted debe realizar el pago de matricula por un valor de <b>${{pgd.valor_pagar|floatformat:2 }}</b>. </span>
+                    <br>
+                    <span>Usted debe :  <a style="color: red;">${{saldo|floatformat:2 }}</a> de <b>${{pgd.valor_pagar|floatformat:2 }}</b> </span>
+                    <br>
+                    <span><b>Nota</b>: En caso de no disponer el valor antes mencionado puede realizar los pagos en abonos.</span>
+                    <br>
+                    {% csrf_token %}
+
+                    <select name="pago_id" class="form-control" required id="id_pago_id" style="visibility:hidden;">
+  <option value="{{id}}" selected>---------</option>
+
+</select>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Fecha:</label>
+                                {{form.fecha}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                                <label>Comprobante:</label>
+                                <div class="file-upload">
+                                    <div class="image-upload-wrap btn btn-success">
+                                        <input class="file-upload-input" type='file' onchange="readURL(this);"
+                                               accept="image/*" name="evidencia" class="form-control" accept="image/*" required="" id="id_evidencia" />
+                                        <div class="drag-text">
+                                            <span>Subir Archivo</span>
+                                        </div>
+                                    </div>
+                                    <div class="file-upload-content">
+                                        <img class="file-upload-image" src="#" alt="your image"/>
+                                        <div class="image-title-wrap">
+                                            <button type="button" onclick="removeUpload()" class="remove-image btn btn-danger">
+                                               <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Valor a Cancelar:</label>
+                                <input type="number" name="valor_cancelado" value="0.0" class="form-control" step="0.05"
+                                       min="1" max="{{pgd.valor_pagar}}" required="" id="id_valor_cancelado">
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                                <label>Saldo Pendiente:</label>
+                                {{form.Valor_pendiente}}
+                            </div>
+                        </div>
+                    </div>
+                    {% if not saldo <= 0 %}
+                        <button id="#eliminarP" class="btn btn-primary" type="submit">Guardar</button>
+                    {% endif %}
+                    <a class="btn btn-default" href="{% url 'academia:Listar' %}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+        <div class="modal-body">
+            <b>Pagos Realizados: </b>
+            <br>
+            <br>
+            <table class="table table-bordered">
+                <thead style="color:Black; font-weight: bolder;">
+                <tr>
+                    <td>N°</td>
+                    <td>Fecha de pago</td>
+                    <td>Valor Pagado</td>
+                    <td>Saldo Pendiente</td>
+                    <td>Acciones</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% if Valores %}
+                {% for val in Valores %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ val.fecha }}</td>
+                    <td>{{ val.valor_cancelado }}</td>
+                    <td>{{ val.Valor_pendiente }}</td>
+                    <td>
+                        <a class="btn btn-danger" onclick="" title="Eliminar"><i class="fas fa-trash-alt"></i> </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1>No hay registos para mostrar</h1>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+
+<script>
+
+    function readURL(input) {
+  if (input.files && input.files[0]) {
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('.image-upload-wrap').hide();
+
+      $('.file-upload-image').attr('src', e.target.result);
+      $('.file-upload-content').show();
+
+      $('.image-title').html(input.files[0].name);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+
+  } else {
+    removeUpload();
+  }
+}
+
+function removeUpload() {
+  $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+  $('.file-upload-content').hide();
+  $('.image-upload-wrap').show();
+}
+$('.image-upload-wrap').bind('dragover', function () {
+    $('.image-upload-wrap').addClass('image-dropping');
+  });
+  $('.image-upload-wrap').bind('dragleave', function () {
+    $('.image-upload-wrap').removeClass('image-dropping');
+});
+
+</script>

@@ -1,0 +1,150 @@
+<div class="modal-dialog modal-lg" role="document" >
+    <div class="modal-content">
+        <div class="modal-header">
+            {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"><b>Agregar Materias</b></h5>
+            {% endblock %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% block modalcuerpo%}
+        <form data-post-url="{% url 'academia:NuevaMateria' programa %}" id= "form_creacion" method="POST">
+            <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+                <div class="modal-body">
+                    <b>Agregar Materias Programa de Estudio: </b>
+                    <br>
+                    <br>
+                    {% csrf_token %}
+                    <input type="hidden" name="cod_programa" class="form-control" required="" value="{{programa}}" id="id_cod_programa">
+                    <input type="hidden" name="materia_id" class="form-control" required="" value="{{ID}}" id="id_materia_id">
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Codigo Materia</label>
+                                {{form.cod_materia}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                                <label>Vigencia</label>
+                                {{form.estado}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Nombre Materia</label>
+                                {{form.nombre_materia}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                                <label>Nivel? </label>
+                                {{form.nivel}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Modalidad(Creditos/Horas)</label>
+                                {{form.modalidad}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                                <label>Duracion</label>
+                                {{form.duracion}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Valor Presencial: </label>
+                                {{form.valor_presencial}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                                <label>Valor Online: </label>
+                                {{form.valor_online}}
+                            </div>
+                        </div>
+                    </div>
+                    <button  type="submit" id="#eliminarP" class="btn btn-primary" >Guardar</button>
+                    <a class="btn btn-default" href="{% url 'academia:Listar' %}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+        <div class="modal-body">
+            <b>Materias del Programa de Estudio: </b>
+            <br>
+            <br>
+            <div class="table-responsive">
+            <table class="table table-hover table-bordered" id="datatable">
+                <thead style="color:Black; font-weight: bolder;">
+                <tr>
+                    <td>N°</td>
+                    <td>Codigo Materia</td>
+                    <td>Descripcion</td>
+                    <td>Precio</td>
+                    <td>Acciones</td>
+                </tr>
+                </thead>
+                <tbody id="contenido">
+                {% if materias %}
+                {% for mat in materias %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ mat.cod_materia }}</td>
+                    <td>{{ mat.nombre_materia }}</td>
+                    <td>{{ mat.valor_presencial }}</td>
+                    <td>
+                        <a class="btn btn-danger" onclick="abrirmodaleliminar('{% url 'academia:EliminarMateria' mat.cod_materia  %}');" title="Eliminar"><i class="fas fa-trash-alt"></i> </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1>No hay registos para mostrar</h1>
+                {% endif %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+
+<script>
+    $(function() {
+    'use strict';
+    $('#form_creacion').on('submit', function() {
+       var post_url = $("#form_creacion").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+                $("#id_materia_id").val(response.content.nuevo_id);
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+                var eliminar = "<a class='btn btn-danger' onclick='' title='Eliminar'><i class='fas fa-trash-alt'></i> </a>"
+                    var $tr = $('<tr></tr>');
+                    $tr.append('<td>' +response.content.materiaRegistrada.id+ '</td>');
+                    $tr.append('<td>' +response.content.materiaRegistrada.cod_materia + '</td>');
+                    $tr.append('<td>' +response.content.materiaRegistrada.nombre_materia+ '</td>');
+                    $tr.append('<td>' +response.content.materiaRegistrada.valorP+ '</td>');
+                    $tr.append('<td>' + eliminar +'</td>')
+                    // agrego la columna tr a la tabla
+                    $("#contenido").append($tr);
+            },
+        });
+        return false;
+    });
+});
+</script>

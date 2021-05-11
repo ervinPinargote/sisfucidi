@@ -12,8 +12,6 @@
     <p class="card-category">Programas N. Vigentes</p>
     <p class="card-title">{{nvigentes}}<p>
 {% endblock %}
-
-
 {% block il6 %} class="active" {% endblock %}
 {% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Programas Académicos {% endblock %}
@@ -27,17 +25,14 @@
 <table class="table table-hover table-bordered" id="datatable">
     <thead class="centrado-negrita">
     <tr>
-        <td>#</td>
+        <td>N°</td>
         <td>Codigo Programa</td>
         <td>Nombre Programa</td>
         <td>Duracion</td>
         <td>Modalidad</td>
-        <td>Valor Matricula</td>
-
         <td>Acciones</td>
     </tr>
     </thead>
-
     <tbody>
         {% if programas %}
         {% for program in programas %}
@@ -47,14 +42,13 @@
             <td>{{ program.nombre_programa }}</td>
             <td>{{ program.duracion }}</td>
             <td>{{ program.tipo_programa }}</td>
-            <td>{{ program.precio_matricula }}</td>
             <td style="text-align:center;">
-                <a CLASS="btn btn-primary" title="Editar" href="{% url 'academia:Editar' program.id  %}"><i class="fas fa-edit"></i> </a>
-               <!-- <a CLASS="btn btn-primary" href="{% url 'academia:Editar' program.id  %}">Editar</a>-->
-                <a class="btn btn btn-info" title="Descargar" href="{% url 'academia:ReportePrograma' program.id  %}"><i class="nc-icon nc-cloud-download-93"></i></a>
+                <a CLASS="btn btn-primary" title="Editar"  href="{% url 'academia:Editar' program.id  %}" id=""><i class="fas fa-edit"></i> </a>
+                <a CLASS="btn btn-info"  title="Valor Matricula"  onclick="abrirmodaleliminar('{% url 'academia:Valores' program.id  %}'); " ><i class="fas fa-plus-square"></i> </a>
+                <a CLASS="btn btn-info"  title="Añadir Materias"  onclick="abrirmodaleliminar('{% url 'academia:NuevaMateria' program.id  %}'); " ><i class="nc-icon nc-single-copy-04"></i> </a>
+                <a class="btn btn-success" title="Descargar" href="{% url 'academia:ReportePrograma' program.id  %}"><i class="nc-icon nc-cloud-download-93"></i></a>
                 <a class="btn btn-danger" title="Eliminar" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "><i class="fas fa-trash-alt"></i> </a>
                 <!--<button class="btn btn-danger" type="button" data-toggle="modal" onclick="abrirmodaleliminar('{% url 'academia:Eliminar' program.id  %}'); "> Eliminar</button> -->
-
             </td>
         </tr>
         {% endfor %}
@@ -64,4 +58,7 @@
     </tbody>
 </table>
 </div>
+
+
+
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "usuarios/base_panel.html" %}
 {%block cantidad%}
     <p class="card-category">Materias</p>
-    <a  class="btn btn-primary btn-sm" href="{% url 'academia:NuevaMateria' %}">Nuevo </a>
+
 {% endblock %}
 {% block opcion2 %}
     <p class="card-category">Materias Vigentes</p>
@@ -18,7 +18,7 @@
 {% block il %} class="" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Materias {% endblock %}
 {%block titulofuncional %} <b> Materias</b> &nbsp; &nbsp; &nbsp;
-<a class="btn btn-success btn-sm" href="{% url 'academia:NuevaMateria' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
+<a class="btn btn-success btn-sm" href=""><i class="fas fa-plus-square"> </i> Agregar </a>
 {% endblock%}
 
 {% block trabajo %}

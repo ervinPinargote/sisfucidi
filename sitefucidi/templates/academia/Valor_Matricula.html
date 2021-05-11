@@ -1,0 +1,81 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"><b>Agregar Valor Matricula</b></h5>{% endblock %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% block modalcuerpo%}
+
+        <form action="{% url 'academia:Valores' programa  %}" method="POST">
+            <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+                <div class="modal-body">
+                    <b>Registrar valores a Pagar: </b>
+                    <br>
+                    <br>
+                    {% csrf_token %}
+                    <input type="hidden" name="cod_programa" class="form-control" required="" value="{{programa}}" id="id_cod_programa">
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Fecha:</label>
+                                {{form.fecha}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Valor matricula Online:</label>
+                                {{form.valor_matricula_online}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <div class="form-group">
+                               <label>Valor matricula Presencial:</label>
+                                {{form.valor_matricula_presencial}}
+                            </div>
+                        </div>
+                    </div>
+                    <button id="#eliminarP" class="btn btn-primary" type="submit">Guardar</button>
+                    <a class="btn btn-default" href="{% url 'academia:Listar' %}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+        <div class="modal-body">
+            <b>Historial de Precios: </b>
+            <br>
+            <br>
+            <table class="table table-bordered">
+                <thead style="color:Black; font-weight: bolder;">
+                <tr>
+                    <td>N°</td>
+                    <td>Fecha</td>
+                    <td>Valor Matricula Presencial</td>
+                    <td>Valor Matricula Online</td>
+                    <td>Acciones</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% if Valores %}
+                    {% for val in Valores %}
+                    <tr>
+                        <td>{{forloop.counter0}}</td>
+                        <td>{{ val.fecha }}</td>
+                        <td>{{ val.valor_matricula_presencial }}</td>
+                        <td>{{ val.valor_matricula_online }}</td>
+                        <td>
+                            <a class="btn btn-danger" onclick="" title="Eliminar"><i class="fas fa-trash-alt"></i> </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <h1>No hay registos para mostrar</h1>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% endblock %}
+    </div>
+</div>

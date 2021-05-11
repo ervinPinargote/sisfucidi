@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CprograLista, CprograNuevo, CprogramaEditar, CprogramaEliminar, CMateriaLista, CMateriaNuevo, \
-    CMateriaEditar, CMateriaEliminar, EliminarPrograma, pdfMalla_view, pdfMateria_view
+    CMateriaEditar, CMateriaEliminar, EliminarPrograma, pdfMalla_view, pdfMateria_view, cAgregarValor
 
 urlpatterns = [
     path('listar_programa/',CprograLista,name='Listar' ),
@@ -11,14 +11,17 @@ urlpatterns = [
 
 
     path('materias/',CMateriaLista,name='ListarMaterias' ),
-    path('nueva_Materia/',CMateriaNuevo,name='NuevaMateria' ),
+    path('nueva_Materia/(?P<cd_programa>\d+)/',CMateriaNuevo,name='NuevaMateria' ),
     path('editar_Materia/(?P<id_materia>\d+)/',CMateriaEditar,name='EditarMateria'), #Editar Materia
     path('eliminar_Materia/(?P<id_materia>\d+)/',CMateriaEliminar,name='EliminarMateria'), #Eliminar Materia
+    path('programa/(?P<cd_programa>\d+)/$',cAgregarValor,name='Valores'),
 
     #Reportes
 
     path('generar/pdf', pdfMalla_view.as_view(), name='reporte_malla'),
     path('generar_programa/pdf/(?P<pk>\d+)/',pdfMateria_view.as_view(),name='ReportePrograma'), #Eliminar Materia
-
     #path('generar/pdf', render_pdf, name='reporte_malla'),
+
+
+
 ]

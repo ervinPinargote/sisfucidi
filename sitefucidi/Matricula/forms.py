@@ -10,24 +10,26 @@ class cMatriculaForm(forms.ModelForm):
         fields=[
             'cod_matricula',
             'admision_id',
-            'materias',
             'fecha_matricula',
-            'nivel',
             'modalidad',
+            'id_matricula',
+            'porcentaje_beca',
+            'extesion',
+            'valor_pagar',
         ]
         labes={
             'cod_matricula':'Codigo Matricula',
             'admision_id': 'Codigo Admision',
-            'materias':'Lista de Materias',
             'fecha_matricula':'Fecha Matricula',
-            'nivel':'Nivel',
             'modalidad': 'Modalidad',
         }
         widgets = {
         'cod_matricula': forms.TextInput(attrs={'class': 'form-control'}),
         'admision_id': forms.Select(attrs={'class': 'form-control'}),
-        'materias': forms.CheckboxSelectMultiple(attrs={'class':'QuitarPuntos'}),
+        'id_matricula':forms.NumberInput(attrs={'class':'form-control'}),
         'fecha_matricula': forms.SelectDateWidget(attrs={'class': 'form-control', 'style':'width:auto; display: inline;'}),
-        'nivel': forms.NumberInput(attrs={'class':'form-control'}),
         'modalidad': forms.Select(attrs={'class':'form-control'}),
+        'porcentaje_beca':forms.NumberInput(attrs={'class':'form-control'}),
+        'extesion':  forms.TextInput(attrs={'class': 'form-control'}),
+        'valor_pagar'  : forms.NumberInput(attrs={'class':'form-control'}),
         }

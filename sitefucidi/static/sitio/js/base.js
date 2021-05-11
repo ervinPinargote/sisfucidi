@@ -18,8 +18,6 @@ function abrirmodaleliminar(url)
                 backdrop: 'static',
                 keyboard: false
             })
-
-
                $(this).modal('show');
             });
 }
@@ -182,3 +180,4 @@ $('#id_ci').keypress(function(event){
            alert('NO SE PUEDE VALIDAR EL NUMERO DE DOCUMENTO');
     }
 });
+

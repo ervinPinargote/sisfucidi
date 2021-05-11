@@ -3,9 +3,9 @@ from .models import Pago
 # Register your models here.
 @admin.register(Pago)
 class cPago(admin.ModelAdmin):
-    list_display = ("cod_matricula","estudiante","cod_pago",'Descripcion','obervaciones','valor_pagar','Valor_pagado','estado')
+    list_display = ("cod_matricula","cod_pago",'descripcion','obervaciones','fecha_generacion','valor_pagar','estado')
     search_fields = ("cod_pago",)
-    raw_id_fields = ('cod_matricula','estudiante',)
-    fields = (('cod_matricula', 'estudiante'), "cod_pago",'Descripcion','obervaciones',('valor_pagar','Valor_pagado'),'evidencia',('fecha_pago','estado'))
+    raw_id_fields = ('cod_matricula',)
+    fields = (('cod_matricula'), "cod_pago",'descripcion','obervaciones','fecha_generacion')
     #fields = ('image_tag',)
     #readonly_fields = ('image_tag',)

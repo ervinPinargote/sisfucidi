@@ -1,16 +1,23 @@
 import datetime
+import json
 from sys import path
 
 import uri as uri
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.core import serializers
+from django.core.serializers import serialize
+
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DeleteView
 # Create your views here.
-from .forms import ProgramaNuevo, ProgramaEditar, MateriaNuevo, MateriaEditar
-from .models import Programa, Materia
+
+
+from .forms import ProgramaNuevo, ProgramaEditar, MateriaNuevo, MateriaEditar, ValoresMatriculaForm
+from .models import Programa, Materia, Valor_matricula
 
 import os
 from django.conf import settings
@@ -90,15 +97,30 @@ def CMateriaLista(request):
     return render(request,'academia/materias/materias.html',contexto)
 
 # funcion que permite Registrar una nueva materia
-def CMateriaNuevo(request):
+def CMateriaNuevo(request,cd_programa):
+    global materiaRegistrada
+    materias = Materia.objects.all().filter(cod_programa = cd_programa)
+    num=Materia.objects.all().count() + 1 #Genero el nuevo Indice
+    error =""
     if request.method == 'POST': # preguntamos si es un metodo POST.
         form = MateriaNuevo(request.POST) # Instaciomos el  formulario creado
         if form.is_valid():
-            form.save()
-        return redirect('academia:ListarMaterias')
+            if form.save():
+                error = "Se Registro Materia "+ request.POST.get("nombre_materia")
+                nuevo_id = int(request.POST.get("materia_id")) + 1
+                materiasF1 = Materia.objects.filter(cod_programa=cd_programa).order_by('-materia_id')[:1]
+                materiasF = serializers.serialize('json', materiasF1)
+                #prices_json = serialize('json', materiasF)
+                for i in materiasF1:
+                    materiaRegistrada= {'id':i.materia_id,'cod_materia':i.cod_materia,'nombre_materia':i.nombre_materia,'valorP':i.valor_presencial,'valorO':i.valor_online,}
+            return JsonResponse({'content': {'message': error,'color':'success', 'materias':materiasF,'nuevo_id':nuevo_id,'materiaRegistrada':materiaRegistrada,}})
+        else :
+            error = "Se genero un erro al guardar "+ request.POST.get("nombre_materia") + "Al parecer esta materia ya existe.!"
+            return JsonResponse({'content': {'message': error, 'color':'danger','nuevo_id':request.POST.get("materia_id"),}})
     else:
         form = MateriaNuevo()
-    return render(request, 'academia/materias/nuevomat.html', {'form': form, 'title':"Agregar"})
+    return render(request, 'academia/materias/AgregarMateriasModal.html', {'form': form, 'title':"Agregar", 'programa':cd_programa , 'materias':materias,'ID':num})
+
 
 # funcion para editar una materia....
 def CMateriaEditar(request, id_materia):
@@ -119,6 +141,24 @@ def CMateriaEliminar(request, id_materia):
         materia.delete()
         return redirect('academia:ListarMaterias') # Redirijo a la Listar que es Principal en la funcionalidad
     return render(request,'academia/materias/Eliminar.html',{'materia':materia}) # enviamos el contexto que es la materia a elminar.
+
+
+#Generación de vista de Agregar Valor de Programa Academico
+def cAgregarValor(request, cd_programa):
+    valores =Valor_matricula.objects.all().filter(cod_programa = cd_programa).order_by('-fecha').order_by('-id')# valores que se han ingresado en la tabla de matriculas
+    mensaje = "Error"
+    if request.method == 'POST':
+        form = ValoresMatriculaForm(request.POST)
+        if form.is_valid():
+             if form.save()==True:
+                 mensaje = "Guardado con exito"
+        return redirect('academia:Listar')
+    else:
+        form = ValoresMatriculaForm()
+    contexto = {'form': form, 'Valores': valores, 'mensaje': mensaje,'programa':cd_programa}
+    return render(request, 'academia/Valor_Matricula.html', contexto)
+
+
 
 
 # Generacion de Reportes

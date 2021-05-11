@@ -54,15 +54,15 @@
                         <li class="QuitarPuntos" {% block il %} {% endblock %}>
                             <a href="{% url 'academia:Listar' %}">
                                 <span class="fa fa-arrow-right"></span>
-                                Programas Estudios
+                                Gestión Programas de Estudio
                             </a>
                         </li>
                         {% endif %}
-                        {% if perms.Academico %}
+                       {% if perms.Academico %}
                         <li class="QuitarPuntos" {% block il1 %} {% endblock %}>
                             <a href="{% url 'academia:ListarMaterias' %}">
                                 <span class="fa fa-arrow-right"></span>
-                                Materias
+                                Gestion Academica Estudiantes
                             </a>
                         </li>
                         {% endif %}
@@ -138,14 +138,14 @@
                 {% if perms.Pago %}
                     <li {% block il8 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-4">
-                        <i class=" nc-icon nc-money-coins"></i> MóDULO PAGOS <span data-toggle="collapse" href="#sub-item-4"
+                        <i class=" nc-icon nc-money-coins"></i> MÓDULO PAGOS <span data-toggle="collapse" href="#sub-item-4"
                                                                             class="icon pull-right"><em
                             class="caret"></em></span>
                     </a>
                     <ul class="children collapse" id="sub-item-4">
                         <li class="QuitarPuntos">
-                            <a class="" href="{%  url 'matricula:MatriculasList' %}"> <span class="fa fa-arrow-right">&nbsp;</span>Gestión
-                                Pagos </a>
+                            <a class="" href="{%  url 'pago:PagoLista' %}"> <span class="fa fa-arrow-right">&nbsp;</span>Gestión
+                                Pagos Matrícula</a>
                         </li>
                         <li class="QuitarPuntos"><a class="" href="#">
                             <span class="fa fa-arrow-right">&nbsp;</span> Visualizar Pagos</a>
@@ -197,7 +197,7 @@
                         {% if user.is_authenticated %}
                         <p>Bienvenido, &nbsp;
                         <p style="color:red"> {{ user.first_name }} {{ user.last_name }}</p>.</p>
-                        <p>{{perms.Admision}}</p>
+
                         {% else %}
                         <p>Por favor tiene que Loguearse.</p>
                         {% endif %}
@@ -456,6 +456,9 @@
             }
         } );
     });
+
+
+
 
 </script>
 <script src="{% static 'sitio/datatable/js/jquery.dataTables.min.js' %}"></script>
