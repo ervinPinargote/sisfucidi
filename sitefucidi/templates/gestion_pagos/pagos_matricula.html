@@ -59,7 +59,7 @@
                         <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
                         <a class="btn btn-warning"  title="pagos" onclick="abrirmodaleliminar('{% url 'pago:PagoDetalle' pag.id  %}'); " ><i class="fas fa-plus-square"></i> </a>
                         <a class="btn btn-info" title="Ver Reporte" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
-                        <a class="btn btn-success" title="Descargar"><i class="nc-icon nc-cloud-download-93"></i> </a>
+                        <a class="btn btn-success" title="Descargar"href="{% url 'pago:ReportePagoMatricula' pag.id %}" ><i class="nc-icon nc-cloud-download-93"></i> </a>
                         <a class="btn btn-danger" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
                     </td>
                 </tr>

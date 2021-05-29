@@ -20,6 +20,7 @@ pytz==2020.1
 reportlab==3.5.66
 six==1.15.0
 sqlparse==0.3.1
+uri==2.0.1
 webencodings==0.5.1
 whitenoise==5.2.0
 xhtml2pdf==0.2.5
