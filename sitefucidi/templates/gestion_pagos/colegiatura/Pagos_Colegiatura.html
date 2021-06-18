@@ -1,0 +1,73 @@
+{% extends "usuarios/base_panel.html" %}
+{% block title %} Listado-Pagos{% endblock %}
+
+{%block cantidad%}
+    <p class="card-category">Matriculas</p>
+    <a href="{% url 'matricula:ListAdm'%}">Generar
+    <i class="fas fa-plus-square"></i>
+    </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Matriculas Vigentes</p>
+    <p class="card-title"><p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Matriculas Pendientes</p>
+    <p class="card-title"><p>
+{% endblock %}
+
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Pagos  / Listado de Pagos Colegiatura  {% endblock %}
+
+{% block il8 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+    {%block titulofuncional %} <a><b> {{Titulo}} </b></a>
+   <a class="btn btn-success btn-sm" href="{% url 'pago:PagoEstudianteHabColegiatura'%}"><i class="fas fa-plus-square"></i> Generar</a>
+   <a class="btn btn-info btn-sm" href="{% url 'matricula:ListAdm'%}"><i class="nc-icon nc-cloud-download-93"> </i> Reporte</a>
+    {% endblock%}
+{% block trabajo %}
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead  class="centrado-negrita">
+    <tr>
+        <td  width="1%">N.</td>
+        <td>Codigo</td>
+        <td>Fecha</td>
+        <td>Programa Estudio</td>
+        <td>Materia</td>
+        <td>Estudiante</td>
+        <td>Valor</td>
+        <td>Estado</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+    <tbody>
+        {% if matpgos %}
+            {% for pag in matpgos %}
+                <tr>
+                    <td style="text-align:center;">{{forloop.counter}}</td>
+                    <td>{{pag.pago_id.cod_pago}}</td>
+                    <td>{{pag.pago_id.fecha_generacion}}</td>
+                    <td>{{pag.pago_id.cod_matricula.admision_id.Programa.nombre_programa}}</td>
+                    <td>{{pag.materia_asignada.nombre_materia}}</td></td>
+                    <td>{{pag.pago_id.cod_matricula.admision_id.ci.nombre}} {{pag.pago_id.cod_matricula.admision_id.ci.apellido}} </td>
+                    <td style="text-align:center;">{{pag.pago_id.valor_pagado}}</td>
+                    {% if pag.pago_id.estado %}
+                        <td width="2%" style="text-align:center;"> <a class="btn btn-success btn-circle" > <i class="fa fa-check"></i> </a> </td>
+                    {%else%}
+                        <td style="text-align:center;"> <a class="btn btn-danger btn-circle" > <i class="fa fa-times"></i></a>  </td>
+                    {%endif%}
+                    <td style="text-align:center;">
+                        <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
+                        <a class="btn btn-info" title="Ver Reporte"  onclick="abrirmodaleliminar('{% url 'pago:FichaPagoColegiatura' pag.id  %}'); " ><i class="icon-big nc-icon nc-single-copy-04"></i></a>
+                        <a class="btn btn-success" title="Descargar"href="{% url 'pago:ReportePagoColegiatura' pag.pago_id.id %}" ><i class="nc-icon nc-cloud-download-93"></i> </a>
+                        <a class="btn btn-danger" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h1>No hay registos para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

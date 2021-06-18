@@ -1,0 +1,62 @@
+{% extends "usuarios/base_panel.html" %}
+{% block title %} Listado-Estudiantes{% endblock %}
+
+{%block cantidad%}
+    <p class="card-category">Matriculas</p>
+    <a href="{% url 'matricula:ListAdm'%}">Generar
+    <i class="fas fa-plus-square"></i>
+    </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Matriculas Vigentes</p>
+    <p class="card-title"><p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Matriculas Pendientes</p>
+    <p class="card-title"><p>
+{% endblock %}
+
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Pagos Colegiatura / Lista / Estudiantes habilitados  {% endblock %}
+{% block dir %}href="{% url 'pago:PagoListaColegiatura' %}" {% endblock %}
+
+{% block il8 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+    {%block titulofuncional %} <a><b> {{Titulo}} </b></a>
+   <!-- <a href="{% url 'matricula:ListAdm'%}">Generar
+    <i class="fas fa-plus-square"></i>
+    </a> -->
+    {% endblock%}
+{% block trabajo %}
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead  class="centrado-negrita">
+    <tr>
+        <td width="2%">Ord.</td>
+        <td>Codigo Pago</td>
+        <td>Fecha</td>
+        <td>Programa Estudio</td>
+        <td>Estudiante</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+    <tbody>
+        {% if pagos %}
+            {% for pag in pagos %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{pag.cod_pago}}</td>
+                    <td>{{pag.fecha_generacion}}</td>
+                    <td>{{pag.cod_matricula.admision_id.Programa.nombre_programa}}</td>
+                    <td>{{pag.cod_matricula.admision_id.ci.nombre}} {{pag.cod_matricula.admision_id.ci.apellido}} </td>
+                    <td style="text-align:center;">
+                        <a CLASS="btn btn-success"  title="Generar Pago" onclick="abrirmodaleliminar('{% url 'pago:PagoColegiatura' pag.id  %}'); "  ><i class="fas fa-plus-square"></i> </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h1>No hay registos para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

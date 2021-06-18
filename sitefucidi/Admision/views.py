@@ -249,6 +249,28 @@ def cAdmisionNuevaEstudiante(request, id_estu):
     your_params = {
         'id_estu': estu.ci
     }
+    #verificar si existen admisiones
+    admEs=admisione.objects.all().filter(ci=id_estu)  # obtengo las admisiones de un estudiante...
+    idEb = None
+    idTB = None
+    for i in admEs:
+        idEb = i.id_ex.id
+        idTB = i.id_tra.id
+    exp = None
+    expO = None
+    trans = None
+    transO =None
+
+    if idEb is not None:
+        expO = Experencia_espiritual.objects.get(id=idEb)
+        exp = ExpereciaForm(instance=expO)
+    else:
+        exp = ExpereciaForm(request.POST)
+    if idTB is not None:
+        transO = Trasfondo_eclesiastico.objects.get(id=idTB)
+        trans = TrasfondoForm(instance=transO)
+    else:
+        trans = TrasfondoForm(request.POST)
     form2 = ExpereciaForm(request.POST)
     form4 = TrasfondoForm(request.POST)
     if request.method == 'POST':  # preguntamos si es un metodo POST.
@@ -256,15 +278,24 @@ def cAdmisionNuevaEstudiante(request, id_estu):
         if form.is_valid():
             admisionEs = form.save(commit=False)
             admisionEs.ci = estu
-            admisionEs.id_ex = form2.save()
-            admisionEs.id_tra = form4.save()  # GUARDO EL TRANSFONDO ECLESIASTICO PARA PASAR SU ID.
+            if expO is not None:
+                admisionEs.id_ex = expO
+            else:
+                admisionEs.id_ex = form2.save()
+
+            if transO is not None:
+                admisionEs.id_tra = transO
+            else:
+                admisionEs.id_tra = form4.save()
+            #admisionEs.id_ex = form2.save()   # SE GUARDA LA EXPERIENCIA
+            #admisionEs.id_tra = form4.save()  # GUARDO EL TRANSFONDO ECLESIASTICO PARA PASAR SU ID.
             admisionEs.save()
             form.save_m2m()  # PERMITE GUARDAR CAMPO MANY TO MANY.
         return redirect(reverse('admision:ListaAdmisionesEstudiante', kwargs=your_params))  ## RETROCEDER UNA LISTA CON PARAMETROS
     else:
         form = admisioneForm()
         form2 = ExpereciaForm()
-    contexto = {'form': form,'form2': form2,'form4': form4,'doc': estu, 'Titulo': 'Admision'}
+    contexto = {'form': form,'form2': exp,'form4': trans,'doc': estu, 'Titulo': 'Admision'}
     return render(request, 'admision/estudiantes/Nueva_Admision.html', contexto)
 
 @login_required
@@ -360,3 +391,8 @@ class EstudianteSolicitud(CreateView):
         context = super(EstudianteSolicitud, self).get_context_data(**kwargs)
         context['Titulo'] = "Solicitud de Admision"
         return context
+
+
+def editPerfil(request):
+    profile = request.user.profile
+    usuario = profile

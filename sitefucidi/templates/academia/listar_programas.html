@@ -28,7 +28,7 @@
         <td>N°</td>
         <td>Codigo Programa</td>
         <td>Nombre Programa</td>
-        <td>Duracion</td>
+        <td>Duración</td>
         <td>Modalidad</td>
         <td>Acciones</td>
     </tr>
@@ -40,8 +40,12 @@
             <td>{{ program.id }}</td>
             <td>{{ program.cod_programa }}</td>
             <td>{{ program.nombre_programa }}</td>
-            <td>{{ program.duracion }}</td>
-            <td>{{ program.tipo_programa }}</td>
+            <td style="text-align:center;">{{ program.duracion }}</td>
+            {% if program.tipo_programa == 'A'%}
+            <td>Anual/<strong>es</strong></td>
+            {%else%}
+               <td>Mensual/<strong>es</strong></td>
+            {%endif%}
             <td style="text-align:center;">
                 <a CLASS="btn btn-primary" title="Editar"  href="{% url 'academia:Editar' program.id  %}" id=""><i class="fas fa-edit"></i> </a>
                 <a CLASS="btn btn-info"  title="Valor Matricula"  onclick="abrirmodaleliminar('{% url 'academia:Valores' program.id  %}'); " ><i class="fas fa-plus-square"></i> </a>

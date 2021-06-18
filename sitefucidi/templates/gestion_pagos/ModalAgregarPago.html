@@ -15,7 +15,7 @@
                     <br>
                     <span>Sr(ita). Usted debe realizar el pago de matricula por un valor de <b>${{pgd.valor_pagar|floatformat:2 }}</b>. </span>
                     <br>
-                    <span>Usted debe :  <a style="color: red;">${{saldo|floatformat:2 }}</a> de <b>${{pgd.valor_pagar|floatformat:2 }}</b> </span>
+                    <span>Usted debe :  $<a id="id_saldo" style="color: red;">{{saldo|floatformat:2 }}</a> de <b>${{pgd.valor_pagar|floatformat:2 }}</b> </span>
                     <br>
                     <span><b>Nota</b>: En caso de no disponer el valor antes mencionado puede realizar los pagos en abonos.</span>
                     <br>
@@ -73,7 +73,8 @@
                     {% if not saldo <= 0 %}
                         <button id="#eliminarP" class="btn btn-primary" type="submit">Guardar</button>
                     {% endif %}
-                    <a class="btn btn-default" href="{% url 'academia:Listar' %}">Cancelar</a>
+                        <a class="btn btn-default" href="{% url 'academia:Listar' %}">Cancelar</a>
+                    <span id="error"  style="color: red;" hidden>Existe un error en el formulario porfavor revise</span>
                 </div>
             </div>
         </form>
@@ -147,6 +148,28 @@ $('.image-upload-wrap').bind('dragover', function () {
   });
   $('.image-upload-wrap').bind('dragleave', function () {
     $('.image-upload-wrap').removeClass('image-dropping');
+});
+
+
+
+$('#id_valor_cancelado').on('change', function() {
+        saldo = $("#id_saldo").text();
+        if ($('#id_valor_cancelado').val() > parseFloat(saldo))
+        {
+            alert("El valor a cancelar no puede ser mayor al saldo adeudado");
+            $('#id_valor_cancelado').val(0,00);
+            $('#id_valor_cancelado').focus();
+            $("#id_Valor_pendiente").val(0,00);
+            $('#id_Valor_pendiente').attr("readonly","readonly");
+            $('#error').removeAttr("hidden");
+        }
+        else
+        {
+            $("#id_Valor_pendiente").val(parseFloat(saldo)-$("#id_valor_cancelado").val());
+            $('#id_Valor_pendiente').attr("readonly","readonly");
+            $('#error').attr("hidden","hidden");
+        }
+
 });
 
 </script>

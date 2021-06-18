@@ -1,0 +1,160 @@
+<div class="modal-dialog modal-lg"  id="ModalMatricula" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+        {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"> <b>Formulario de Pago Colegiatura</b> </h5>{% endblock %}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+          {% block modalcuerpo%}
+        <form data-post-url="{% url 'pago:PagoColegiatura' pgd.id  %}" id= "form_GenerarPago"  method="POST">
+            {% csrf_token %}
+          <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+           <div class="modal-body">
+               <p>Estudiante, {{pgd.cod_matricula.admision_id.ci.nombre}} {{pgd.cod_matricula.admision_id.ci.apellido}}, usted se encuentra realizando un pago de colegiatura al Programa de estudios {{pgd.cod_matricula.admision_id.Programa.nombre_programa}}
+                   en la modalidad <span id="TipoMatricula">{{tipoM}}</span> </p>
+               <div class="row">
+                 <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                    <label>Código de Pago: </label>
+                    <input type="text" name="cod_pago" class="form-control" maxlength="10"  value="{{codigo}}" required="" id="id_cod_pago" readonly>
+                    <input type="hidden" name="cod_matricula" class="form-control" required="" id="id_cod_matricula" value="{{pgd.cod_matricula.cod_matricula}}">
+                    <input type="hidden" name="estado" class="form-control" id="id_estado" value="True">
+                    </div>
+                 </div>
+                <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                        <label>Fecha Pago (dd/mm/aaaa): </label>
+                        <input type="date" id="id_fecha_generacion" class="form-control" name="fecha_generacion" min="2017-04-01" max="2022-12-31">
+                    </div>
+                </div>
+               </div>
+               <div class="row">
+                 <div class="col-md-12 pr-1">
+                    <div class="form-group">
+                    <label>Descripción: </label>
+                        <input type="text" name="descripcion" class="form-control" value="Colegiatura" required="" id="id_descripcion" readonly>
+                        <input type="hidden" name="descripcion" class="form-control" value="Colegiatura" required="" id="id_descripcion" >
+                    </div>
+                 </div>
+             </div>
+               <div class="row">
+                 <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                    <label>Valor Total: </label>
+                        {{form.valor_pagar}}
+                    </div>
+                 </div>
+                <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                        <label>Valor a Cancelar:</label>
+                        {{form.valor_pagado}}
+                    </div>
+                </div>
+               </div>
+               <div class="row">
+                 <div class="col-md-12 pr-1">
+                    <div class="form-group">
+                    <label>Observaciones (max. 100 caracteres): </label>
+                          {{form.obervaciones}}
+                    </div>
+                 </div>
+               </div>
+           </div>
+         <div class="modal-body">
+             2. Escoga una Materia.
+             <div class="col-md-12 pl-1">
+                 <div class="form-group">
+                     <table width="100%">
+                         <tr>
+                            <th>N.</th>
+                            <th>Materia</th>
+                            <th align="center">Valor online</th>
+                            <th align="center">Valor Presencial</th>
+                            <th align="center">Seleccionar</th>
+                         </tr>
+                         {% for mat in  materias %}
+                             <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td class="nombre">{{mat.nombre_materia}}</td>
+                                 <td class="valorOnline" align="center">{{mat.valor_online}}</td>
+                                 <td class="valorPresencial" align="center">{{mat.valor_presencial}}</td>
+                                 <td align="center"><input name="materia_asignada" id="id_materia_asignada" value="{{mat.cod_materia}}" type="checkbox" /></td>
+                             </tr>
+                        {% endfor %}
+                   </table>
+                 </div>
+             </div>
+             {% if materias %}
+                <button class="btn btn-primary" type="submit">Pagar</button>
+             {%endif%}
+             <a class="btn btn-default" href="">Cancelar</a>
+        </div>
+   </div>
+            <br><br>
+   </form>
+      {% endblock %}
+    </div>
+</div>
+
+<script>
+$(function() {
+    'use strict';
+    $('#form_GenerarPago').on('submit', function() {
+       var post_url = $("#form_GenerarPago").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+                $("#id_materia_id").val(response.content.nuevo_id);
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+                $('#eliminar').modal('hide')
+            },
+        });
+        return false;
+    });
+
+   $('input[type=checkbox]').on('change', function() {
+      if ($(this).is(':checked') ) {
+          var tipo =  $("#TipoMatricula").text();
+          var fila = $(this).parents("tr");
+          var nombre = fila.find(".nombre").text();
+          if($("#TipoMatricula").text()=="Online")
+          {
+            var vo = fila.find(".valorOnline").text();
+            vo = vo.replace(/,/g, '.');
+            $("#id_valor_pagar").val(parseFloat(vo).toFixed(2));
+            $("#id_valor_pagado").val(parseFloat(vo).toFixed(2));
+            var text = "Pago de colegiatura en la materia "+nombre+" por el valor de $ "+vo+" ,";
+            $("#id_obervaciones").val(text);
+
+          }
+          else
+          {
+             var vp = fila.find(".valorPresencial").text();
+             vp = vp.replace(/,/g, '.');
+             $("#id_valor_pagar").val(parseFloat(vp).toFixed(2));
+             $("#id_valor_pagado").val(parseFloat(vp).toFixed(2));
+             var text = "Pago de colegiatura en la materia "+nombre+" por el valor de $ "+vp+" ,";
+             $("#id_obervaciones").val(text);
+          }
+      } else {
+          //alert("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") => Deseleccionado");
+          $("#id_valor_pagar").val(parseFloat("0.00").toFixed(2));
+          $("#id_valor_pagado").val(parseFloat("0.00").toFixed(2));
+          var text = "";
+          $("#id_obervaciones").val(text);
+
+      }
+  });
+
+
+
+
+});
+</script>

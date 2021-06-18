@@ -181,3 +181,66 @@ $('#id_ci').keypress(function(event){
     }
 });
 
+$('#id_tipoReporte').on('change',function(event) {
+    /*Para cambiar la ruta a un href a traves de jquery*/
+    var vinculo = $('#id_link').attr('href');
+    $('#id_link').attr('href','/pagos/reportes/(%3FP'+$('#id_tipoReporte').val()+'%5Cd+)/');
+});
+
+
+$('#id_hbeditar').on('change', function() {
+      if ($(this).is(':checked') ) {
+         $('#exampleInputEmail1').removeAttr("readonly");
+         $('#exampleInputEmail1').removeClass("readOnly");
+         $('#first_name').removeAttr("readonly");
+         $('#first_name').removeClass("readOnly");
+         $('#last_name').removeAttr("readonly");
+         $('#last_name').removeClass("readOnly");
+         $('#btnupperfi').removeAttr("disabled");
+      }
+      else {
+
+         $('#exampleInputEmail1').attr("readonly","readonly");
+         $('#exampleInputEmail1').addClass("readOnly");
+         $('#first_name').attr("readonly","readonly");
+         $('#first_name').addClass("readOnly");
+         $('#last_name').attr("readonly","readonly");
+         $('#last_name').addClass("readOnly");
+         $('#btnupperfi').attr("disabled","disabled");
+
+      }
+});
+
+
+
+$('#formUpdatePerfil').on('submit', function() {
+       var post_url = $("#formUpdatePerfil").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+                $('#exampleInputEmail1').attr("readonly","readonly");
+                $('#exampleInputEmail1').addClass("readOnly");
+                $('#first_name').attr("readonly","readonly");
+                $('#first_name').addClass("readOnly");
+                $('#last_name').attr("readonly","readonly");
+                $('#last_name').addClass("readOnly");
+                $('#btnupperfi').attr("disabled","disabled");
+                $('#id_hbeditar').prop("checked",false);
+                $('#user_name').text($('#first_name').val()+" "+$('#last_name').val());
+                $('#user_name1').text($('#first_name').val()+" "+$('#last_name').val());
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+            },
+        });
+   return false;
+});
+
+
+
+
+

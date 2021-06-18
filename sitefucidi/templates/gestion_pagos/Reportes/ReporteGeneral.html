@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{tittle}} {{codigo}}</title>
+    <style type="text/css" media="screen, print">
+     @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 10pt; height: 40pt;
+            font-size: 100em;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+
+    }
+    .header_table{
+    text-align: center;
+    font-weight:bold;
+    color: black;
+     background-color: #F00;
+    }
+
+    .indice{
+     text-align: center;
+     font-weight:bold;
+     color: Red;
+     width:10%;
+    }
+    .nivel{
+     width:25%;
+    }
+    .materias{
+      width:40%;
+    }
+    .infoCenter{
+    text-align: center;
+    }
+
+    th, td{
+            padding: 5px 15px;
+    }
+    th{
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+    td{
+
+    }
+     .firma1{
+     float:left;
+     width: 30%;
+     outline: green solid thin
+     }
+     p.linea { text-align:  left; }
+     .prueba{
+        height: 10px;
+        width: 50%;
+      border-color: red;
+      color: red;
+     }
+
+    </style>
+</head>
+<body STYLE="font-size:9pt;">
+
+<div id="header_content">
+    <img src="media/logo13.png" width="200px">
+</div>
+
+
+<div class="infoGeneral">
+    <h1>{{tittle}} <b style="color:blue;"> {{codigo}}</b>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Fecha Elaborado:<a> {{date}}</a> </h1>
+</div>
+<hr>
+
+<div style="">
+    <diV >
+        <b>Codigo Matricula: &nbsp; </b> {{pago.cod_matricula.cod_matricula}}
+        <br>
+        <b>Progama de Estudios: &nbsp;</b>{{pago.cod_matricula.admision_id.Programa.nombre_programa}}
+        <br>
+        <b>Nombre y Apellidos: &nbsp;</b> {{pago.cod_matricula.admision_id.ci.nombre}}  {{pago.cod_matricula.admision_id.ci.apellido}}
+        <br>
+        <b>Valor a cancelar: &nbsp;</b> {{pago.valor_pagar}} por concepto de {{pago.descripcion}}
+    </diV>
+    <br>
+</div>
+
+<span>Fechas de pagos Relizados : </span>
+<br>
+<br>
+<table border="1">
+
+    <thead class="header_table">
+    <tr>
+        <td class="indice">Orden</td>
+        <td class="materias">Fecha</td>
+        <td class="nivel">Valor Pagado</td>
+        <td>Valor Pendiente</td>
+    </tr>
+    </thead>
+
+    <tbody class="rows_table">
+    {% if valores %}
+    {% for val in valores %}
+    <tr>
+            <td class="indice">{{forloop.counter}}</td>
+            <td class="materias">{{ val.fecha}}</td>
+            <td class="infoCenter">{{ val.valor_cancelado}}</td>
+            <td class="infoCenter">{{ val.Valor_pendiente }}</td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h1>No hay registos para mostrar</h1>
+    {% endif %}
+    </tbody>
+</table>
+
+<div>
+ <p> <b> Observaciones: </b>  </p>
+    {% if pago.cod_matricula.porcentaje_beca > 0 %}
+       <p> El estudiante tiene el {{pago.cod_matricula.porcentaje_beca}}% de beca en pago de matricula</p>
+    {% else %}
+       <p> Ninguna </p>
+    {% endif %}
+
+</div>
+
+
+    <p> <b>Total Cancelado</b>      ${{valorCancelado}}         </p>
+    <p> <b>Total Adeudado</b>       ${{ValorAdeudado}}</p>
+
+<div>
+    <br> <br> <br> <br> <br> <br>
+    <br><br>
+</div>
+
+<b>Realizado por: </b>
+<br> <br> <br>
+<br> <br> <br>
+<div class="cfirma">
+     <div style="color:#020000;height:10px;">________________________________________</div>
+    <p> &nbsp;&nbsp;&nbsp;<b> Nombre: </b>{{ usuario.first_name }} {{ usuario.last_name }}</p>
+    <p> &nbsp;&nbsp;&nbsp;<b> Correo: </b>{{ usuario.email }}</p>
+</div>
+
+
+<div id="footer_content">
+    (Semilla) - pagina
+    <pdf:pagenumber> de
+        <pdf:pagecount>
+</div>
+
+
+</body>
+</html>

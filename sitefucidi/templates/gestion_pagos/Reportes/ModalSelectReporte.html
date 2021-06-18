@@ -1,0 +1,61 @@
+<div class="modal-dialog modal-lg" role="document" >
+    <div class="modal-content">
+        <div class="modal-header">
+            {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"><b>Generar Reportes</b></h5>
+            {% endblock %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% block modalcuerpo%}
+        <form  id= "form_creacion1" method="POST">
+            <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <div class="row">
+                 <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                        <select name="tipoReporte" id="id_tipoReporte" class="form-control" style="width:40%; display: inline-block;">
+                            <option value="R1">1. Reporte estudiantes han pagado</option>
+                            <option value="R2">2. Reporte estudiantes que no han pagado</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-info btn-sm " style="width:30%;  display: inline-block;"><i class="nc-icon nc-cloud-download-93"> </i> Reporte</button>
+                    </div>
+                 </div>
+         </div>
+
+                    <button  type="submit" id="#eliminarP" class="btn btn-primary" >Guardar</button>
+                    <a class="btn btn-default" href="">Cancelar</a>
+                </div>
+            </div>
+        </form>
+        {% endblock %}
+    </div>
+</div>
+
+
+<script>
+$(function() {
+    'use strict';
+
+    $('#form_creacion1').on('submit', function() {
+       var post_url = $("#form_creacion1").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+            },
+        });
+        return false;
+    });
+});
+</script>

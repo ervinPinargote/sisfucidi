@@ -10,6 +10,8 @@
 {% block content %}
 
 
+{{ user_profile_form.as_p }}
+
 <div class="row">
           <div class="col-md-4">
             <div class="card card-user">
@@ -20,7 +22,7 @@
                 <div class="author">
                   <a href="#">
                     <i class="fa fa-user-circle fa-5x" aria-hidden="true"></i>
-                    <h5 class="title">{{ user.first_name }} {{ user.last_name }}</h5>
+                    <h5 id="user_name1" class="title">{{ user.first_name }} {{ user.last_name }}</h5>
                   </a>
                   <p class="description">
                     @{{user}}
@@ -37,7 +39,7 @@
             </div>
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title">Tus Permisos</h4>
+                <h4 class="card-title">Módulos Permitidos</h4>
                 <hr>
               </div>
               <div class="card-body">
@@ -117,11 +119,13 @@
           <div class="col-md-8">
             <div class="card card-user">
               <div class="card-header">
-                <h5 class="card-title">Información de Perfil</h5>
+                <h5 class="card-title">Información de Perfil <input  type="checkbox" name="hbeditar" id="id_hbeditar"></h5>
+
                 <hr>
               </div>
               <div class="card-body">
-                <form>
+                <form  data-post-url="{% url 'prof:edit' %}" id="formUpdatePerfil" method="POST">
+                   {% csrf_token %}
                   <div class="row">
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
@@ -132,13 +136,13 @@
                     <div class="col-md-3 px-1">
                       <div class="form-group">
                         <label>Username</label>
-                        <input type="text" class="form-control" placeholder="Username" value="{{user}}">
+                        <input type="text" class="form-control"  name="username" placeholder="Username" value="{{user}}" readonly>
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Email: </label>
-                        <input type="email" class="form-control" placeholder="Email" value="{{user.email}}">
+                        <input type="email" id="exampleInputEmail1" name="email1" class="form-control" placeholder="Email" value="{{user.email}}" readonly>
                       </div>
                     </div>
                   </div>
@@ -146,13 +150,13 @@
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Nombres: </label>
-                        <input type="text" class="form-control" placeholder="Company" value="{{user.first_name}}">
+                        <input type="text" class="form-control" id="first_name" placeholder="Company" name="first_name" value="{{user.first_name}}" readonly>
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
                         <label>Apellidos</label>
-                        <input type="text" class="form-control" placeholder="Last Name" value="{{user.last_name}}">
+                        <input type="text" class="form-control"  id="last_name" placeholder="Last Name" name="last_name" value="{{user.last_name}}" readonly>
                       </div>
                     </div>
                   </div>
@@ -160,14 +164,13 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Ultimo inicio sesion: </label>
-                        <input type="text" class="form-control" placeholder="Home Address" value="{{user.last_login}}">
+                        <input type="text" class="form-control" placeholder="Home Address" value="{{user.last_login}}" readonly>
                       </div>
                     </div>
                   </div>
-
                   <div class="row">
                     <div class="update ml-auto mr-auto">
-                      <button type="submit" class="btn btn-primary btn-round">Actualizar Información</button>
+                      <button type="submit" id="btnupperfi" class="btn btn-primary btn-round" disabled>Actualizar Información</button>
                     </div>
                   </div>
                 </form>
@@ -177,6 +180,8 @@
         </div>
 
 <!--<button class="btn btn-primary btn-block" onclick="demo.showNotification('top','left')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Arriba a la izquierda</font></font></button> -->
+
+
 
 {% endblock %}
 

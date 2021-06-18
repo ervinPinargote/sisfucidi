@@ -147,7 +147,7 @@
                             <a class="" href="{%  url 'pago:PagoLista' %}"> <span class="fa fa-arrow-right">&nbsp;</span>Gestión
                                 Pagos Matrícula</a>
                         </li>
-                        <li class="QuitarPuntos"><a class="" href="#">
+                        <li class="QuitarPuntos"><a class="" href="{% url 'pago:PagoListaColegiatura' %}">
                             <span class="fa fa-arrow-right">&nbsp;</span> Gestión Pagos Colegiatura </a>
                         </li>
                         <li class="QuitarPuntos"><a class="" href="#">
@@ -158,7 +158,7 @@
                 {% endif %}
 
                 {% if perms.Admision.add_persona %}
-                    <li {% block il9 %} {% endblock %}>
+              <!--      <li {% block il9 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-8">
                         <i class=" nc-icon nc-money-coins"></i> SOLICITUD EXTERNA <span data-toggle="collapse" href="#sub-item-8"
                                                                             class="icon pull-right"><em
@@ -175,7 +175,7 @@
                             <span class="fa fa-arrow-right">&nbsp;</span> Reportes</a>
                         </li>
                     </ul>
-                </li>
+                </li>-->
                 {% endif %}
             </ul>
         </div>
@@ -192,19 +192,19 @@
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <a class="navbar-brand" href="javascript:;">
 
-                        {% if user.is_authenticated %}
-                        <p>Bienvenido, &nbsp;
-                        <p style="color:red"> {{ user.first_name }} {{ user.last_name }}</p>.</p>
 
-                        {% else %}
-                        <p>Por favor tiene que Loguearse.</p>
-                        {% endif %}
-                    </a>
-                    {% if perms.Admision %}
-                    <a>Usted Tiene Permiso en la Aplicación</a>
-                    {% endif %}
+
+			        <ol class="breadcrumb">
+
+                        <a {%block dir %}{%endblock%}>
+					        <em class="fa fa-home"></em>
+				        </a>
+
+                    <li class="active">{%block path %}{%endblock%}  </li>
+			            </ol>
+
+
                 </div>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
@@ -229,6 +229,7 @@
                         <li class="nav-item btn-rotate dropdown">
                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <p id="user_name" style="color:red"> {{ user.first_name }} {{ user.last_name }}</p>.</p>
                                 <i class="nc-icon nc-single-02"></i>
                                 <p>
                                     <span class="d-lg-none d-md-block">Acciones</span>
@@ -248,108 +249,23 @@
         <div class="content">
             {% block content %}
 
+           <div class="row">
+               {% block square %}
+               {% endblock %}
 
-          <!--  <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div class="col-5 col-md-4">
-                                    <div class="icon-big text-center ">
-                                        <i class="nc-icon nc-globe text-warning"></i>
-                                    </div>
-                                </div>
-                                <div class="col-7 col-md-8">
-                                    <div class="numbers">
-                                        {% block cantidad%}
-                                        <p class="card-category">Capacity</p>
-                                        <p class="card-title">150GB
-                                        <p>
-                                            {% endblock %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer ">
-                            <hr>
-                            <div class="stats">
-                                <i class="fa fa-refresh"></i>
-                                Update Now
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div class="col-5 col-md-4">
-                                    <div class="icon-big text-center icon-warning">
-                                        <i class="nc-icon nc-money-coins text-success"></i>
-                                    </div>
-                                </div>
-                                <div class="col-7 col-md-8">
-                                    <div class="numbers">
-                                        {% block opcion2 %}
-                                        <p class="card-category">Revenue</p>
-                                        <p class="card-title">$ 1,345
-                                        <p>
-                                            {% endblock %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer ">
-                            <hr>
-                            <div class="stats">
-                                <i class="fa fa-calendar-o"></i>
-                                Last day
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div class="col-5 col-md-4">
-                                    <div class="icon-big text-center icon-warning">
-                                        <i class="nc-icon nc-vector text-danger"></i>
-                                    </div>
-                                </div>
-                                <div class="col-7 col-md-8">
-                                    <div class="numbers">
-                                        {% block opcion3 %}
-                                        <p class="card-category">Errors</p>
-                                        <p class="card-title">23
-                                        <p>
-                                            {% endblock %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer ">
-                            <hr>
-                            <div class="stats">
-                                <i class="fa fa-clock-o"></i>
-                                In the last hour
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <div class="row">
+            </div>
+           <!-- <div class="row">
                 &nbsp; &nbsp; &nbsp;
 			    <ol class="breadcrumb">
 
 				    <li>
-                        <a {%block dir %}{%endblock%}>
+                        <a {%block dir1 %}{%endblock%}>
 					        <em class="fa fa-home"></em>
 				        </a>
                     </li>
-                    <li class="active">{%block path %}{%endblock%}  </li>
+                    <li class="active">{%block path1 %}{%endblock%}  </li>
 			    </ol>
-		    </div>
+		    </div>-->
 
             <div class="row">
                 <div class="col-md-12">
@@ -456,11 +372,9 @@
             }
         } );
     });
-
-
-
-
 </script>
+
+
 <script src="{% static 'sitio/datatable/js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'sitio/datatable/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'sitio/js/base.js' %}"></script>

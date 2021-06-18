@@ -21,16 +21,17 @@ FUCIDI-MATRICULAS
 {% endblock %}
 
 
-{% block il5 %} class="active" {% endblock %} <!-- clase para saber en que menu estas -->
-{%block titulofuncional %} <a><b> {{Titulo}} </b>  </a> {% endblock%}
+{% block il5 %} class="active" {% endblock %}
+{%block titulofuncional %} <a><b> {{Titulo}} </b></a> {% endblock%}
 
 {% block trabajo %}
 <div class="table-responsive">
 <table class="table table-hover table-bordered" id="datatable">
     <thead class="centrado-negrita">
     <tr>
-        <td>Admision</td>
-        <td>Estudiante</td>
+        <td>N.</td>
+        <td width="4">Código Admision</td>
+        <td>Nombres y Apellidos</td>
         <td>Fecha Admision</td>
         <td>Programa de Estudio</td>
         <td>Acciones</td>
@@ -40,13 +41,13 @@ FUCIDI-MATRICULAS
         {% if admisiones %}
         {% for adm in admisiones %}
         <tr>
+            <td style="text-align:center;">{{forloop.counter}}</td>
             <td>{{ adm.codigoAdmision }}</td>
-            <td>{{ adm.ci.nombre}}</td>
+            <td>{{ adm.ci.nombre}} {{ adm.ci.apellido}}</td>
             <td>{{ adm.fecha }}</td>
             <td>{{ adm.Programa.nombre_programa }}</td>
-            <td>
-                <a class="btn btn btn-success" onclick="abrirmodaleliminar('{% url 'matricula:Matricula' adm.id %}'); " >Matricula</a>
-                <a href="{% url 'matricula:Matricula' adm.id %}">as</a>
+            <td style="text-align:center;">
+                <a class="btn btn btn-success" title="Generar Matricula" onclick="abrirmodaleliminar('{% url 'matricula:Matricula' adm.id %}'); " ><i class="fas fa-plus-square"></i></a>
             </td>
         </tr>
         {% endfor %}

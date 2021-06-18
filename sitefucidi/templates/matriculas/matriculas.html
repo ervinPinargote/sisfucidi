@@ -21,18 +21,19 @@
 
 {% block il5 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
     {%block titulofuncional %} <a><b> {{Titulo}} </b></a>
-    <a href="{% url 'matricula:ListAdm'%}">Generar
-    <i class="fas fa-plus-square"></i>
-    </a>
-    {% endblock%}
+    <a href="{% url 'matricula:ListAdm'%}" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>  Generar </a>
+{% endblock%}
+
 {% block trabajo %}
 <div class="table-responsive">
 <table class="table table-hover table-bordered" id="datatable">
     <thead  class="centrado-negrita">
     <tr>
         <td>N. Matricula</td>
+        <td>Estudiante</td>
         <td>Programa de Estudio</td>
         <td>Fecha Matricula</td>
+        <td>Extension</td>
         <td>Modalidad</td>
         <td>Acciones</td>
     </tr>
@@ -41,12 +42,14 @@
         {% if object_list %}
             {% for doc in object_list %}
                 <tr>
-                    <td>{{doc.cod_matricula}}</td>
+                    <td style="text-align:center;">{{doc.cod_matricula}}</td>
+                    <td>{{doc.admision_id.ci.nombre}} {{doc.admision_id.ci.apellido}}</td>
                     <td>{{doc.admision_id.Programa.nombre_programa}}</td>
                     <td>{{doc.fecha_matricula}}</td>
-                    <td>{{doc.modalidad}}</td>
+                    <td>{{doc.extesion}}</td>
+                    <td style="text-align:center;">{{doc.modalidad}}</td>
 
-                    <td >
+                    <td style="text-align:center;">
                         <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
                         <a class="btn btn btn-success" title="Ficha Matricula" href="{% url 'matricula:MatriculaFicha' doc.cod_matricula %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
                         <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>

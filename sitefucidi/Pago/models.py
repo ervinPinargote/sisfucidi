@@ -16,6 +16,7 @@ class Pago(models.Model):
     obervaciones = models.CharField(max_length=100)
     fecha_generacion = models.DateField(verbose_name="Fecha Creado",default=None)
     valor_pagar = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Valor a Pagar",default=0.0)
+    valor_pagado = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Valor a Pagar", default=0.0)
     estado = models.BooleanField(verbose_name="Estado")
 
 
@@ -25,4 +26,9 @@ class detalle_pagos(models.Model):
     valor_cancelado = models.DecimalField(max_digits=6, decimal_places=2,verbose_name="Valor Cancelado", default=0.0)
     Valor_pendiente = models.DecimalField(max_digits=6, decimal_places=2,verbose_name="Valor Pendiente", default=0.0)
     evidencia = models.ImageField(upload_to="pagos/matricula",verbose_name="Respaldo",null=True,default=None)
+    pago_id = models.ForeignKey('Pago', on_delete=models.CASCADE, verbose_name="id_pago")
+
+class materia_recibir(models.Model):
+    fecha = models.DateField(verbose_name="Fecha Pago",default=None)
+    materia_asignada = models.ForeignKey('Academico.Materia',on_delete=models.CASCADE, verbose_name="id_Materia")
     pago_id = models.ForeignKey('Pago', on_delete=models.CASCADE, verbose_name="id_pago")

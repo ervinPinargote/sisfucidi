@@ -24,8 +24,9 @@ urlpatterns = [
     path('', LoginView.as_view(template_name='usuarios/index.html'), name="Menu"),
     path('salir/', LogoutView.as_view(template_name='usuarios/index.html'), name="logout"),
     path('Menu', include('administrador.urls')),
-    path('academia/', include(('Academico.urls','academia'), namespace='academia'),name='academia'),
-    path('admision/', include(('Admision.urls','admision'), namespace='admision'),name='admision'),# incluimos las urls de admision para generar el sistema
+    path('profile/', include(('administrador.urls', 'prof'), namespace='prof'),name='prof'),
+    path('academia/', include(('Academico.urls', 'academia'), namespace='academia'),name='academia'),
+    path('admision/', include(('Admision.urls', 'admision'), namespace='admision'),name='admision'),# incluimos las urls de admision para generar el sistema
     path('matricula/', include(('Matricula.urls', 'matricula'), namespace='matricula'), name='matricula'), # incluimos las urls de admision para generar el sistema
     path('pagos/', include(('Pago.urls', 'pago'), namespace='pago'), name='pago'), # incluimos las urls de admision para generar el sistema
 

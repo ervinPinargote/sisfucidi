@@ -3,27 +3,37 @@
 
 {%block cantidad%}
     <p class="card-category">Matriculas</p>
-    <a href="{% url 'matricula:ListAdm'%}">Generar
     <i class="fas fa-plus-square"></i>
     </a>
 {% endblock %}
 {% block opcion2 %}
-    <p class="card-category">Matriculas Vigentes</p>
+    <p class="card-category">Total de Pagos</p>
     <p class="card-title"><p>
 {% endblock %}
 
 {% block opcion3 %}
-    <p class="card-category">Matriculas Pendientes</p>
+    <p class="card-category">Valor de Pagos</p>
     <p class="card-title"><p>
 {% endblock %}
+
+
+
 
 {% block path%} &nbsp; &nbsp; &nbsp; Módulo Pagos  / Listado de Pagos Matricula  {% endblock %}
 
 {% block il8 %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
     {%block titulofuncional %} <a><b> {{Titulo}} </b></a>
-   <!-- <a href="{% url 'matricula:ListAdm'%}">Generar
-    <i class="fas fa-plus-square"></i>
-    </a> -->
+
+     <div class="col-md-6 pr-1">
+        <div class="form-group">
+           <select name="tipoReporte" id="id_tipoReporte" class="form-control" style="width:40%; display: inline-block;">
+               <option value="R1">1. Reporte estudiantes que <strong>SI</strong> han pagado</option>
+               <option value="R2">2. Reporte estudiantes que <strong>NO</strong> han pagado</option>
+           </select>
+           <a class="btn btn-info btn-sm" id="id_link" href="{% url 'pago:ReporteGeneralPago' 'R1'  %}"><i class="nc-icon nc-cloud-download-93"> </i> Reporte </a>
+
+       </div>
+     </div>
     {% endblock%}
 {% block trabajo %}
 <div class="table-responsive">
@@ -32,7 +42,7 @@
     <tr>
         <td>N. Pago</td>
         <td>Codigo Pago</td>
-        <td>Fecha</td>
+        <td>Fecha Pago</td>
         <td>Programa Estudio</td>
         <td>Estudiante</td>
         <td>Valor a Pagar</td>
@@ -41,21 +51,21 @@
     </tr>
     </thead>
     <tbody>
-        {% if object_list %}
-            {% for pag in object_list %}
+        {% if matriculas %}
+            {% for pag in matriculas %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{pag.cod_pago}}</td>
+                    <td style="text-align:center;">{{forloop.counter}}</td>
+                    <td style="text-align:center;">{{pag.cod_pago}}</td>
                     <td>{{pag.fecha_generacion}}</td>
                     <td>{{pag.cod_matricula.admision_id.Programa.nombre_programa}}</td>
                     <td>{{pag.cod_matricula.admision_id.ci.nombre}} {{pag.cod_matricula.admision_id.ci.apellido}} </td>
-                    <td>{{pag.valor_pagar}}</td>
+                    <td style="text-align:center;">{{pag.valor_pagar}}</td>
                     {% if pag.estado %}
                         <td style="text-align:center;"> <a class="btn btn-success btn-circle" > <i class="fa fa-check"></i> </a> </td>
                     {%else%}
                         <td style="text-align:center;"> <a class="btn btn-danger btn-circle" > <i class="fa fa-times"></i></a>  </td>
                     {%endif%}
-                    <td >
+                    <td style="text-align:center;">
                         <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
                         <a class="btn btn-warning"  title="pagos" onclick="abrirmodaleliminar('{% url 'pago:PagoDetalle' pag.id  %}'); " ><i class="fas fa-plus-square"></i> </a>
                         <a class="btn btn-info" title="Ver Reporte" href=""><i class="icon-big nc-icon nc-single-copy-04"></i></a>
@@ -70,4 +80,5 @@
     </tbody>
 </table>
 </div>
+
 {% endblock %}
