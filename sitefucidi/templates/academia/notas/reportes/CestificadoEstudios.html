@@ -2,31 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{tittle}} {{codigo}}</title>
-    <style type="text/css" media="screen, print">
-     @page {
+    <title>{{tittle}}</title>
+    <style>
+    @page {
         size: a4 portrait;
         @frame header_frame {           /* Static Frame */
             -pdf-frame-content: header_content;
             left: 50pt; width: 512pt; top: 10pt; height: 40pt;
-            font-size: 100em;
         }
         @frame content_frame {          /* Content Frame */
             left: 50pt; width: 512pt; top: 90pt; height: 632pt;
-
         }
         @frame footer_frame {           /* Another static Frame */
             -pdf-frame-content: footer_content;
             left: 50pt; width: 512pt; top: 772pt; height: 20pt;
         }
-
     }
+
     .header_table{
     text-align: center;
     font-weight:bold;
     color: black;
      background-color: #F00;
     }
+
 
     .indice{
      text-align: center;
@@ -35,10 +34,10 @@
      width:10%;
     }
     .nivel{
-     width:25%;
+     width:10%;
     }
     .materias{
-      width:40%;
+      width:50%;
     }
     .infoCenter{
     text-align: center;
@@ -70,56 +69,66 @@
 
     </style>
 </head>
-<body STYLE="font-size:9pt;">
+<body>
 
 <div id="header_content">
     <img src="media/logo13.png" width="200px">
 </div>
+<div id="footer_content">
 
+
+    (Semilla) - pagina
+    <pdf:pagenumber> de
+        <pdf:pagecount>
+
+
+</div>
 
 <div class="infoGeneral">
-    <h1>{{tittle}} <b style="color:blue;"> {{codigo}}</b>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Fecha Elaborado:<a> {{date}}</a> </h1>
+    <h1>{{tittle}}  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;Fecha Elaborado:<a> {{date}}</a> </h1>
 </div>
+
 <hr>
+<p> <b>Codigo: &nbsp; </b> {{programa.cod_programa}} </p>
+<p><b>Nombre: &nbsp; </b>{{programa.nombre_programa}}</p>
+{% if programa.tipo_programa == 'A' %}
+ <p> <b>Tiempo de Estudios: &nbsp;</b> {{programa.duracion}} &nbsp;&nbsp; <u>Año(s)</u>  </p>
+{% else %}
+ <p> <b>Tiempo de Estudios: &nbsp;</b> {{programa.duracion}} &nbsp;&nbsp; <u>Mes(es)</u>   </p>
+{% endif %}
 
-<div style="">
-    <diV >
-        <b>Codigo Matricula: &nbsp; </b> {{pago.cod_matricula.cod_matricula}}
-        <br>
-        <b>Progama de Estudios: &nbsp;</b>{{pago.cod_matricula.admision_id.Programa.nombre_programa}}
-        <br>
-        <b>Nombre y Apellidos: &nbsp;</b> {{pago.cod_matricula.admision_id.ci.nombre}}  {{pago.cod_matricula.admision_id.ci.apellido}}
-        <br>
-        <b>Valor a cancelar: &nbsp;</b> {{pago.valor_pagar}} por concepto de {{pago.descripcion}}
-    </diV>
-    <br>
-</div>
 
-<span>Fechas de pagos Relizados : </span>
+<span> La fundación FUCIDI, tiene el grato honor de certificar que el sr(ita). <b>{{pers.nombre}} {{pers.apellido}}</b>,
+    se encuentra en el programa de estudios <b>{{programa.nombre_programa}}</b>,
+    Hasta la presente fecha ha obtenido las siguientes calificaciones en las materias matriculadas:
+</span>
 <br>
 <br>
 <table border="1">
 
     <thead class="header_table">
     <tr>
-        <td class="indice">Orden</td>
-        <td>Estudiante</td>
-        <td>Descripción</td>
-        <td>Fecha</td>
-        <td>Valor a Recuadar</td>
+        <td class="indice">Codigo</td>
+        <td class="materias">Materia</td>
+        <td>Fecha de calificacion</td>
+        <td class="nivel">Nota</td>
+        <td>Asistencia</td>
     </tr>
     </thead>
 
     <tbody class="rows_table">
-    {% if valores %}
-    {% for val in valores %}
+    {% if mat %}
+    {% for materias in mat %}
+
     <tr>
-            <td class="indice">{{forloop.counter}}</td>
-            <td>{{val.cod_matricula.admision_id.ci.nombre}}{{val.cod_matricula.admision_id.ci.apellido}}</td>
-            <td>{{val.cod_matricula.admision_id.Programa.nombre_programa}}</td>
-            <td >{{ val.fecha_generacion}}</td>
-            <td >{{ val.valor_pagar}}</td>
+
+            <td class="indice">{{ materias.cod_materia }}</td>
+            <td class="materias">{{ materias.nombre_materia}}</td>
+            <td>{{ materias.fecha_subir_nota}}</td>
+            <td class="nivel">{{ materias.notaestudiante}}</td>
+            <td class="infoCenter"> 0 % </td>
     </tr>
+
     {% endfor %}
     {% else %}
     <h1>No hay registos para mostrar</h1>
@@ -127,21 +136,22 @@
     </tbody>
 </table>
 
+<p>El solicitante puede hacer uso del presente certificado, en trámites que el crea pertinente</p>
 
-{% if tipo  %}
-    <p> <b>Valor total Recaudar</b>      ${{valorCancelado}}         </p>
-    <p> <b>Valor total Recaudado</b>       ${{ValorAdeudado}}</p>
-{% else %}
-    <p> <b>Valor Total Recaudar</b>      ${{valorCancelado}}         </p>
-    <p> <b>Valor Pendiente</b>       ${{ValorAdeudado}}</p>
-
-{% endif %}
-
+<br>
+<div>
+    <p><b> Leyendas:</b> </p>
+    <p> Esta información Permite leer mejor los datos presentados en la tabla </p>
+    <p> <b>-1 :</b>  Significa materia que no ha sido calificada.</p>
+</div>
 
 <div>
-    <br> <br> <br> <br> <br> <br>
-    <br><br>
+    <br> <br> <br> <br>
+
 </div>
+
+<p>Es todo en cuanto puedo certificar en honor a la verdad</p>
+
 
 <b>Realizado por: </b>
 <br> <br> <br>
@@ -150,13 +160,6 @@
      <div style="color:#020000;height:10px;">________________________________________</div>
     <p> &nbsp;&nbsp;&nbsp;<b> Nombre: </b>{{ usuario.first_name }} {{ usuario.last_name }}</p>
     <p> &nbsp;&nbsp;&nbsp;<b> Correo: </b>{{ usuario.email }}</p>
-</div>
-
-
-<div id="footer_content">
-    (Semilla) - pagina
-    <pdf:pagenumber> de
-        <pdf:pagecount>
 </div>
 
 

@@ -1,0 +1,90 @@
+<div class="modal-dialog modal-lg" role="document" >
+    <div class="modal-content">
+        <div class="modal-header">
+            {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"><b>Reporte Estudiantes: <span id="idp"></span></b></h5>
+            {% endblock %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {% block modalcuerpo%}
+        <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <span>
+                        Porfavor Seleccione, el programa de estudio del cual desea generar el reporte
+                    </span>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Seleccione Programa Academico</label>
+                                {% if mat %}
+                                    <select name="programa" class="form-control" id="id_Programa">
+                                    {% for prges in mat %}
+                                        <option value="{{prges.cod_programa}}">{{prges.nombre_programa}}</option>
+                                    {% endfor %}
+                                 </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-3 pl-1">
+                            <div class="form-group">
+                                <label>Tipo de Reporte</label>
+
+                                    <select name="tiporeporte" class="form-control" id="tiporeporte">
+
+                                        <option value="RA">Estudiantes Aprobados</option>
+                                        <option value="RR">Estudiantes Reprobados</option>
+
+                                 </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 pr-1">
+                            <div class="form-group">
+                                <br>
+                                <a  id="id_reportes"  class="btn btn-primary" href="{% url 'academia:AprobadoReporteEStudios' 1 2 %}">Generar Reporte</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 pl-1">
+                            <div class="form-group">
+                                <br>
+                                <a class="btn btn-default" href="">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+            <br>
+        {% endblock %}
+    </div>
+</div>
+
+<script>
+
+
+
+$('#id_reportes').attr('href','/academia/notas/reporte/aprobados/estudios/(%3FP'+$('#tiporeporte').val()+'%5Cd+)/(%3FP'+$('#id_Programa').val()+'%5Cd+)');
+
+$('#id_Programa').on('change',function(event) {
+    /*Para cambiar la ruta a un href a traves de jquery*/
+    var vinculo = $('#id_reportes').attr('href');
+    /* /academia/notas/reporte/certificado/estudios/(%3FP1804824330%5Cd+)/(%3FP1%5Cd+)  */
+    $('#id_reportes').attr('href','/academia/notas/reporte/aprobados/estudios/(%3FP'+$('#tiporeporte').val()+'%5Cd+)/(%3FP'+$('#id_Programa').val()+'%5Cd+)');
+});
+
+$('#tiporeporte').on('change',function(event) {
+    /*Para cambiar la ruta a un href a traves de jquery*/
+    var vinculo = $('#id_reportes').attr('href');
+    /* /academia/notas/reporte/certificado/estudios/(%3FP1804824330%5Cd+)/(%3FP1%5Cd+)  */
+    $('#id_reportes').attr('href','/academia/notas/reporte/aprobados/estudios/(%3FP'+$('#tiporeporte').val()+'%5Cd+)/(%3FP'+$('#id_Programa').val()+'%5Cd+)');
+});
+
+</script>

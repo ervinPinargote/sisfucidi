@@ -1,0 +1,56 @@
+{% extends "usuarios/base_panel.html" %}
+{% block title %} Academia-Notas{% endblock %}
+{%block cantidad%}
+    <p class="card-category">Programas</p>
+    <a  class="btn btn-primary btn-sm" href="{% url 'academia:Nuevo' %}">Nuevo </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Programas Vigentes</p>
+    <p class="card-title">{{pvigentes}}<p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Programas N. Vigentes</p>
+    <p class="card-title">{{nvigentes}}<p>
+{% endblock %}
+{% block il6 %} class="active" {% endblock %}
+{% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Notas de Estudiante{% endblock %}
+{%block titulofuncional %} <b> Estudiantes Lista. </b>  &nbsp; &nbsp; &nbsp;
+
+<a class="btn btn-info btn-sm" href="#" onclick="abrirmodaleliminar('{% url 'academia:xd' 1 %}'); "><i class="nc-icon nc-cloud-download-93"> </i> Reporte</a>
+{% endblock%}
+
+{% block trabajo %}
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
+    <tr>
+        <td>N°</td>
+        <td>Cedula</td>
+        <td>Nombres</td>
+        <td>Apellido</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+    <tbody>
+        {% if estudantes %}
+        {% for est in estudantes %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ est.ci }}</td>
+            <td>{{est.nombre}}</td>
+            <td>{{est.apellido}}</td>
+            <td style="text-align:center;">
+                <a title="Ir portal Agrega Notas Asitencia" class="btn btn-success" href="{% url 'academia:NotasListaEstudianteMateria' est.ci  %}"><i class="fas fa-edit"></i></a>
+                <a title="Generar Reporte Materias" onclick="abrirmodaleliminar('{% url 'academia:ReporteEStudios' est.ci %}'); " class="btn btn-info" href="#"><i class="fa fa-file-pdf-o"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registros para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

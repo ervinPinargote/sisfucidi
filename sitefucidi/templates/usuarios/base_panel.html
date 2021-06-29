@@ -41,7 +41,7 @@
             </a>
         </div>
         <div class="sidebar-wrapper">
-            <ul class="nav">
+            <ul id="id_menu_lateral" class="nav">
                 {% if perms.Academico %}
                     <li {% block il6 %} {% endblock %}>
                     <a data-toggle="collapse" href="#sub-item-2">
@@ -58,11 +58,20 @@
                             </a>
                         </li>
                         {% endif %}
-                       {% if perms.Academico %}
+                      <!-- {% if perms.Academico %}
                         <li class="QuitarPuntos" {% block il1 %} {% endblock %}>
                             <a href="{% url 'academia:ListarMaterias' %}">
                                 <span class="fa fa-arrow-right"></span>
-                                Gestion Academica Estudiantes
+                                MATERIAS PROGRAMAS ACADEMICOS.
+                            </a>
+                        </li>
+                        {% endif %} -->
+
+                        {% if perms.Academico %}
+                        <li class="QuitarPuntos" >
+                            <a href="{% url 'academia:NotasListaEstudiante' %}">
+                                <span class="fa fa-arrow-right"></span>
+                                GESTIÓN NOTAS Y ASISTENCIA.
                             </a>
                         </li>
                         {% endif %}
@@ -95,7 +104,7 @@
                             <a href="{% url 'admision:ListarEstudiante' 1 %}">
                                 <!-- Designo el tipo de la lista de los estudiantes-->
                                 <span class="fa fa-arrow-right"></span>
-                                Estudiantes
+                                Gestión Estudiantes
                             </a>
                         </li>
                         {% endif %}
@@ -104,7 +113,7 @@
                             <li class="QuitarPuntos" {% block il3 %} {% endblock %}>
                             <a href="{% url 'admision:ListarDocente' %}">
                                 <span class="fa fa-arrow-right"></span>
-                                Instructores
+                                Getión Instructores
                             </a>
                         </li>
                         {% endif %}
@@ -125,12 +134,6 @@
                             <a class="" href="{%  url 'matricula:MatriculasList' %}"> <span class="fa fa-arrow-right">&nbsp;</span>Gestión
                                 Matriculas </a>
                         </li>
-                        <li class="QuitarPuntos"><a class="" href="#">
-                            <span class="fa fa-arrow-right">&nbsp;</span> Visualizar Matrículas</a>
-                        </li>
-                        <li class="QuitarPuntos"><a class="" href="#">
-                            <span class="fa fa-arrow-right">&nbsp;</span> Reportes</a>
-                        </li>
                     </ul>
                 </li>
                 {% endif %}
@@ -149,9 +152,6 @@
                         </li>
                         <li class="QuitarPuntos"><a class="" href="{% url 'pago:PagoListaColegiatura' %}">
                             <span class="fa fa-arrow-right">&nbsp;</span> Gestión Pagos Colegiatura </a>
-                        </li>
-                        <li class="QuitarPuntos"><a class="" href="#">
-                            <span class="fa fa-arrow-right">&nbsp;</span> Reportes</a>
                         </li>
                     </ul>
                 </li>
@@ -195,14 +195,12 @@
 
 
 
-			        <ol class="breadcrumb">
-
+			        <ol title="Regresar al Inicio" class="breadcrumb active">
                         <a {%block dir %}{%endblock%}>
 					        <em class="fa fa-home"></em>
 				        </a>
-
-                    <li class="active">{%block path %}{%endblock%}  </li>
-			            </ol>
+                       <li class="active">{%block path %}{%endblock%}  </li>
+                    </ol>
 
 
                 </div>
@@ -229,8 +227,8 @@
                         <li class="nav-item btn-rotate dropdown">
                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <p id="user_name" style="color:red"> {{ user.first_name }} {{ user.last_name }}</p>.</p>
-                                <i class="nc-icon nc-single-02"></i>
+                                <p id="user_name" style="color:#51cbce"> <st> {{ user.first_name }} {{ user.last_name }}</st></p>
+                                <i class="fa fa-user-circle fa-5x"></i>
                                 <p>
                                     <span class="d-lg-none d-md-block">Acciones</span>
                                 </p>

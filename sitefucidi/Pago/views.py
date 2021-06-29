@@ -16,10 +16,12 @@ from xhtml2pdf import pisa
 from .forms import PagosForm, DetallesPagosForm, FormMateriaPago
 from .models import Pago, detalle_pagos, materia_recibir
 
-from Academico.models import Materia
+from Academico.models import Materia, CnotasEstudiante
 
 
 # Create your views here.
+
+
 class PagosMatriculaList(ListView):
     model = Pago
     template_name = 'gestion_pagos/pagos_matricula.html'
@@ -45,10 +47,12 @@ def cAgregarValor(request, id_pago):
     mensaje = "Error"
     if request.method == 'POST':
         saldopendiente = request.POST.get("Valor_pendiente")
+        valpagado = request.POST.get("valor_cancelado")
         form = DetallesPagosForm(request.POST, request.FILES)
         if form.is_valid():
             if form.save():
-                if(float(saldopendiente)<=0):
+                Pago.objects.filter(pk=pago_datos.id).update(valor_pagado=valCancelado+decimal.Decimal(valpagado))
+                if (float(saldopendiente) <= 0):
                     Pago.objects.filter(pk=pago_datos.id).update(estado=True)
                 mensaje = "Guardado con exito"
         return redirect('pago:PagoLista')
@@ -73,6 +77,7 @@ class PagosColegiaturaList(ListView):
         context['Titulo'] = "Pagos Colegiatura"
         return context
 
+
 class PagosColegiaturaEstudHabilList(ListView):
     model = Pago
     template_name = 'gestion_pagos/colegiatura/pago_gen_matricula.html'
@@ -87,9 +92,9 @@ class PagosColegiaturaEstudHabilList(ListView):
 
 # Generación de vista de Agregar Pagos de Colegiatura
 def cAgregarPago(request, id_pago):
-    pago_datos = Pago.objects.get(id=id_pago) #primero obtengo los datos del pago.
-    tipodematricula = pago_datos.cod_matricula.modalidad # Obtengo cual fue la modalidad de la matricula
-    id_prog = pago_datos.cod_matricula.admision_id.Programa.id #id del programa para mostrar las materias
+    pago_datos = Pago.objects.get(id=id_pago)  # primero obtengo los datos del pago.
+    tipodematricula = pago_datos.cod_matricula.modalidad  # Obtengo cual fue la modalidad de la matricula
+    id_prog = pago_datos.cod_matricula.admision_id.Programa.id  # id del programa para mostrar las materias
     materias = Materia.objects.all().filter(cod_programa=id_prog)
     mensaje = "Error"
     idpago = None
@@ -111,28 +116,35 @@ def cAgregarPago(request, id_pago):
         form = PagosForm(request.POST)
         if form.is_valid():
             if form.save():
-                np=Pago.objects.get(id=idpago)
+                np = Pago.objects.get(id=idpago)
                 mt = Materia.objects.get(cod_materia=request.POST.get("materia_asignada"))
-                OpagoMateria = materia_recibir(fecha=request.POST.get("fecha_generacion"),materia_asignada=mt,pago_id=np)
-                OpagoMateria.save()
+                OpagoMateria = materia_recibir(fecha=request.POST.get("fecha_generacion"), materia_asignada=mt,
+                                               pago_id=np)
+                OpagoMateria.save()  # Se genera la materia recibir del estudiante.
+                # proceso generar notas y asistencia del estudiante
+                OnotasAc = CnotasEstudiante(fecha_subir_nota=request.POST.get("fecha_generacion"), notaestudiante=-1.00,
+                                            asitencia=0, id_pago_materia=np)
+                OnotasAc.save()
                 msg = "Se Registro con exito el pago de colegiatura " + request.POST.get("cod_pago")
             return JsonResponse({'content': {'message': msg, 'color': 'success', }})
         else:
-            msg = "Se genero un error al generar el pago de colegiatura " + request.POST.get("cod_pago") + "Al parecer este pago ya existe.!"
+            msg = "Se genero un error al generar el pago de colegiatura " + request.POST.get(
+                "cod_pago") + "Al parecer este pago ya existe.!"
             return JsonResponse({'content': {'message': msg, 'color': 'danger', }})
     else:
         form = PagosForm()
         form2 = FormMateriaPago()
-        contexto = {'form': form, 'tipoM': tipodematricula, 'mensaje': mensaje, 'id': id_pago, 'pgd': pago_datos, 'materias': materias, 'form2':form2,'codigo':codigoP}
+        contexto = {'form': form, 'tipoM': tipodematricula, 'mensaje': mensaje, 'id': id_pago, 'pgd': pago_datos,
+                    'materias': materias, 'form2': form2, 'codigo': codigoP}
     return render(request, 'gestion_pagos/colegiatura/modal_form_pago.html', contexto)
 
 
 # Generación de vista de Agregar Pagos de Colegiatura
 def cFichaPago(request, id_pago):
-    detallemateria = materia_recibir.objects.get(id=id_pago) # obtengo el obejecto al cual hago referencia
-    pago_datos = Pago.objects.get(id=detallemateria.pago_id.id) #primero obtengo los datos del pago.
-    tipodematricula = pago_datos.cod_matricula.modalidad # Obtengo cual fue la modalidad de la matricula
-    id_prog = pago_datos.cod_matricula.admision_id.Programa.id #id del programa para mostrar las materias
+    detallemateria = materia_recibir.objects.get(id=id_pago)  # obtengo el obejecto al cual hago referencia
+    pago_datos = Pago.objects.get(id=detallemateria.pago_id.id)  # primero obtengo los datos del pago.
+    tipodematricula = pago_datos.cod_matricula.modalidad  # Obtengo cual fue la modalidad de la matricula
+    id_prog = pago_datos.cod_matricula.admision_id.Programa.id  # id del programa para mostrar las materias
     materias = Materia.objects.all().filter(cod_programa=id_prog)
     mensaje = "Error"
     if request.method == 'POST':
@@ -142,14 +154,15 @@ def cFichaPago(request, id_pago):
                 msg = "Se Registro con exito el pago de colegiatura " + request.POST.get("cod_pago")
             return JsonResponse({'content': {'message': msg, 'color': 'success', }})
         else:
-            msg = "Se genero un error al generar el pago de colegiatura " + request.POST.get("cod_pago") + "Al parecer este pago ya existe.!"
+            msg = "Se genero un error al generar el pago de colegiatura " + request.POST.get(
+                "cod_pago") + "Al parecer este pago ya existe.!"
             return JsonResponse({'content': {'message': msg, 'color': 'danger', }})
     else:
         form = PagosForm()
         form2 = FormMateriaPago()
-        contexto = {'form': form, 'tipoM': tipodematricula, 'mensaje': mensaje, 'id': id_pago, 'pgd': pago_datos, 'materias': materias, 'form2':form2,'codigo':mensaje,'detM':detallemateria}
+        contexto = {'form': form, 'tipoM': tipodematricula, 'mensaje': mensaje, 'id': id_pago, 'pgd': pago_datos,
+                    'materias': materias, 'form2': form2, 'codigo': mensaje, 'detM': detallemateria}
     return render(request, 'gestion_pagos/colegiatura/fichaPago.html', contexto)
-
 
 
 # REPORTES PDF DE PAGOS
@@ -218,6 +231,7 @@ class pdfPagoMatricula_view(LoginRequiredMixin, View):
                 return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisaStatus.err, html))
         return response
 
+
 class pdfEstadoPagoMatricula_view(LoginRequiredMixin, View):
     def link_callback(self, uri, rel):
         result = finders.find(uri)
@@ -246,16 +260,25 @@ class pdfEstadoPagoMatricula_view(LoginRequiredMixin, View):
         return path
 
     def get(self, request, *args, **kwargs):
-
+        valpago=0
+        salPendiente=0
         tipo_reporte = self.kwargs['pk']
-        if(tipo_reporte=="R1"):
+        if (tipo_reporte == "R1"):
             pagos = Pago.objects.all().filter(cod_pago__contains='PAM', estado=True)
             pago_estado = 'Pago Completo'
             name_report = 'Reporte de estudiantes con '
+            tipo = True
+            for pag in pagos:
+                valpago = valpago + pag.valor_pagar
+                salPendiente = salPendiente + (pag.valor_pagar-pag.valor_pagado)
         else:
             pagos = Pago.objects.all().filter(cod_pago__contains='PAM', estado=False)
             pago_estado = 'Pago Incompleto'
             name_report = 'Reporte de estudiantes con '
+            tipo = False
+            for pag in pagos:
+                valpago = valpago + pag.valor_pagar # valor a cobrar en total
+                salPendiente = salPendiente + (pag.valor_pagar-pag.valor_pagado)
         user = User.objects.get(
             username=self.request.user)  # envia el usuario que esta en la logueado en la aplicacion.
         template_path = 'gestion_pagos/Reportes/ReporteGeneral.html'
@@ -265,8 +288,9 @@ class pdfEstadoPagoMatricula_view(LoginRequiredMixin, View):
                    'codigo': pago_estado,
                    'icon': '{}{}'.format(settings.MEDIA_URL, 'logo13.png'),
                    'date': fecha,
-                   'valorCancelado': 0.00,
-                   'ValorAdeudado': 0.00,
+                   'tipo':tipo,
+                   'valorCancelado': valpago,
+                   'ValorAdeudado': salPendiente,
                    'usuario': user
                    }
         response = HttpResponse(content_type='application/pdf')
@@ -283,6 +307,7 @@ class pdfEstadoPagoMatricula_view(LoginRequiredMixin, View):
             if pisaStatus.err:
                 return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisaStatus.err, html))
         return response
+
 
 class pdfEstadoPagoMatricula_view1(ListView):
     model = Pago
@@ -323,9 +348,9 @@ class pdfPagoColegiatura_view(LoginRequiredMixin, View):
             'id')  # valores que se han ingresado en la tabla de pagos
         pago_datos = Pago.objects.get(id=id_pago)
         valCancelado = 0.00
-        #for i in valores:
+        # for i in valores:
         #    valCancelado = decimal.Decimal(valCancelado) + i.valor_cancelado
-        #Saldo_adeudado = pago_datos.valor_pagar - decimal.Decimal(valCancelado)
+        # Saldo_adeudado = pago_datos.valor_pagar - decimal.Decimal(valCancelado)
 
         user = User.objects.get(
             username=self.request.user)  # envia el usuario que esta en la logueado en la aplicacion.
@@ -341,7 +366,8 @@ class pdfPagoColegiatura_view(LoginRequiredMixin, View):
                    'usuario': user
                    }
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename=' +'Colegiatura-' + pago_datos.cod_matricula.admision_id.ci.ci + ".pdf"
+        response[
+            'Content-Disposition'] = 'attachment; filename=' + 'Colegiatura-' + pago_datos.cod_matricula.admision_id.ci.ci + ".pdf"
         template = get_template(template_path)
         html = template.render(context)
         if request.POST.get('show_html', ''):

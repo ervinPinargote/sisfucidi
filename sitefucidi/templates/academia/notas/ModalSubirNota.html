@@ -1,0 +1,121 @@
+<div class="modal-dialog modal-lg" role="document" >
+    <div class="modal-content">
+        <div class="modal-header">
+            {% block titlemodal %} <h5 class="modal-title" id="exampleModalLabel"><b>Notas y Asistencia: <span id="idp">{{c}}</span></b></h5>
+            {% endblock %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {% block modalcuerpo%}
+        <form data-post-url="{% url 'academia:NotasEditar' id %}" id= "form_creacion" method="POST">
+            <div style="border-radius: 25px; border: 1px solid #05548C; margin: 1em 1em 0 1em; ">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <span>Estimado usuario usted debe calificar la materia del estudiante bajo el siguiente criterio:
+                          <br>Mayor a (>0) y Menor o igual (<=20), caso contrario el sistema
+                          <b style="color:red;">NO</b> le premitirar guardar esa calificación
+                    </span>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <div class="form-group">
+                                <label>Fecha:</label>
+                                <input type="hidden" id="fecha" value="{{form.fecha_subir_nota.value|date:'SHORT_DATE_FORMAT'}}">
+                                <input type="date" name="fecha_subir_nota" id="id_fecha_subir_nota" class="form-control" value="{{form.fecha_subir_nota.value|date:'SHORT_DATE_FORMAT'}}" >
+                            </div>
+                        </div>
+                        <div class="col-md-3 pl-1">
+                            <div class="form-group">
+                                <label>Nota:</label>
+                                {{form.notaestudiante}}
+                            </div>
+                        </div>
+                        <div class="col-md-3 pl-1">
+                            <div class="form-group">
+                                <label>Asistencia:</label>
+                                {{form.asitencia}}
+                            </div>
+                        </div>
+                    </div>
+                    <span style="color:red"><b>Estatus:</b></span><span id="error"> OK</span>
+                    <br>
+                    <button  type="submit" id="id_guardar_nota" class="btn btn-primary" >Guardar</button>
+                    <a class="btn btn-default" href="">Cancelar</a>
+                </div>
+            </div>
+             <br>
+                    <br>
+        </form>
+        {% endblock %}
+    </div>
+</div>
+
+<script>
+$(function() {
+    'use strict';
+    $('#form_creacion').on('submit', function() {
+       var post_url = $("#form_creacion").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+                setTimeout(window.location = '/academia/notas/estudiantes/lista/materias/(%3FP'+$("#idp").text()+'%5Cd+)/',1060000);
+            },
+        });
+        return false;
+    });
+});
+
+var parts =$("#fecha").val().split('/');
+var fecha1 = parts[1] +"/"+parts[0]+"/"+parts[2];
+$("#id_fecha_subir_nota").val(new Date(fecha1).toISOString().substring(0, 10));
+
+
+var nota = $("#id_notaestudiante").val();
+   if(parseFloat(nota)<0)
+   {
+     $("#error").text(" Para guardar calificación, ingrese una nota");
+     $('#id_guardar_nota').hide();
+   }
+   else
+   {
+    $("#error").text(" OK");
+   }
+
+$("#id_notaestudiante").on('change', function() {
+   var nota = $("#id_notaestudiante").val();
+
+   if ( parseFloat(nota) > 20)
+   {
+     $("#error").text(" No se puede calificar mayor a 20. ejemplo 1/20 o 20/20");
+     $('#id_guardar_nota').hide();
+   }
+   else
+   {
+      if(parseFloat(nota) < 0)
+      {
+
+        $("#error").text(" No se puede calificar menor a 0. ejemplo 1/20 o 20/20");
+        $('#id_guardar_nota').hide();
+      }
+      else
+      {
+       $("#error").text(" OK");
+       $('#id_guardar_nota').show();
+      }
+   }
+ });
+
+
+</script>

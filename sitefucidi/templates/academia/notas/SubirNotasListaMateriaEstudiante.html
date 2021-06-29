@@ -1,0 +1,57 @@
+{% extends "usuarios/base_panel.html" %}
+{%block cantidad%}
+    <p class="card-category">Programas</p>
+    <a  class="btn btn-primary btn-sm" href="{% url 'academia:Nuevo' %}">Nuevo </a>
+{% endblock %}
+{% block opcion2 %}
+    <p class="card-category">Programas Vigentes</p>
+    <p class="card-title">{{pvigentes}}<p>
+{% endblock %}
+
+{% block opcion3 %}
+    <p class="card-category">Programas N. Vigentes</p>
+    <p class="card-title">{{nvigentes}}<p>
+{% endblock %}
+{% block dir %}href="{% url 'academia:NotasListaEstudiante' %}" {% endblock %}
+{% block il6 %} class="active" {% endblock %}
+{% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
+{% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Notas de Estudiante / {{est.nombre}} {{est.apellido}} {% endblock %}
+{%block titulofuncional %} <b>{{est.nombre}} {{est.apellido}} </b>  &nbsp; &nbsp; &nbsp;
+{% endblock%}
+
+{% block trabajo %}
+<div class="table-responsive">
+<table class="table table-hover table-bordered" id="datatable">
+    <thead class="centrado-negrita">
+    <tr>
+        <td>N°</td>
+        <td>Codigo de Materia</td>
+        <td>Nombre de Materia</td>
+        <td>Fecha</td>
+        <td>Nota actual</td>
+        <td>Asistencia</td>
+        <td>Acciones</td>
+    </tr>
+    </thead>
+    <tbody>
+        {% if estudantes %}
+        {% for est in estudantes %}
+        <tr style="background-color: #fff;">
+            <td style="text-align:center;">{{ forloop.counter }}</td>
+            <td>{{est.cod_materia}}</td>
+            <td>{{est.nombre_materia}}</td>
+            <td style="text-align:center;">{{est.fecha_subir_nota}}</td>
+            <td style="text-align:center;">{{est.notaestudiante}}</td>
+            <td style="text-align:center;">{{est.asitencia}} % </td>
+            <td style="text-align:center;">
+                <a title="Subir Nota y Asistencia" href="#" class="btn btn-success" onclick="abrirmodaleliminar('{% url 'academia:NotasEditar' est.id %}'); "><i class="fas fa-save"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <h1>No hay registros para mostrar</h1>
+        {% endif %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

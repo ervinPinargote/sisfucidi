@@ -240,6 +240,33 @@ $('#formUpdatePerfil').on('submit', function() {
    return false;
 });
 
+$('#form_creacion_reporte').on('submit', function() {
+       var post_url = $("#form_creacion_reporte").data("post-url");
+       var formData = new FormData(this);
+        $.ajax({
+            url : post_url,
+            type: "POST",
+            data : formData,
+            processData: false,
+            contentType: false,
+            success:function(response){
+                $('#exampleInputEmail1').attr("readonly","readonly");
+                $('#exampleInputEmail1').addClass("readOnly");
+                $('#first_name').attr("readonly","readonly");
+                $('#first_name').addClass("readOnly");
+                $('#last_name').attr("readonly","readonly");
+                $('#last_name').addClass("readOnly");
+                $('#btnupperfi').attr("disabled","disabled");
+                $('#id_hbeditar').prop("checked",false);
+                $('#user_name').text($('#first_name').val()+" "+$('#last_name').val());
+                $('#user_name1').text($('#first_name').val()+" "+$('#last_name').val());
+                var message = response.content.message
+                demo.showNotification('bottom','right',message, response.content.color)
+            },
+        });
+   return false;
+});
+
 
 
 

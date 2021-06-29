@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{tittle}}</title>
+    <style>
+    @page {
+        size: a4 portrait;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 10pt; height: 40pt;
+        }
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+    }
+
+    .header_table{
+    text-align: center;
+    font-weight:bold;
+    color: black;
+     background-color: #F00;
+    }
+
+
+    .indice{
+     text-align: center;
+     font-weight:bold;
+     color: Red;
+     width:10%;
+    }
+    .nivel{
+     width:10%;
+    }
+    .materias{
+      width:25%;
+    }
+    .infoCenter{
+    text-align: center;
+    }
+
+    th, td{
+            padding: 5px 15px;
+    }
+    th{
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+    td{
+
+    }
+     .firma1{
+     float:left;
+     width: 30%;
+     outline: green solid thin
+     }
+     p.linea { text-align:  left; }
+     .prueba{
+        height: 10px;
+        width: 50%;
+      border-color: red;
+      color: red;
+     }
+
+    </style>
+</head>
+<body>
+
+<div id="header_content">
+    <img src="media/logo13.png" width="200px">
+</div>
+<div id="footer_content">
+
+
+    (Semilla) - pagina
+    <pdf:pagenumber> de
+        <pdf:pagecount>
+
+
+</div>
+
+<div class="infoGeneral">
+    <h1>{{tittle}}  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;Fecha Elaborado:<a> {{date}}</a> </h1>
+</div>
+
+<hr>
+<p> <b>Codigo: &nbsp; </b> {{programa.cod_programa}} </p>
+<p><b>Nombre: &nbsp; </b>{{programa.nombre_programa}}</p>
+{% if programa.tipo_programa == 'A' %}
+ <p> <b>Tiempo de Estudios: &nbsp;</b> {{programa.duracion}} &nbsp;&nbsp; <u>Año(s)</u>  </p>
+{% else %}
+ <p> <b>Tiempo de Estudios: &nbsp;</b> {{programa.duracion}} &nbsp;&nbsp; <u>Mes(es)</u>   </p>
+{% endif %}
+
+
+<span> La fundación FUCIDI, tiene el grato honor de mostrar  a los estuiantes que cursan</b>,
+    el programa de estudios <b>{{programa.nombre_programa}}</b>,
+    Obteniendo las siguientes calificaciones en las respectivas materias
+</span>
+<br>
+<br>
+<table border="1">
+
+    <thead class="header_table">
+    <tr>
+        <td class="indice">Ord.</td>
+        <td class="materias">Materia</td>
+        <td>Estudiante</td>
+        <td>Fecha de calificacion</td>
+        <td class="nivel">Nota</td>
+        <td class="nivel">Asistencia</td>
+    </tr>
+    </thead>
+
+    <tbody class="rows_table">
+    {% if mat %}
+    {% for materias in mat %}
+
+        {% ifequal  pers "RA" %}
+           {% if materias.notaestudiante > 14 %}
+            <tr>
+
+                <td class="indice">{{ forloop.counter }}</td>
+                <td class="materias">{{ materias.nombre_materia}}</td>
+                <td>{{ materias.nombre}} {{ materias.apellido}}</td>
+                <td>{{ materias.fecha_subir_nota}}</td>
+                <td class="nivel">{{ materias.notaestudiante}}</td>
+                <td class="nivel"> 0 % </td>
+            </tr>
+            {% endif %}
+
+        {% else %}
+            {% if materias.notaestudiante < 14 %}
+            <tr>
+                <td class="indice">{{ forloop.counter }}</td>
+                <td class="materias">{{ materias.nombre_materia}}</td>
+                <td>{{ materias.nombre}} {{ materias.apellido}}</td>
+                <td>{{ materias.fecha_subir_nota}}</td>
+                <td class="nivel">{{ materias.notaestudiante}}</td>
+                <td class="nivel"> 0 % </td>
+            </tr>
+            {% endif %}
+
+        {% endifequal  %}
+    {% endfor %}
+    {% else %}
+    <h1>No hay registos para mostrar</h1>
+    {% endif %}
+    </tbody>
+</table>
+
+<p>La presente lista, se encuentra validad por la informacion que reposa en el sistema de notas de la fundacion
+</p>
+
+<br>
+<div>
+    <p><b> Leyendas:</b> </p>
+    <p> Esta información Permite leer mejor los datos presentados en la tabla </p>
+    <p> <b> -1 :</b>  Significa materia que no ha sido evaluda</p>
+</div>
+
+<div>
+    <br> <br> <br> <br>
+
+</div>
+
+<p>Es todo en cuanto puedo certificar en honor a la verdad</p>
+
+
+<b>Realizado por: </b>
+<br> <br> <br>
+<br> <br> <br>
+<div class="cfirma">
+     <div style="color:#020000;height:10px;">________________________________________</div>
+    <p> &nbsp;&nbsp;&nbsp;<b> Nombre: </b>{{ usuario.first_name }} {{ usuario.last_name }}</p>
+    <p> &nbsp;&nbsp;&nbsp;<b> Correo: </b>{{ usuario.email }}</p>
+</div>
+
+
+</body>
+</html>
