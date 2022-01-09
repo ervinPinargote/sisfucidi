@@ -71,6 +71,14 @@
       color: red;
      }
 
+     .watermark {
+    opacity: 0.1;
+    color: BLACK;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    }
+
     </style>
 </head>
 <body STYLE="font-size:9pt;">
@@ -78,6 +86,7 @@
 <div id="header_content">
     <img src="media/logo13.png" width="200px">
 </div>
+
 
 
 <div class="infoGeneral">
@@ -89,47 +98,36 @@
     <diV >
         <b>Codigo Matricula: &nbsp; </b> {{matricula.cod_matricula}}
         <br>
-        <b>Progama de Estudios: &nbsp;</b>{{matricula.admision_id.Programa.nombre_programa}}
-        <br>
         <b>Identificacíon: &nbsp;</b> {{matricula.admision_id.ci.ci}}
         <br>
         <b>Nombre y Apellidos: &nbsp;</b> {{matricula.admision_id.ci.nombre}}  {{matricula.admision_id.ci.apellido}}
         <br>
-        <b>Valor Matrícula: &nbsp;</b> {{matricula.admision_id.Programa.precio_matricula}} &nbsp;&nbsp;  <b>Valor Colegiatura: &nbsp;</b>{{matricula.admision_id.Programa.precio_pension}}
+        <b>Valor Matrícula: &nbsp;</b> {{matricula.valor_pagar}}
     </diV>
     <br>
 </div>
 
-<span>Materias en las que se matriculo el estudiante : </span>
+<span>Rubro de matrícula : </span>
 <br>
 <br>
 <table border="1">
 
     <thead class="header_table">
     <tr>
-        <td class="indice">Codigo</td>
-        <td class="materias">Materia</td>
-        <td class="nivel">Nivel</td>
-        <td>Modalidad</td>
-        <td>Duracion</td>
+        <td class="indice">Ord.</td>
+        <td class="materias">Detalle</td>
+        <td class="nivel">Modalidad</td>
+        <td>Beca</td>
+
     </tr>
     </thead>
-
     <tbody class="rows_table">
-    {% if matricula.materias %}
-    {% for materias in matricula.materias.values %}
     <tr>
-
-            <td class="indice">{{ materias.cod_materia }}</td>
-            <td class="materias">{{ materias.nombre_materia}}</td>
-            <td class="nivel">{{ materias.nivel}}</td>
-            <td class="infoCenter">{{ materias.modalidad }}</td>
-            <td class="infoCenter">{{ materias.duracion }}</td>
+            <td class="indice">1.</td>
+            <td class="materias">{{matricula.admision_id.Programa.nombre_programa}}</td>
+            <td class="infoCenter">{{ matricula.modalidad}}</td>
+            <td class="infoCenter">{{ matricula.porcentaje_beca }} %</td>
     </tr>
-    {% endfor %}
-    {% else %}
-    <h1>No hay registos para mostrar</h1>
-    {% endif %}
     </tbody>
 </table>
 
@@ -137,8 +135,8 @@
 <div>
     <p><b> Leyendas:</b> </p>
     <p> Esta información Permite leer mejor los datos presentados en la tabla </p>
-    <p> <b>C :</b>  Significa Creditos.</p>
-    <p> <b>H :</b>  Significa Horas. </p>
+    <p> <b>Porcentaje de Beca :</b>  Este valor indica el procentaje que tiene el estudiante en el programa de estudio
+        en la matricula.</p>
 </div>
 
 <div>

@@ -28,14 +28,12 @@ from django.conf import settings
 from Pago.models import Pago
 
 
-class MatriculasList(ListView):
+class MatriculasList(LoginRequiredMixin, ListView):
     model = Matricula
     template_name = 'matriculas/matriculas.html'
 
     def get_context_data(self, **kwargs):
         matriculas = Matricula.objects.all()
-        ac = 0
-        ne = 0
         context = super(MatriculasList, self).get_context_data(**kwargs)
         context['matriculas'] = matriculas
         context['Titulo'] = "Matrículas"
@@ -186,3 +184,28 @@ class pdfMatricula_view(LoginRequiredMixin, View):
             if pisaStatus.err:
                 return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisaStatus.err, html))
         return response
+
+
+def cMatriculaEditar(request, id_mat):
+    mat = Matricula.objects.get(id_matricula=id_mat)
+    adm = admisione.objects.get(id=mat.admision_id.id)
+    valores_pagar = Valor_matricula.objects.all().filter(cod_programa=adm.Programa.id).order_by('-id')[:1]
+    materiasMatriculdas = Matricula.objects.all().filter(admision_id=adm.id)
+    valor = Matricula.objects.all().order_by('-id_matricula')[:1]
+    if request.method == 'POST':
+        form = cMatriculaForm(request.POST, instance=mat)
+        if form.is_valid():
+            if form.save():
+                msg = "Se Registro con exito la modificacion" + request.POST.get("cod_matricula")
+            return JsonResponse({'content': {'message': msg, 'color': 'success', }})
+        else:
+            msg = "Se genero un error al EDITAR la Matricula " + request.POST.get(
+                "cod_matricula") + ".!"
+            return JsonResponse({'content': {'message': msg, 'color': 'danger', }})
+    else:
+        form = cMatriculaForm(instance=mat)
+        #form = cMatriculaForm()
+    contexto = {'form': form, 'admision': adm, 'Matriculas': materiasMatriculdas, 'ID': mat.id_matricula,
+                'codM': mat.cod_matricula,
+                'valores': valores_pagar}
+    return render(request, 'matriculas/FormEditarMatricula.html', contexto)

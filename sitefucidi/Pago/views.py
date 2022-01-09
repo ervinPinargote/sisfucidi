@@ -22,7 +22,7 @@ from Academico.models import Materia, CnotasEstudiante
 # Create your views here.
 
 
-class PagosMatriculaList(ListView):
+class PagosMatriculaList(LoginRequiredMixin,ListView):
     model = Pago
     template_name = 'gestion_pagos/pagos_matricula.html'
 
@@ -64,7 +64,7 @@ def cAgregarValor(request, id_pago):
 
 
 # Creacion del menu de pagos
-class PagosColegiaturaList(ListView):
+class PagosColegiaturaList(LoginRequiredMixin,ListView):
     model = Pago
     template_name = 'gestion_pagos/colegiatura/Pagos_Colegiatura.html'
 

@@ -37,7 +37,7 @@
         {% if estudantes %}
         {% for est in estudantes %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td style="text-align:center;">{{ forloop.counter }}</td>
             <td>{{ est.ci }}</td>
             <td>{{est.nombre}}</td>
             <td>{{est.apellido}}</td>

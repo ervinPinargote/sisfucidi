@@ -50,7 +50,7 @@
                     <td style="text-align:center;">{{doc.modalidad}}</td>
 
                     <td style="text-align:center;">
-                        <a CLASS="btn btn-primary"  title="Modificar" href=""><i class="fas fa-edit"></i> </a>
+                        <a CLASS="btn btn-primary" onclick="abrirmodaleliminar('{% url 'matricula:EditarMatricula' doc.id_matricula %}'); " title="Modificar" ><i class="fas fa-edit"></i> </a>
                         <a class="btn btn btn-success" title="Ficha Matricula" href="{% url 'matricula:MatriculaFicha' doc.cod_matricula %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
                         <a class="btn btn-danger" onclick="" title="Eliminar" ><i class="fas fa-trash-alt"></i> </a>
                     </td>

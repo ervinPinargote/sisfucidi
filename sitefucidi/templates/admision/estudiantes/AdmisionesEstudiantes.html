@@ -41,9 +41,8 @@
                         <td style="text-align: center; width:30%;">
 
                         <a CLASS="btn btn-primary" title="Modificar" href="{% url 'admision:EditarAdmision' adm.id  %}"><i class="fas fa-edit"></i></a>
-
-                        <a class="btn btn btn-success"  title="Ver Ficha" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}"><i class="icon-big nc-icon nc-single-copy-04"></i></a>
-                        <a class="btn btn-danger" title="Eliminar" href="{% url 'academia:EliminarMateria' adm.codigoAdmision  %}"><i class="fas fa-trash-alt"></i></a>
+                        <a class="btn btn btn-success"  title="Descargar Ficha de Admision" href="{% url 'admision:ReporteFichaAdmision' adm.id %}"><i class="nc-icon nc-cloud-download-93"></i></a>
+                        <a class="btn btn-danger" title="Eliminar" href="#" onclick=" abrirmodaleliminar('{% url 'admision:EliminarAdmision' adm.id  %}');"><i class="fas fa-trash-alt"></i></a>
                         </td>
                      </tr>
                     {% endfor %}

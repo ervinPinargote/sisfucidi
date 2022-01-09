@@ -4,6 +4,7 @@ from collections import namedtuple
 from sys import path
 
 import uri as uri
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.core.serializers import serialize
@@ -34,6 +35,7 @@ from .utils import render_to_pdf
 from Admision.models import Persona
 
 
+@login_required
 def CprograLista(request):
     program = Programa.objects.all()
     ac = 0
@@ -65,6 +67,27 @@ def CprograNuevo(request):
                   {'form': form, 'codigo': codigo, 'mensaje': mensaje, 'title': "Agregar"})
 
 
+def CProgramaNuevoModal(request):
+    error = ""
+    if request.method == 'POST':  # preguntamos si es un metodo POST.
+        form = ProgramaNuevo(request.POST)  # Instaciomos el  formulario creado
+        if form.is_valid():
+            if form.save():
+                error = "Se Registro Programa Academico " + request.POST.get("nombre_programa")
+            return JsonResponse({'content': {'message': error, 'color': 'success',  }})
+        else:
+            error = "Se genero un error al guardar " + request.POST.get(
+                "nombre_programa") + ".!"
+            return JsonResponse(
+                {'content': {'message': error, 'color': 'danger', }})
+    else:
+        form = ProgramaNuevo()
+    return render(request, 'academia/ModalProgramaNuevo.html',
+                  {'form': form, 'title': "Agregar"})
+
+
+
+
 def CprogramaEditar(request, id_programa):
     program = Programa.objects.get(id=id_programa)
     if (request.method == 'GET'):
@@ -76,6 +99,24 @@ def CprogramaEditar(request, id_programa):
         return redirect('academia:Listar')  # Redirijo a la Listar que es Principal en el funcionalidad
     return render(request, 'academia/nuevo.html',
                   {'form': form, 'title': "Editar"})  # Usamos el mismo Formulario para un nuevo Programa
+
+def CprogramaEditarModal(request, id_programa):
+    program = Programa.objects.get(id=id_programa)
+    if (request.method == 'GET'):
+        form = ProgramaEditar(instance=program)
+    else:
+        form = ProgramaEditar(request.POST, instance=program)
+        if form.is_valid():
+            if form.save():
+                error = "Se modifico con exito el programa de estudio"
+                # return redirect('academia:Listar')  # Redirijo a la Listar que es Principal en el funcionalidad
+                return JsonResponse({'content': {'message': error, 'color': 'success', }})
+        else:
+            error = "Existio un Error al modificar el programa de estudio!!!"
+            # return redirect('academia:Listar')  # Redirijo a la Listar que es Principal en el funcionalidad
+            return JsonResponse({'content': {'message': error, 'color': 'danger', }})
+    return render(request, 'academia/ModalProgramaEditar.html',
+                  {'form': form, 'title': "Editar", 'id':id_programa})  # Usamos el mismo Formulario para un nuevo Programa
 
 
 class EliminarPrograma(DeleteView):
@@ -376,6 +417,7 @@ def CModalReportes(request, id_per):
     return render(request, 'academia/notas/ModalSeleccionarReporte.html',
                   {'mat': progrmasestudiosEst, 'title': "Editar", 'id': id_per, 'c': id_per})
 
+
 def CModalReportesA(request, pk):
     info = pk
 
@@ -393,6 +435,8 @@ def CModalReportesA(request, pk):
     cursor.close()
     return render(request, 'academia/notas/ModalSeleccionarReporte_aprobado.html',
                   {'mat': progrmasestudiosEst, 'title': "Editar"})
+
+
 # Generacion de Reportes
 
 class pdfNotasR_view(LoginRequiredMixin, View):
@@ -444,12 +488,11 @@ class pdfNotasR_view(LoginRequiredMixin, View):
         mate = namedtuplefetchall(cursor)
         cursor.close()
 
-
         user = User.objects.get(
             username=self.request.user)  # envia el usuario que esta en la logueado en la aplicacion.
         template_path = 'academia/notas/reportes/CestificadoEstudios.html'
         fecha = datetime.date.today()
-        context = {'tittle': 'CERTIFICADO DE ESTUDIOS', 'programa': program, 'mat': mate ,
+        context = {'tittle': 'CERTIFICADO DE ESTUDIOS', 'programa': program, 'mat': mate,
                    'pers': persona,
                    'icon': '{}{}'.format(settings.MEDIA_URL, 'logo13.png'),
                    'date': fecha,
@@ -469,7 +512,6 @@ class pdfNotasR_view(LoginRequiredMixin, View):
             if pisaStatus.err:
                 return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisaStatus.err, html))
         return response
-
 
 
 class pdfAprobadoReprobado_view(LoginRequiredMixin, View):
@@ -502,7 +544,7 @@ class pdfAprobadoReprobado_view(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # mat = Materia.objects.all().order_by('nivel')
         program = Programa.objects.get(cod_programa=self.kwargs['cp'])
-        #persona = Persona.objects.get(ci=self.kwargs['pk'])
+        # persona = Persona.objects.get(ci=self.kwargs['pk'])
 
         sd = "'" + self.kwargs['pk'] + "'"
         cod = "'" + self.kwargs['cp'] + "'"
@@ -520,17 +562,16 @@ class pdfAprobadoReprobado_view(LoginRequiredMixin, View):
         mate = namedtuplefetchall(cursor)
         cursor.close()
         tipo = self.kwargs['pk']
-        if tipo=="RA":
+        if tipo == "RA":
             title = "Estudiantes Aprobados"
         else:
             title = "Estudiantes Reprobados"
-
 
         user = User.objects.get(
             username=self.request.user)  # envia el usuario que esta en la logueado en la aplicacion.
         template_path = 'academia/notas/reportes/EstudiantestipoReport.html'
         fecha = datetime.date.today()
-        context = {'tittle': title, 'programa': program, 'mat': mate ,
+        context = {'tittle': title, 'programa': program, 'mat': mate,
                    'pers': self.kwargs['pk'],
                    'icon': '{}{}'.format(settings.MEDIA_URL, 'logo13.png'),
                    'date': fecha,

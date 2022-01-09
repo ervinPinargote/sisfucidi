@@ -17,7 +17,8 @@
 {% block il %} class="active" {% endblock %} <!-- clase para saber en que menuestas -->
 {% block path%} &nbsp; &nbsp; &nbsp; Módulo Academia  / Gestión Programas Académicos {% endblock %}
 {%block titulofuncional %} <b> Programas Académicos </b>  &nbsp; &nbsp; &nbsp;
-<a class="btn btn-success btn-sm" href="{% url 'academia:Nuevo' %}"><i class="fas fa-plus-square"> </i> Agregar </a>
+<!--<a class="btn btn-success btn-sm" href="{% url 'academia:Nuevo' %}"><i class="fas fa-plus-square"> </i> Agregar </a> -->
+<a class="btn btn-success btn-sm" href="#" onclick="abrirmodaleliminar('{% url 'academia:Nuevo1' %}'); "><i class="fas fa-plus-square"> </i> Agregar </a>
 <a class="btn btn-info btn-sm" href="{% url 'academia:reporte_malla' %}"><i class="nc-icon nc-cloud-download-93"> </i> PDF Programas </a>
 {% endblock%}
 
@@ -38,7 +39,7 @@
         {% if programas %}
         {% for program in programas %}
         <tr>
-            <td>{{ program.id }}</td>
+            <td style="text-align:center;">{{ forloop.counter }}</td>
             <td>{{ program.cod_programa }}</td>
             <td>{{ program.nombre_programa }}</td>
             <td style="text-align:center;">{{ program.duracion }}</td>
@@ -47,8 +48,10 @@
             {%else%}
                <td>Mensual/<strong>es</strong></td>
             {%endif%}
+
             <td style="text-align:center;">
-                <a CLASS="btn btn-primary" title="Editar"  href="{% url 'academia:Editar' program.id  %}" id=""><i class="fas fa-edit"></i> </a>
+                <!--<a CLASS="btn btn-primary" title="Editar"  href="{% url 'academia:Editar' program.id  %}" id=""><i class="fas fa-edit"></i> </a>-->
+                <a CLASS="btn btn-primary" title="Editar"  href="#" onclick="abrirmodaleliminar('{% url 'academia:Editar2' program.id  %}'); " ><i class="fas fa-edit"></i> </a>
                 <a CLASS="btn btn-info"  title="Valor Matricula"  onclick="abrirmodaleliminar('{% url 'academia:Valores' program.id  %}'); " ><i class="fas fa-plus-square"></i> </a>
                 <a CLASS="btn btn-info"  title="Añadir Materias"  onclick="abrirmodaleliminar('{% url 'academia:NuevaMateria' program.id  %}'); " ><i class="nc-icon nc-single-copy-04"></i> </a>
                 <a class="btn btn-success" title="Descargar" href="{% url 'academia:ReportePrograma' program.id  %}"><i class="nc-icon nc-cloud-download-93"></i></a>

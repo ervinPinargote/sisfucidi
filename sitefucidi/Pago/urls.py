@@ -22,4 +22,6 @@ urlpatterns = [
     path('pago/colegiatura/pdf/(?P<pk>\d+)/', pdfPagoColegiatura_view.as_view(), name='ReportePagoColegiatura'),
 
 
+
+
 ]
